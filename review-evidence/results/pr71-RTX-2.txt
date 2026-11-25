@@ -1,0 +1,17 @@
+
+running 1 test
+test host::relay_persistence_tests::unchanged_hash_does_not_repair_a_mismatched_readback ... PERSISTENCE first=29 second=29 second_hash_flag=0
+
+thread 'host::relay_persistence_tests::unchanged_hash_does_not_repair_a_mismatched_readback' (6592) panicked at crates\victory-gpu\src\host.rs:6706:9:
+assertion `left == right` failed: a correct flight must leave CPU bytes at the producer value
+  left: 29
+ right: 17
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+
+failures:
+
+failures:
+    host::relay_persistence_tests::unchanged_hash_does_not_repair_a_mismatched_readback
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 118 filtered out; finished in 1.09s

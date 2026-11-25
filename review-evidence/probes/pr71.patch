@@ -1,0 +1,107 @@
+diff --git a/crates/victory-gpu/src/host.rs b/crates/victory-gpu/src/host.rs
+index 1dc0062..862f5cc 100644
+--- a/crates/victory-gpu/src/host.rs
++++ b/crates/victory-gpu/src/host.rs
+@@ -6609,3 +6609,102 @@ mod batch {   // Batch::texture_due lives here; `mod tests` is already taken at
+         );
+     }
+ }
++
++#[cfg(test)]
++mod relay_persistence_tests {
++    use super::*;
++
++
++    #[test]
++    fn unchanged_hash_does_not_repair_a_mismatched_readback() {
++        if std::env::var_os("VICTORY_TEST_RELAY_SNAPSHOT").is_none() {
++            let thread = std::thread::current();
++            let result = std::process::Command::new(std::env::current_exe().unwrap())
++                .args(["--exact", thread.name().unwrap(), "--nocapture"])
++                .env("VICTORY_TEST_RELAY_SNAPSHOT", "1")
++                .env("VICTORY_RELAY", "2").env("VICTORY_KEEP_SNAPSHOTS", "0")
++                .env("VICTORY_CARD_BUFFERS", "1").env("VICTORY_CARD_BUFFERS_MIN_MB", "1")
++                .status().unwrap();
++            assert!(result.success());
++            return;
++        }
++        let host = host().expect("D3D12 device");
++        const WORDS: usize = 1024 * 1024 / 4;
++        let mut title = vec![0u32; WORDS];
++        let address = title.as_mut_ptr() as usize;
++        crate::shadow::register(address, address as u64, (WORDS * 4) as u64);
++        let shadow = crate::shadow::find(address as u64, 4).unwrap();
++        assert!(shadow.carded());
++        let put = |list: &HostList, value: u32| {
++            let (upload, data) = host.upload_buffer(4).unwrap();
++            // SAFETY: mapped four-byte upload, live buffers; the list retains the upload.
++            unsafe {
++                data.cast::<u32>().write_unaligned(value);
++                list.list.CopyBufferRegion(&shadow.buffer, 0, &upload, 0, 4);
++                list.list.ResourceBarrier(&[transition(&shadow.buffer, D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_COMMON)]);
++            }
++            list.keep(&upload);
++        };
++        let producer = host.new_list().unwrap();
++        shadow.refresh(&producer, address as u64, 4);
++        shadow.gpu_writes(&producer, address as u64, 4);
++        put(&producer, 17);
++        producer.close();
++        let (submitted, mut sent) = host.submit(&[&producer], true).unwrap();
++        let completed = *submitted;
++        drop(submitted);
++        let plan = sent.card.take().unwrap();
++        let next = host.new_list().unwrap();
++        put(&next, 29);
++        next.close();
++        // A deterministic interleaving: the later DIRECT write completes before
++        // the relay fetch starts. No queues access a racing resource in this test.
++        unsafe {
++            let fence: ID3D12Fence = host.device.CreateFence(0, D3D12_FENCE_FLAG_NONE).unwrap();
++            host.queue.ExecuteCommandLists(&[Some(next.list.cast().unwrap())]);
++            host.queue.Signal(&fence, 1).unwrap();
++            fence.SetEventOnCompletion(1, Default::default()).unwrap();
++        }
++        let _=completed;
++        host.relay_card_back(&[&plan], &mut None);
++        let seen = title[0];
++        let restore = host.new_list().unwrap();
++        put(&restore, 17);
++        restore.close();
++        unsafe {
++            let fence: ID3D12Fence = host.device.CreateFence(0, D3D12_FENCE_FLAG_NONE).unwrap();
++            host.queue.ExecuteCommandLists(&[Some(restore.list.cast().unwrap())]);
++            host.queue.Signal(&fence, 1).unwrap();
++            fence.SetEventOnCompletion(1, Default::default()).unwrap();
++        }
++        host.card_done(plan);
++        for (s, ranges) in sent.back { s.copy_back_done(&ranges); }
++        // This later flight declares the same range after DIRECT has restored
++        // the original 17. Its comparator should match the first flight's hash.
++        let same = host.new_list().unwrap();
++        shadow.gpu_writes(&same, address as u64, 4);
++        same.close();
++        let (submitted, mut again) = host.submit(&[&same], true).unwrap();
++        let finished = *submitted;
++        drop(submitted);
++        unsafe { host.fence.SetEventOnCompletion(finished, Default::default()).unwrap(); }
++        let plan = again.card.take().unwrap();
++        let r = &plan.ranges[0];
++        assert!(r.compared);
++        let flags = {
++            let work = CARD_WORK.lock().unwrap();
++            let flags = work.as_ref().unwrap().differs.1 as *const u32;
++            unsafe { flags.add(r.at as usize).read() }
++        };
++        host.relay_card_back(&[&plan], &mut None);
++        let after_unchanged = title[0];
++        host.card_done(plan);
++        for (s, ranges) in again.back { s.copy_back_done(&ranges); }
++        crate::shadow::unregister(address, address as u64);
++        eprintln!("PERSISTENCE first={seen} second={after_unchanged} second_hash_flag={flags}");
++        assert_eq!(flags, 0, "the restored word has the producer's original hash");
++        assert_eq!(after_unchanged, 17, "a correct flight must leave CPU bytes at the producer value");
++        assert_eq!(seen, 17, "read-back must correspond to the producer's completed flight");
++    }
++}
++

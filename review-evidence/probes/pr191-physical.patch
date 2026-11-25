@@ -1,0 +1,36 @@
+diff --git a/crates/victory-gpu/src/host.rs b/crates/victory-gpu/src/host.rs
+index 6c9c082..b176d26 100644
+--- a/crates/victory-gpu/src/host.rs
++++ b/crates/victory-gpu/src/host.rs
+@@ -6651,3 +6651,31 @@ mod batch {   // Batch::texture_due lives here; `mod tests` is already taken at
+         );
+     }
+ }
++
++#[cfg(test)]
++mod review_physical_overlap {
++    #[test]
++    fn a_late_store_blocks_copying_only_the_overlapping_bytes_of_another_view() {
++        use crate::inplace::{title_memory_view, views_gone};
++        const PAGE: usize = 65536;
++        let (a, b) = (0x17_1000_0000, 0x18_1000_0000);
++        // Only the mapping registry is used. No command is submitted and
++        // neither synthetic address is dereferenced.
++        title_memory_view(a, 2 * PAGE, 0x1734, 0);
++        title_memory_view(b, PAGE, 0x1734, PAGE as u64);
++        let host = super::host().expect("D3D12 device");
++        let list = host.new_list().unwrap();
++        list.defer_copy(std::ptr::null_mut(), (b + 12) as *const u8, 4);
++        let check = |at: usize, n| {
++            super::blocked_by(&[], &[], &[(at, at + n)], &[&list], false)
++        };
++        let results = [check(a + PAGE + 8, 4), check(a + PAGE + 10, 4), check(a + 12, 4)];
++        views_gone(b, PAGE);
++        let unmapped = check(a + PAGE + 12, 4);
++        views_gone(a, 2 * PAGE);
++        assert_eq!(results, [None, Some(super::WHY_READ), None]);
++        assert_eq!(unmapped, None);
++    }
++
++
++}

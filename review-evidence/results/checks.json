@@ -1,0 +1,379 @@
+{
+  "description": "Adapter and validation flags are printed by the instrumented GPU harness. A passing pixel assertion can coexist with a D3D12 error. Each transcript is one fresh process.",
+  "gpu": [
+    {
+      "target": "base",
+      "adapter": "RTX",
+      "run": 1,
+      "test": "audit_render_indirect",
+      "exit": 0,
+      "found": true,
+      "passed": true,
+      "errors": [
+        "645"
+      ],
+      "validated_device": true
+    },
+    {
+      "target": "base",
+      "adapter": "RTX",
+      "run": 2,
+      "test": "audit_render_indirect",
+      "exit": 0,
+      "found": true,
+      "passed": true,
+      "errors": [
+        "645"
+      ],
+      "validated_device": true
+    },
+    {
+      "target": "base",
+      "adapter": "RTX",
+      "run": 1,
+      "test": "copied_arguments_replace_a_prefetched_record",
+      "exit": 101,
+      "found": true,
+      "passed": false,
+      "errors": [],
+      "validated_device": true
+    },
+    {
+      "target": "base",
+      "adapter": "RTX",
+      "run": 2,
+      "test": "copied_arguments_replace_a_prefetched_record",
+      "exit": 101,
+      "found": true,
+      "passed": false,
+      "errors": [],
+      "validated_device": true
+    },
+    {
+      "target": "base",
+      "adapter": "WARP",
+      "run": 1,
+      "test": "audit_render_indirect",
+      "exit": 0,
+      "found": true,
+      "passed": true,
+      "errors": [],
+      "validated_device": true
+    },
+    {
+      "target": "base",
+      "adapter": "WARP",
+      "run": 2,
+      "test": "audit_render_indirect",
+      "exit": 0,
+      "found": true,
+      "passed": true,
+      "errors": [],
+      "validated_device": true
+    },
+    {
+      "target": "base",
+      "adapter": "WARP",
+      "run": 1,
+      "test": "copied_arguments_replace_a_prefetched_record",
+      "exit": 101,
+      "found": true,
+      "passed": false,
+      "errors": [],
+      "validated_device": true
+    },
+    {
+      "target": "base",
+      "adapter": "WARP",
+      "run": 2,
+      "test": "copied_arguments_replace_a_prefetched_record",
+      "exit": 101,
+      "found": true,
+      "passed": false,
+      "errors": [],
+      "validated_device": true
+    },
+    {
+      "target": "g",
+      "adapter": "RTX",
+      "run": 1,
+      "test": "audit_render_indirect",
+      "exit": 0,
+      "found": true,
+      "passed": true,
+      "errors": [],
+      "validated_device": true
+    },
+    {
+      "target": "g",
+      "adapter": "RTX",
+      "run": 2,
+      "test": "audit_render_indirect",
+      "exit": 0,
+      "found": true,
+      "passed": true,
+      "errors": [],
+      "validated_device": true
+    },
+    {
+      "target": "g",
+      "adapter": "RTX",
+      "run": 1,
+      "test": "shader_view_limit_fits_the_reported_heap",
+      "exit": 0,
+      "found": true,
+      "passed": true,
+      "errors": [],
+      "validated_device": true
+    },
+    {
+      "target": "g",
+      "adapter": "RTX",
+      "run": 2,
+      "test": "shader_view_limit_fits_the_reported_heap",
+      "exit": 0,
+      "found": true,
+      "passed": true,
+      "errors": [],
+      "validated_device": true
+    },
+    {
+      "target": "g",
+      "adapter": "WARP",
+      "run": 1,
+      "test": "audit_render_indirect",
+      "exit": 0,
+      "found": true,
+      "passed": true,
+      "errors": [],
+      "validated_device": true
+    },
+    {
+      "target": "g",
+      "adapter": "WARP",
+      "run": 2,
+      "test": "audit_render_indirect",
+      "exit": 0,
+      "found": true,
+      "passed": true,
+      "errors": [],
+      "validated_device": true
+    },
+    {
+      "target": "g",
+      "adapter": "WARP",
+      "run": 1,
+      "test": "shader_view_limit_fits_the_reported_heap",
+      "exit": 0,
+      "found": true,
+      "passed": true,
+      "errors": [],
+      "validated_device": true
+    },
+    {
+      "target": "g",
+      "adapter": "WARP",
+      "run": 2,
+      "test": "shader_view_limit_fits_the_reported_heap",
+      "exit": 0,
+      "found": true,
+      "passed": true,
+      "errors": [],
+      "validated_device": true
+    },
+    {
+      "target": "f",
+      "adapter": "RTX",
+      "run": 1,
+      "test": "copied_arguments_replace_a_prefetched_record",
+      "exit": 0,
+      "found": true,
+      "passed": true,
+      "errors": [],
+      "validated_device": true
+    },
+    {
+      "target": "f",
+      "adapter": "RTX",
+      "run": 2,
+      "test": "copied_arguments_replace_a_prefetched_record",
+      "exit": 0,
+      "found": true,
+      "passed": true,
+      "errors": [],
+      "validated_device": true
+    },
+    {
+      "target": "f",
+      "adapter": "RTX",
+      "run": 1,
+      "test": "indirect_window_ends_at_a_copy_or_unknown_writer",
+      "exit": 0,
+      "found": true,
+      "passed": true,
+      "errors": [],
+      "validated_device": true
+    },
+    {
+      "target": "f",
+      "adapter": "RTX",
+      "run": 2,
+      "test": "indirect_window_ends_at_a_copy_or_unknown_writer",
+      "exit": 0,
+      "found": true,
+      "passed": true,
+      "errors": [],
+      "validated_device": true
+    },
+    {
+      "target": "f",
+      "adapter": "WARP",
+      "run": 1,
+      "test": "copied_arguments_replace_a_prefetched_record",
+      "exit": 0,
+      "found": true,
+      "passed": true,
+      "errors": [],
+      "validated_device": true
+    },
+    {
+      "target": "f",
+      "adapter": "WARP",
+      "run": 2,
+      "test": "copied_arguments_replace_a_prefetched_record",
+      "exit": 0,
+      "found": true,
+      "passed": true,
+      "errors": [],
+      "validated_device": true
+    },
+    {
+      "target": "f",
+      "adapter": "WARP",
+      "run": 1,
+      "test": "indirect_window_ends_at_a_copy_or_unknown_writer",
+      "exit": 0,
+      "found": true,
+      "passed": true,
+      "errors": [],
+      "validated_device": true
+    },
+    {
+      "target": "f",
+      "adapter": "WARP",
+      "run": 2,
+      "test": "indirect_window_ends_at_a_copy_or_unknown_writer",
+      "exit": 0,
+      "found": true,
+      "passed": true,
+      "errors": [],
+      "validated_device": true
+    }
+  ],
+  "upstream_pr_tests": [
+    {
+      "pr": 220,
+      "adapter": "RTX",
+      "round": 1,
+      "test": "indirect::tests::ordered_budget_rejects_a_record_without_consuming_the_remainder",
+      "exit": 101
+    },
+    {
+      "pr": 220,
+      "adapter": "RTX",
+      "round": 2,
+      "test": "indirect::tests::ordered_budget_rejects_a_record_without_consuming_the_remainder",
+      "exit": 101
+    },
+    {
+      "pr": 220,
+      "adapter": "WARP",
+      "round": 1,
+      "test": "indirect::tests::ordered_budget_rejects_a_record_without_consuming_the_remainder",
+      "exit": 101
+    },
+    {
+      "pr": 220,
+      "adapter": "WARP",
+      "round": 2,
+      "test": "indirect::tests::ordered_budget_rejects_a_record_without_consuming_the_remainder",
+      "exit": 101
+    },
+    {
+      "pr": 71,
+      "adapter": "RTX",
+      "round": 1,
+      "test": "host::relay_persistence_tests::unchanged_hash_does_not_repair_a_mismatched_readback",
+      "exit": 101
+    },
+    {
+      "pr": 71,
+      "adapter": "RTX",
+      "round": 2,
+      "test": "host::relay_persistence_tests::unchanged_hash_does_not_repair_a_mismatched_readback",
+      "exit": 101
+    },
+    {
+      "pr": 71,
+      "adapter": "WARP",
+      "round": 1,
+      "test": "host::relay_persistence_tests::unchanged_hash_does_not_repair_a_mismatched_readback",
+      "exit": 101
+    },
+    {
+      "pr": 71,
+      "adapter": "WARP",
+      "round": 2,
+      "test": "host::relay_persistence_tests::unchanged_hash_does_not_repair_a_mismatched_readback",
+      "exit": 101
+    },
+    {
+      "pr": 191,
+      "adapter": "CPU",
+      "round": 1,
+      "test": "list::value_wait_after_an_overwrite_does_not_observe_the_earlier_match",
+      "exit": 101
+    },
+    {
+      "pr": 191,
+      "adapter": "CPU",
+      "round": 2,
+      "test": "list::value_wait_after_an_overwrite_does_not_observe_the_earlier_match",
+      "exit": 101
+    },
+    {
+      "pr": "191-physical",
+      "adapter": "RTX",
+      "round": 1,
+      "test": "host::review_physical_overlap::a_late_store_blocks_copying_only_the_overlapping_bytes_of_another_view",
+      "exit": 101
+    },
+    {
+      "pr": "191-physical",
+      "adapter": "RTX",
+      "round": 2,
+      "test": "host::review_physical_overlap::a_late_store_blocks_copying_only_the_overlapping_bytes_of_another_view",
+      "exit": 101
+    },
+    {
+      "pr": "191-physical",
+      "adapter": "WARP",
+      "round": 1,
+      "test": "host::review_physical_overlap::a_late_store_blocks_copying_only_the_overlapping_bytes_of_another_view",
+      "exit": 101
+    },
+    {
+      "pr": "191-physical",
+      "adapter": "WARP",
+      "round": 2,
+      "test": "host::review_physical_overlap::a_late_store_blocks_copying_only_the_overlapping_bytes_of_another_view",
+      "exit": 101
+    }
+  ],
+  "pr555": {
+    "head": "5af49b5d193b6d6b931676aa4c1066ed557bf401",
+    "test_commit": "b63010881edd8d98e2eef0754bf38e474b0ce35b",
+    "tests": 3,
+    "runs_per_test": 2
+  }
+}

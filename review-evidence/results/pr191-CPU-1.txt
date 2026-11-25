@@ -1,0 +1,16 @@
+
+running 1 test
+test list::value_wait_after_an_overwrite_does_not_observe_the_earlier_match ...
+thread 'list::value_wait_after_an_overwrite_does_not_observe_the_earlier_match' (27636) panicked at crates\victory-gpu\src\list.rs:2241:5:
+assertion `left == right` failed
+  left: (true, 0)
+ right: (false, 1)
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+
+failures:
+
+failures:
+    list::value_wait_after_an_overwrite_does_not_observe_the_earlier_match
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 119 filtered out; finished in 0.03s

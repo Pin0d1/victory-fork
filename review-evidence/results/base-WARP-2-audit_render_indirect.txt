@@ -1,0 +1,13 @@
+
+running 1 test
+test pipeline::make::indirect_review_tests::audit_render_indirect ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER vendor=1414 device=008c software=true
+VALIDATION_MESSAGE id=1016 severity=4 Device Debug Layer Startup Options: GPU-Based Validation is enabled (disabled by default). This results in new validation not possible during API calls on the CPU, by creating patched shaders that have validation added directly to the shader. However, it can slow things down a lot, especially for applications with numerous PSOs. Time to see the first render frame may take several minutes.
+omit inactive batch: 16/16 green, 3 vertices
+count=0, empty tail: 16/16 green, 3 vertices
+count=0, populated tail: 16/16 green, 3 vertices
+rejected pipeline, empty tail: 16/16 green, 3 vertices
+rejected pipeline, populated tail: 16/16 green, 3 vertices
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 138 filtered out; finished in 1.42s

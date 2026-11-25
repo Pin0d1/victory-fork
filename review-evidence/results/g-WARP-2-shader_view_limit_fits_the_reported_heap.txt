@@ -1,0 +1,7 @@
+
+running 1 test
+test descriptor::host::tests::shader_view_limit_fits_the_reported_heap ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER vendor=1414 device=008c software=true
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 139 filtered out; finished in 0.15s

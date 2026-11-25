@@ -1,0 +1,46 @@
+diff --git a/crates/victory-gpu/src/host.rs b/crates/victory-gpu/src/host.rs
+index 6c9c082..6a25771 100644
+--- a/crates/victory-gpu/src/host.rs
++++ b/crates/victory-gpu/src/host.rs
+@@ -6651,3 +6651,10 @@ mod batch {   // Batch::texture_due lives here; `mod tests` is already taken at
+         );
+     }
+ }
++
++#[cfg(test)]
++pub(crate) fn audit_pending_words_at(address: usize, values: &[u64]) {
++    let mut l = line();
++    assert!(l.line.iter().all(|x| matches!(x, Late::Write(..))));
++    l.line = values.iter().map(|&v| Late::Write(address, crate::queue::Written::Value(v), 8)).collect();
++}
+diff --git a/crates/victory-gpu/src/list.rs b/crates/victory-gpu/src/list.rs
+index 8ce9856..ebc3fe7 100644
+--- a/crates/victory-gpu/src/list.rs
++++ b/crates/victory-gpu/src/list.rs
+@@ -2217,3 +2217,26 @@ mod tests {
+         assert_eq!(release(allocator), 0);
+     }
+ }
++
++#[cfg(all(test, windows))]
++#[test]
++fn value_wait_after_an_overwrite_does_not_observe_the_earlier_match() {
++    if std::env::var("VICTORY_AUDIT_WAIT_CHILD").is_err() {
++        let thread = std::thread::current();
++        assert!(std::process::Command::new(std::env::current_exe().unwrap())
++            .args(["--exact", thread.name().unwrap(), "--nocapture"])
++            .env("VICTORY_AUDIT_WAIT_CHILD","1").env("VICTORY_LATE_WAIT","1")
++            .status().unwrap().success());
++        return;
++    }
++    let memory = 1u64;
++    let address = (&memory as *const u64) as usize;
++    let wait = ValueWait { address: address as u64, comparison: 3, reference: 1, wide: true };
++    crate::host::audit_pending_words_at(address, &[1, 0]);
++    let historical = crate::host::late_met(&wait);
++    let list = std::ptr::null();
++    VALUE_WAITS.lock().unwrap().push((list as usize, wait));
++    let submission_holds = unmet_waits(&[list]).len();
++    crate::host::audit_pending_words_at(address,&[]);
++    assert_eq!((historical,submission_holds),(false,1));
++}

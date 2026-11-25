@@ -1,0 +1,19 @@
+
+running 1 test
+test pipeline::make::indirect_review_tests::copied_arguments_replace_a_prefetched_record ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER vendor=1414 device=008c software=true
+VALIDATION_MESSAGE id=1016 severity=4 Device Debug Layer Startup Options: GPU-Based Validation is enabled (disabled by default). This results in new validation not possible during API calls on the CPU, by creating patched shaders that have validation added directly to the shader. However, it can slow things down a lot, especially for applications with numerous PSOs. Time to see the first render frame may take several minutes.
+
+thread 'pipeline::make::indirect_review_tests::copied_arguments_replace_a_prefetched_record' (26112) panicked at crates\victory-gpu\src\pipeline\indirect_review_tests.rs:688:5:
+assertion `left == right` failed: third draw reads zero vertices after the copy
+  left: 9
+ right: 6
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+
+failures:
+
+failures:
+    pipeline::make::indirect_review_tests::copied_arguments_replace_a_prefetched_record
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 138 filtered out; finished in 1.93s

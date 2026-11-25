@@ -1,0 +1,112 @@
+diff --git a/crates/victory-gpu/src/host.rs b/crates/victory-gpu/src/host.rs
+index 6d61295..1e7f00d 100644
+--- a/crates/victory-gpu/src/host.rs
++++ b/crates/victory-gpu/src/host.rs
+@@ -2204,12 +2204,17 @@ fn blocked_by(
+     if written.is_empty() && immed.is_empty() {
+         return None;
+     }
+-    let any_written = |from: usize, to: usize| touches(written, from, to) || touches(immed, from, to);
++    let any_written = |from: usize, to: usize| {
++        let pending = |a, b| touches(written, a, b) || touches(immed, a, b);
++        pending(from, to) || crate::inplace::alias_matches(from, to, pending)
++    };
+     for list in runs {
+         for step in &list.deferred().copies {
+             match step {
+                 &Step::Copy(dst, src, len) => {
+-                    if any_written(src, src + len) || any_written(dst, dst + len) {
++                    if any_written(src, src.saturating_add(len))
++                        || any_written(dst, dst.saturating_add(len))
++                    {
+                         if count {
+                             LATE_STATS[15].fetch_add(1, Ordering::Relaxed);
+                         }
+@@ -2217,7 +2222,7 @@ fn blocked_by(
+                     }
+                 }
+                 &Step::Fill(_, src, len) => {
+-                    if any_written(src, src + len) {
++                    if any_written(src, src.saturating_add(len)) {
+                         if count {
+                             LATE_STATS[16].fetch_add(1, Ordering::Relaxed);
+                         }
+@@ -2226,7 +2231,7 @@ fn blocked_by(
+                 }
+                 Step::Texture(staging) => {
+                     let (at, len) = staging.memory();
+-                    if any_written(at, at + len) {
++                    if any_written(at, at.saturating_add(len)) {
+                         if count {
+                             LATE_STATS[17].fetch_add(1, Ordering::Relaxed);
+                         }
+@@ -2234,9 +2239,14 @@ fn blocked_by(
+                     }
+                 }
+                 Step::Refresh(shadow, address, len) => {
+-                    let (from, to) = (*address, *address + *len);
++                    let (from, to) = (*address, address.saturating_add(*len));
+                     let copy = std::sync::Arc::as_ptr(shadow) as usize;
+-                    if touches_other(written, by_copy, copy, from, to) || touches(immed, from, to) {
++                    if touches_other(written, by_copy, copy, from, to)
++                        || touches(immed, from, to)
++                        || crate::inplace::alias_matches(from, to, |a, b| {
++                            touches(written, a, b) || touches(immed, a, b)
++                        })
++                    {
+                         if count {
+                             LATE_STATS[18].fetch_add(1, Ordering::Relaxed);
+                         }
+@@ -2691,6 +2701,31 @@ mod late_tests {
+ 
+     /// Copies join only when both ends continue and the whole does not
+     /// overlap itself.
++    #[test]
++    fn a_late_store_blocks_copying_only_the_overlapping_bytes_of_another_view() {
++        use crate::inplace::{title_memory_view, views_gone};
++        const PAGE: usize = 65536;
++        let (a, b) = (0x17_1000_0000, 0x18_1000_0000);
++        // Only the mapping registry is used. No command is submitted and
++        // neither synthetic address is dereferenced.
++        title_memory_view(a, 2 * PAGE, 0x1734, 0);
++        title_memory_view(b, PAGE, 0x1734, PAGE as u64);
++        let host = super::host().expect("D3D12 device");
++        let list = host.new_list().unwrap();
++        list.defer_copy(std::ptr::null_mut(), (b + 12) as *const u8, 4);
++        let check = |at: usize, n| super::blocked_by(&[], &[], &[(at, at + n)], &[&list], false);
++        let results = [
++            check(a + PAGE + 8, 4),
++            check(a + PAGE + 10, 4),
++            check(a + 12, 4),
++        ];
++        views_gone(b, PAGE);
++        let unmapped = check(a + PAGE + 12, 4);
++        views_gone(a, 2 * PAGE);
++        assert_eq!(results, [None, Some(super::WHY_READ), None]);
++        assert_eq!(unmapped, None);
++    }
++
+     #[test]
+     fn copies_join_only_end_to_end_and_apart() {
+         // (destination, source, bytes)
+diff --git a/crates/victory-gpu/src/inplace.rs b/crates/victory-gpu/src/inplace.rs
+index dc2e67d..8decdd0 100644
+--- a/crates/victory-gpu/src/inplace.rs
++++ b/crates/victory-gpu/src/inplace.rs
+@@ -380,6 +380,16 @@ fn aliases_in(v: &Views, at: usize, len: usize) -> Vec<(usize, usize)> {
+     pairs
+ }
+ 
++/// Whether any sibling view shows bytes in the requested interval that match
++/// the dependency predicate. Clip both ends to the part of each shared page.
++pub(crate) fn alias_matches(from: usize, to: usize, test: impl Fn(usize, usize) -> bool) -> bool {
++    from < to && aliases(from, to - from).into_iter().any(|(here, there)| {
++        let lo = from.saturating_sub(here);
++        let hi = (to - here).min(K64);
++        test(there + lo, there + hi)
++    })
++}
++
+ /// The title memory that shows bytes `[offset, offset + len)` of
+ /// `section`: `(address, bytes)` pieces, in address order, those that
+ /// continue each other joined.

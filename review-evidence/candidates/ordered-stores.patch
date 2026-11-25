@@ -1,0 +1,197 @@
+diff --git a/crates/victory-gpu/src/host.rs b/crates/victory-gpu/src/host.rs
+index 95113cb..5cce23e 100644
+--- a/crates/victory-gpu/src/host.rs
++++ b/crates/victory-gpu/src/host.rs
+@@ -2305,46 +2305,113 @@ pub(crate) fn late_signal(fence: usize, value: u64) -> bool {
+     true
+ }
+ 
+-/// A queue stands at `wait`, which memory does not meet now ([`late`]):
+-/// whether it is met once the flights in the air have run. A flight's
+-/// bottom-of-pipe write of a value that meets it says yes without a wait
+-/// for the card: the part behind the wait goes to the card behind that
+-/// flight, which is the order the wait asks for. If the flights may write
+-/// the value in a way not known here (shaders, a timestamp, another
+-/// width), they are settled and memory is asked again.
++#[derive(Debug, PartialEq)]
++enum PendingValue {
++    Memory,
++    Known(u64),
++    Settle,
++}
++
++/// What precedes a wait on the host timeline. An earlier matching store
++/// cannot release a wait that follows a later store to the same bytes.
++fn pending_value(address: usize, bytes: usize, writes: &[Late]) -> PendingValue {
++    let Some(end) = address.checked_add(bytes) else {
++        return PendingValue::Settle;
++    };
++    for item in writes.iter().rev() {
++        let Late::Write(at, what, width) = *item else {
++            continue;
++        };
++        if at >= end || at.saturating_add(width) <= address {
++            continue;
++        }
++        if let crate::queue::Written::Value(value) = what
++            && at <= address
++            && end - at <= width
++        {
++            return PendingValue::Known(value >> (8 * (address - at)));
++        }
++        // A timestamp, or a partial overwrite: read the actual bytes after
++        // landing. This also handles a pair of adjacent 32-bit stores.
++        return PendingValue::Settle;
++    }
++    PendingValue::Memory
++}
++
+ pub(crate) fn late_met(wait: &crate::list::ValueWait) -> bool {
+     let (address, bytes) = wait.place();
+-    {
++    let pending = {
+         let line = line();
+-        if line.line.is_empty() && line.in_hand.is_empty() {
+-            return false;
++        if line.settling
++            || touches(&line.written, address, address.saturating_add(bytes))
++            || (!line.line.is_empty()
++                && crate::inplace::cover(address, bytes) != crate::inplace::Cover::None)
++        {
++            PendingValue::Settle
++        } else {
++            pending_value(address, bytes, &line.line)
+         }
+-        let mut unsure = touches(&line.written, address, address + bytes);
+-        // (With the relay: first the writes of flights being landed.)
+-        let writes = line.in_hand.iter().map(|(at, what, n)| (at, what, n)).chain(line.line.iter().filter_map(|item| match item {
+-            Late::Write(at, what, n) => Some((at, what, n)),
+-            _ => None,
+-        }));
+-        for (at, what, n) in writes {
+-            if *at >= address + bytes || address >= *at + *n {
+-                continue;
++    };
++    match pending {
++        PendingValue::Known(value) => {
++            let met = wait.holds_for(value);
++            if met {
++                LATE_STATS[13].fetch_add(1, Ordering::Relaxed);
++            }
++            met
++        }
++        PendingValue::Memory => wait.met(),
++        PendingValue::Settle => {
++            settle_now(WHY_VALUE);
++            wait.met()
++        }
++    }
++}
++
++#[cfg(test)]
++mod ordered_wait_tests {
++    use super::{Late, PendingValue, pending_value};
++    use crate::queue::Written::{GpuTimestamp, Value};
++
++    #[test]
++    fn only_the_last_covering_store_predicts_a_wait() {
++        let p = 0x1000;
++        let mut seq = vec![Late::Write(p, Value(1), 8), Late::Write(p, Value(0), 8)];
++        assert_eq!(pending_value(p, 8, &seq), PendingValue::Known(0));
++        seq.push(Late::Write(p + 4, Value(1), 4));
++        assert_eq!(pending_value(p, 8, &seq), PendingValue::Settle);
++        assert_eq!(pending_value(p + 4, 4, &seq), PendingValue::Known(1));
++        seq.push(Late::Write(p, GpuTimestamp, 8));
++        assert_eq!(pending_value(p, 4, &seq), PendingValue::Settle);
++        assert_eq!(pending_value(p + 8, 4, &seq), PendingValue::Memory);
++    }
++
++    #[test]
++    fn known_predictions_agree_with_a_byte_addressed_interpreter() {
++        let mut seed = 9u64;
++        let mut next = || {
++            seed = seed.wrapping_mul(6364136223846793005).wrapping_add(1);
++            seed ^ (seed >> 32)
++        };
++        for _ in 0..2048 {
++            let mut ram = [0u8; 32];
++            let mut seq = Vec::new();
++            for _ in 0..8 {
++                let at = (next() as usize % 7) * 4;
++                let width = if next() & 1 == 0 { 4 } else { 8 };
++                let v = next();
++                ram[at..at + width].copy_from_slice(&v.to_le_bytes()[..width]);
++                seq.push(Late::Write(at, Value(v), width));
+             }
+-            match what {
+-                crate::queue::Written::Value(v) if *at == address && *n >= bytes => {
+-                    if wait.holds_for(*v) {
+-                        LATE_STATS[13].fetch_add(1, Ordering::Relaxed);
+-                        return true;
++            for at in (0..28).step_by(4) {
++                for n in [4, 8] {
++                    if let PendingValue::Known(v) = pending_value(at, n, &seq) {
++                        assert_eq!(&v.to_le_bytes()[..n], &ram[at..at + n]);
+                     }
+                 }
+-                _ => unsure = true,
+             }
+         }
+-        if !unsure {
+-            return false;
+-        }
+     }
+-    settle_now(WHY_VALUE);
+-    wait.met()
+ }
+ 
+ /// Settles the flights in the air, if any ([`Host::settle`]), for reason
+diff --git a/crates/victory-gpu/src/list.rs b/crates/victory-gpu/src/list.rs
+index 44c8965..13a7d61 100644
+--- a/crates/victory-gpu/src/list.rs
++++ b/crates/victory-gpu/src/list.rs
+@@ -1846,19 +1846,13 @@ static VALUE_WAITS: std::sync::Mutex<Vec<(usize, ValueWait)>> = std::sync::Mutex
+ /// buffer and nothing was lit).
+ /// shortcut: a wait holds its whole list (and submission) back, not only
+ /// the commands after it.
++#[cfg(windows)]
+ pub(crate) fn unmet_waits(lists: &[This]) -> Vec<ValueWait> {
+-    let mut waits = VALUE_WAITS.lock().unwrap_or_else(|e| e.into_inner());
+-    let mut unmet = Vec::new();
+-    waits.retain(|&(list, wait)| {
+-        if !lists.iter().any(|&l| l as usize == list) {
+-            return true;
+-        }
+-        if !wait.met() {
+-            unmet.push(wait);
+-        }
+-        false
+-    });
+-    unmet
++    waits_by_list(lists)
++        .into_iter()
++        .flatten()
++        .filter(|wait| !crate::queue::value_met(wait))
++        .collect()
+ }
+ 
+ /// The waits each of the submitted `lists` recorded (taken from them),
+diff --git a/crates/victory-gpu/src/queue.rs b/crates/victory-gpu/src/queue.rs
+index 11d3a8c..13e1619 100644
+--- a/crates/victory-gpu/src/queue.rs
++++ b/crates/victory-gpu/src/queue.rs
+@@ -427,8 +427,12 @@ pub(crate) fn release_held(all: bool) {
+ /// submissions sent to the card without a wait (`crate::host::late`), it
+ /// will once those in the air have run.
+ #[cfg(windows)]
+-fn value_met(wait: &crate::list::ValueWait) -> bool {
+-    wait.met() || (crate::host::late() && crate::host::late_met(wait))
++pub(crate) fn value_met(wait: &crate::list::ValueWait) -> bool {
++    if crate::host::late() {
++        crate::host::late_met(wait)
++    } else {
++        wait.met()
++    }
+ }
+ 
+ fn queue<'a>(this: This) -> &'a Queue {

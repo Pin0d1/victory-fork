@@ -1,0 +1,59 @@
+diff --git a/crates/victory-gpu/src/indirect.rs b/crates/victory-gpu/src/indirect.rs
+index c3aee53..2cf5987 100644
+--- a/crates/victory-gpu/src/indirect.rs
++++ b/crates/victory-gpu/src/indirect.rs
+@@ -1429,6 +1429,54 @@ void main() {
+         assert_eq!((kept, zeroed), (2, (RECORDS as usize) - 2));
+     }
+ 
++    #[test]
++    fn ordered_budget_rejects_a_record_without_consuming_the_remainder() {
++        let host = host().expect("D3D12 device");
++        const MAX: u32 = 130;
++        const STRIDE: u32 = 16;
++        const CAP: u32 = 1 << 27;
++        let size = u64::from(MAX * STRIDE);
++        let (src, arg) = host.shared_buffer(size).unwrap();
++        let (budget, totals) = host.shared_buffer(256).unwrap();
++        let (count, live) = host.shared_buffer(4).unwrap();
++        let scratch = host.uav_buffer(size).unwrap();
++        let (result, data) = host.shared_buffer(size).unwrap();
++        let consumed = |i: u32| [5,7,11,13,17][(i % 5) as usize];
++        for active in [0, 1, 63, 64, 65, 127, MAX, u32::MAX] {
++            let limit = active.min(MAX);
++            let mut remaining = 497u32;
++            let mut expected = Vec::new();
++            for i in 0..MAX {
++                let cost = consumed(i);
++                if i < limit {
++                    let accepted = cost <= remaining;
++                    if accepted { remaining -= cost; }
++                    expected.push([if accepted {cost} else {0}, u32::from(accepted), i, 200 + i]);
++                }
++                // SAFETY: four dwords per allocated record.
++                unsafe { arg.cast::<[u32;4]>().add(i as usize).write([cost,1,i,200+i]); }
++            }
++            unsafe {
++                totals.cast::<u32>().write(CAP-497);
++                live.cast::<u32>().write(active);
++            }
++            let list = host.new_list().unwrap();
++            assert!(record_clamp_as(clamp().unwrap(), &list.list, (&scratch, D3D12_RESOURCE_STATE_COMMON),
++                unsafe {budget.GetGPUVirtualAddress()}, (&src,0),Some((&count,0)),(0,STRIDE,MAX),false));
++            unsafe {
++                list.list.ResourceBarrier(&[transition(&scratch,D3D12_RESOURCE_STATE_INDIRECT_ARGUMENT,D3D12_RESOURCE_STATE_COPY_SOURCE)]);
++                list.list.CopyBufferRegion(&result,0,&scratch,0,size);
++                list.list.ResourceBarrier(&[transition(&scratch,D3D12_RESOURCE_STATE_COPY_SOURCE,D3D12_RESOURCE_STATE_COMMON)]);
++            }
++            list.close();
++            host.execute(&[&list]);
++            let actual=unsafe {std::slice::from_raw_parts(data.cast::<[u32;4]>(),limit as usize)};
++            assert_eq!(actual,&expected, "GPU count {active}");
++            assert_eq!(unsafe {totals.cast::<u32>().read()},CAP-remaining);
++        }
++    }
++
++
+     /// Exercises `HostList::indirect_scratch`, `bound`, the scratch buffer's
+     /// tracked state, `Host::execute`, and `HostList::reset` end-to-end on
+     /// the host device.
