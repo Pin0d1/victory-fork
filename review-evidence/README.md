@@ -30,4 +30,6 @@ Pass a fresh directory for each invocation. The driver fetches the pinned commit
 
 The publication retest used Windows 11, a Ryzen 5 5600, an RTX 2060 SUPER and WARP. The conclusions concern these synthetic inputs. [Run transcripts](results) · [Candidate patches and source trees for the open PR discussions](candidates/README.md)
 
+An additional draw test compares the #220 window checker's output with the vertex count reported by the GPU after a deferred guest copy. [Results and reproduction](window-check/README.md)
+
 Prepared with the help of Codex 6.2 Astra Max.

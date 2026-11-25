@@ -1,0 +1,356 @@
+Windows 11. RTX 2060 SUPER (10de:1f06) and Microsoft WARP (1414:008c).
+VICTORY_INDIRECT_WINDOW=1 VICTORY_INDIRECT_WINDOW_CHECK=1 VICTORY_D3D12_DEBUG=1
+VICTORY_D3D12_WARP=1 for WARP, unset for hardware. One Rust test per process.
+Probe patch SHA-256 9fc8536089273aacc2385fac7636c5704e2d2d2b02b796596b8e46988926753b
+
+Source f8733949f1d317e79a66365cd4036eb76cb9930b
+
+RTX, repeat 1, host_list_window_check_finds_a_record_written_under_its_window, exit 0
+running 1 test
+test indirect::tests::host_list_window_check_finds_a_record_written_under_its_window ... DIRECT_GPU_WRITE checked=2 differed=1 window=[5, 1, 1] fresh=[11, 2, 1]
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 124 filtered out; finished in 0.41s
+
+RTX, repeat 2, host_list_window_check_finds_a_record_written_under_its_window, exit 0
+running 1 test
+test indirect::tests::host_list_window_check_finds_a_record_written_under_its_window ... DIRECT_GPU_WRITE checked=2 differed=1 window=[5, 1, 1] fresh=[11, 2, 1]
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 124 filtered out; finished in 0.41s
+
+WARP, repeat 1, host_list_window_check_finds_a_record_written_under_its_window, exit 0
+running 1 test
+test indirect::tests::host_list_window_check_finds_a_record_written_under_its_window ... DIRECT_GPU_WRITE checked=2 differed=1 window=[5, 1, 1] fresh=[11, 2, 1]
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 124 filtered out; finished in 0.09s
+
+WARP, repeat 2, host_list_window_check_finds_a_record_written_under_its_window, exit 0
+running 1 test
+test indirect::tests::host_list_window_check_finds_a_record_written_under_its_window ... DIRECT_GPU_WRITE checked=2 differed=1 window=[5, 1, 1] fresh=[11, 2, 1]
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 124 filtered out; finished in 0.09s
+
+RTX, repeat 1, compare_window_checker_with_executed_vertices, exit 101
+running 1 test
+test pipeline::make::feedback_window_checker::compare_window_checker_with_executed_vertices ... ADAPTER vendor=10de device=1f06 software=false
+GUEST_COPY copy=false guest_word=3 ia_vertices=18 checked=4 differed=0 green=16
+GUEST_COPY copy=true guest_word=0 ia_vertices=18 checked=4 differed=0 green=16
+
+thread 'pipeline::make::feedback_window_checker::compare_window_checker_with_executed_vertices' (5316) panicked at crates\victory-gpu\src\pipeline\feedback_window_checker.rs:323:9:
+assertion `left == right` failed: executed vertices must match the recorded inputs
+  left: 18
+ right: 15
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+
+failures:
+
+failures:
+    pipeline::make::feedback_window_checker::compare_window_checker_with_executed_vertices
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 124 filtered out; finished in 0.43s
+
+RTX, repeat 2, compare_window_checker_with_executed_vertices, exit 101
+running 1 test
+test pipeline::make::feedback_window_checker::compare_window_checker_with_executed_vertices ... ADAPTER vendor=10de device=1f06 software=false
+GUEST_COPY copy=false guest_word=3 ia_vertices=18 checked=4 differed=0 green=16
+GUEST_COPY copy=true guest_word=0 ia_vertices=18 checked=4 differed=0 green=16
+
+thread 'pipeline::make::feedback_window_checker::compare_window_checker_with_executed_vertices' (7308) panicked at crates\victory-gpu\src\pipeline\feedback_window_checker.rs:323:9:
+assertion `left == right` failed: executed vertices must match the recorded inputs
+  left: 18
+ right: 15
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+
+failures:
+
+failures:
+    pipeline::make::feedback_window_checker::compare_window_checker_with_executed_vertices
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 124 filtered out; finished in 0.41s
+
+WARP, repeat 1, compare_window_checker_with_executed_vertices, exit 101
+running 1 test
+test pipeline::make::feedback_window_checker::compare_window_checker_with_executed_vertices ... ADAPTER vendor=1414 device=008c software=true
+GUEST_COPY copy=false guest_word=3 ia_vertices=18 checked=4 differed=0 green=16
+GUEST_COPY copy=true guest_word=0 ia_vertices=18 checked=4 differed=0 green=16
+
+thread 'pipeline::make::feedback_window_checker::compare_window_checker_with_executed_vertices' (8960) panicked at crates\victory-gpu\src\pipeline\feedback_window_checker.rs:323:9:
+assertion `left == right` failed: executed vertices must match the recorded inputs
+  left: 18
+ right: 15
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+
+failures:
+
+failures:
+    pipeline::make::feedback_window_checker::compare_window_checker_with_executed_vertices
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 124 filtered out; finished in 0.10s
+
+WARP, repeat 2, compare_window_checker_with_executed_vertices, exit 101
+running 1 test
+test pipeline::make::feedback_window_checker::compare_window_checker_with_executed_vertices ... ADAPTER vendor=1414 device=008c software=true
+GUEST_COPY copy=false guest_word=3 ia_vertices=18 checked=4 differed=0 green=16
+GUEST_COPY copy=true guest_word=0 ia_vertices=18 checked=4 differed=0 green=16
+
+thread 'pipeline::make::feedback_window_checker::compare_window_checker_with_executed_vertices' (10684) panicked at crates\victory-gpu\src\pipeline\feedback_window_checker.rs:323:9:
+assertion `left == right` failed: executed vertices must match the recorded inputs
+  left: 18
+ right: 15
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+
+failures:
+
+failures:
+    pipeline::make::feedback_window_checker::compare_window_checker_with_executed_vertices
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 124 filtered out; finished in 0.10s
+
+Source f8733949f1d317e79a66365cd4036eb76cb9930b with 845fc43e2c536d121b7f34df902e3395c4d7fe2d
+
+RTX, repeat 1, host_list_window_check_finds_a_record_written_under_its_window, exit 0
+running 1 test
+test indirect::tests::host_list_window_check_finds_a_record_written_under_its_window ... DIRECT_GPU_WRITE checked=2 differed=1 window=[5, 1, 1] fresh=[11, 2, 1]
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 125 filtered out; finished in 0.39s
+
+RTX, repeat 2, host_list_window_check_finds_a_record_written_under_its_window, exit 0
+running 1 test
+test indirect::tests::host_list_window_check_finds_a_record_written_under_its_window ... DIRECT_GPU_WRITE checked=2 differed=1 window=[5, 1, 1] fresh=[11, 2, 1]
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 125 filtered out; finished in 0.38s
+
+WARP, repeat 1, host_list_window_check_finds_a_record_written_under_its_window, exit 0
+running 1 test
+test indirect::tests::host_list_window_check_finds_a_record_written_under_its_window ... DIRECT_GPU_WRITE checked=2 differed=1 window=[5, 1, 1] fresh=[11, 2, 1]
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 125 filtered out; finished in 0.10s
+
+WARP, repeat 2, host_list_window_check_finds_a_record_written_under_its_window, exit 0
+running 1 test
+test indirect::tests::host_list_window_check_finds_a_record_written_under_its_window ... DIRECT_GPU_WRITE checked=2 differed=1 window=[5, 1, 1] fresh=[11, 2, 1]
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 125 filtered out; finished in 0.09s
+
+RTX, repeat 1, compare_window_checker_with_executed_vertices, exit 0
+running 1 test
+test pipeline::make::feedback_window_checker::compare_window_checker_with_executed_vertices ... ADAPTER vendor=10de device=1f06 software=false
+GUEST_COPY copy=false guest_word=3 ia_vertices=18 checked=4 differed=0 green=16
+GUEST_COPY copy=true guest_word=0 ia_vertices=15 checked=2 differed=0 green=16
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 125 filtered out; finished in 0.39s
+
+RTX, repeat 2, compare_window_checker_with_executed_vertices, exit 0
+running 1 test
+test pipeline::make::feedback_window_checker::compare_window_checker_with_executed_vertices ... ADAPTER vendor=10de device=1f06 software=false
+GUEST_COPY copy=false guest_word=3 ia_vertices=18 checked=4 differed=0 green=16
+GUEST_COPY copy=true guest_word=0 ia_vertices=15 checked=2 differed=0 green=16
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 125 filtered out; finished in 0.41s
+
+WARP, repeat 1, compare_window_checker_with_executed_vertices, exit 0
+running 1 test
+test pipeline::make::feedback_window_checker::compare_window_checker_with_executed_vertices ... ADAPTER vendor=1414 device=008c software=true
+GUEST_COPY copy=false guest_word=3 ia_vertices=18 checked=4 differed=0 green=16
+GUEST_COPY copy=true guest_word=0 ia_vertices=15 checked=2 differed=0 green=16
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 125 filtered out; finished in 0.10s
+
+WARP, repeat 2, compare_window_checker_with_executed_vertices, exit 0
+running 1 test
+test pipeline::make::feedback_window_checker::compare_window_checker_with_executed_vertices ... ADAPTER vendor=1414 device=008c software=true
+GUEST_COPY copy=false guest_word=3 ia_vertices=18 checked=4 differed=0 green=16
+GUEST_COPY copy=true guest_word=0 ia_vertices=15 checked=2 differed=0 green=16
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 125 filtered out; finished in 0.09s
+
+Source 810793582a76c0a15da8dbfa21d69fb1a54c7aaa
+
+RTX, repeat 1, host_list_window_check_finds_a_record_written_under_its_window, exit 0
+running 1 test
+test indirect::tests::host_list_window_check_finds_a_record_written_under_its_window ... DIRECT_GPU_WRITE checked=2 differed=1 window=[5, 1, 1] fresh=[11, 2, 1]
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 133 filtered out; finished in 0.54s
+
+RTX, repeat 2, host_list_window_check_finds_a_record_written_under_its_window, exit 0
+running 1 test
+test indirect::tests::host_list_window_check_finds_a_record_written_under_its_window ... DIRECT_GPU_WRITE checked=2 differed=1 window=[5, 1, 1] fresh=[11, 2, 1]
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 133 filtered out; finished in 0.42s
+
+WARP, repeat 1, host_list_window_check_finds_a_record_written_under_its_window, exit 0
+running 1 test
+test indirect::tests::host_list_window_check_finds_a_record_written_under_its_window ... DIRECT_GPU_WRITE checked=2 differed=1 window=[5, 1, 1] fresh=[11, 2, 1]
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 133 filtered out; finished in 0.09s
+
+WARP, repeat 2, host_list_window_check_finds_a_record_written_under_its_window, exit 0
+running 1 test
+test indirect::tests::host_list_window_check_finds_a_record_written_under_its_window ... DIRECT_GPU_WRITE checked=2 differed=1 window=[5, 1, 1] fresh=[11, 2, 1]
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 133 filtered out; finished in 0.09s
+
+RTX, repeat 1, compare_window_checker_with_executed_vertices, exit 101
+running 1 test
+test pipeline::make::feedback_window_checker::compare_window_checker_with_executed_vertices ... ADAPTER vendor=10de device=1f06 software=false
+GUEST_COPY copy=false guest_word=3 ia_vertices=18 checked=4 differed=0 green=16
+GUEST_COPY copy=true guest_word=0 ia_vertices=18 checked=4 differed=0 green=16
+
+thread 'pipeline::make::feedback_window_checker::compare_window_checker_with_executed_vertices' (13644) panicked at crates\victory-gpu\src\pipeline\feedback_window_checker.rs:323:9:
+assertion `left == right` failed: executed vertices must match the recorded inputs
+  left: 18
+ right: 15
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+
+failures:
+
+failures:
+    pipeline::make::feedback_window_checker::compare_window_checker_with_executed_vertices
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 133 filtered out; finished in 0.45s
+
+RTX, repeat 2, compare_window_checker_with_executed_vertices, exit 101
+running 1 test
+test pipeline::make::feedback_window_checker::compare_window_checker_with_executed_vertices ... ADAPTER vendor=10de device=1f06 software=false
+GUEST_COPY copy=false guest_word=3 ia_vertices=18 checked=4 differed=0 green=16
+GUEST_COPY copy=true guest_word=0 ia_vertices=18 checked=4 differed=0 green=16
+
+thread 'pipeline::make::feedback_window_checker::compare_window_checker_with_executed_vertices' (28092) panicked at crates\victory-gpu\src\pipeline\feedback_window_checker.rs:323:9:
+assertion `left == right` failed: executed vertices must match the recorded inputs
+  left: 18
+ right: 15
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+
+failures:
+
+failures:
+    pipeline::make::feedback_window_checker::compare_window_checker_with_executed_vertices
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 133 filtered out; finished in 0.43s
+
+WARP, repeat 1, compare_window_checker_with_executed_vertices, exit 101
+running 1 test
+test pipeline::make::feedback_window_checker::compare_window_checker_with_executed_vertices ... ADAPTER vendor=1414 device=008c software=true
+GUEST_COPY copy=false guest_word=3 ia_vertices=18 checked=4 differed=0 green=16
+GUEST_COPY copy=true guest_word=0 ia_vertices=18 checked=4 differed=0 green=16
+
+thread 'pipeline::make::feedback_window_checker::compare_window_checker_with_executed_vertices' (25940) panicked at crates\victory-gpu\src\pipeline\feedback_window_checker.rs:323:9:
+assertion `left == right` failed: executed vertices must match the recorded inputs
+  left: 18
+ right: 15
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+
+failures:
+
+failures:
+    pipeline::make::feedback_window_checker::compare_window_checker_with_executed_vertices
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 133 filtered out; finished in 0.10s
+
+WARP, repeat 2, compare_window_checker_with_executed_vertices, exit 101
+running 1 test
+test pipeline::make::feedback_window_checker::compare_window_checker_with_executed_vertices ... ADAPTER vendor=1414 device=008c software=true
+GUEST_COPY copy=false guest_word=3 ia_vertices=18 checked=4 differed=0 green=16
+GUEST_COPY copy=true guest_word=0 ia_vertices=18 checked=4 differed=0 green=16
+
+thread 'pipeline::make::feedback_window_checker::compare_window_checker_with_executed_vertices' (28164) panicked at crates\victory-gpu\src\pipeline\feedback_window_checker.rs:323:9:
+assertion `left == right` failed: executed vertices must match the recorded inputs
+  left: 18
+ right: 15
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+
+failures:
+
+failures:
+    pipeline::make::feedback_window_checker::compare_window_checker_with_executed_vertices
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 133 filtered out; finished in 0.09s
+
+Source 810793582a76c0a15da8dbfa21d69fb1a54c7aaa with 845fc43e2c536d121b7f34df902e3395c4d7fe2d
+
+RTX, repeat 1, host_list_window_check_finds_a_record_written_under_its_window, exit 0
+running 1 test
+test indirect::tests::host_list_window_check_finds_a_record_written_under_its_window ... DIRECT_GPU_WRITE checked=2 differed=1 window=[5, 1, 1] fresh=[11, 2, 1]
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 134 filtered out; finished in 0.50s
+
+RTX, repeat 2, host_list_window_check_finds_a_record_written_under_its_window, exit 0
+running 1 test
+test indirect::tests::host_list_window_check_finds_a_record_written_under_its_window ... DIRECT_GPU_WRITE checked=2 differed=1 window=[5, 1, 1] fresh=[11, 2, 1]
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 134 filtered out; finished in 0.40s
+
+WARP, repeat 1, host_list_window_check_finds_a_record_written_under_its_window, exit 0
+running 1 test
+test indirect::tests::host_list_window_check_finds_a_record_written_under_its_window ... DIRECT_GPU_WRITE checked=2 differed=1 window=[5, 1, 1] fresh=[11, 2, 1]
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 134 filtered out; finished in 0.10s
+
+WARP, repeat 2, host_list_window_check_finds_a_record_written_under_its_window, exit 0
+running 1 test
+test indirect::tests::host_list_window_check_finds_a_record_written_under_its_window ... DIRECT_GPU_WRITE checked=2 differed=1 window=[5, 1, 1] fresh=[11, 2, 1]
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 134 filtered out; finished in 0.09s
+
+RTX, repeat 1, compare_window_checker_with_executed_vertices, exit 0
+running 1 test
+test pipeline::make::feedback_window_checker::compare_window_checker_with_executed_vertices ... ADAPTER vendor=10de device=1f06 software=false
+GUEST_COPY copy=false guest_word=3 ia_vertices=18 checked=4 differed=0 green=16
+GUEST_COPY copy=true guest_word=0 ia_vertices=15 checked=2 differed=0 green=16
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 134 filtered out; finished in 0.40s
+
+RTX, repeat 2, compare_window_checker_with_executed_vertices, exit 0
+running 1 test
+test pipeline::make::feedback_window_checker::compare_window_checker_with_executed_vertices ... ADAPTER vendor=10de device=1f06 software=false
+GUEST_COPY copy=false guest_word=3 ia_vertices=18 checked=4 differed=0 green=16
+GUEST_COPY copy=true guest_word=0 ia_vertices=15 checked=2 differed=0 green=16
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 134 filtered out; finished in 0.40s
+
+WARP, repeat 1, compare_window_checker_with_executed_vertices, exit 0
+running 1 test
+test pipeline::make::feedback_window_checker::compare_window_checker_with_executed_vertices ... ADAPTER vendor=1414 device=008c software=true
+GUEST_COPY copy=false guest_word=3 ia_vertices=18 checked=4 differed=0 green=16
+GUEST_COPY copy=true guest_word=0 ia_vertices=15 checked=2 differed=0 green=16
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 134 filtered out; finished in 0.11s
+
+WARP, repeat 2, compare_window_checker_with_executed_vertices, exit 0
+running 1 test
+test pipeline::make::feedback_window_checker::compare_window_checker_with_executed_vertices ... ADAPTER vendor=1414 device=008c software=true
+GUEST_COPY copy=false guest_word=3 ia_vertices=18 checked=4 differed=0 green=16
+GUEST_COPY copy=true guest_word=0 ia_vertices=15 checked=2 differed=0 green=16
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 134 filtered out; finished in 0.10s

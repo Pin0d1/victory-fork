@@ -1,0 +1,364 @@
+diff --git a/crates/victory-gpu/src/indirect.rs b/crates/victory-gpu/src/indirect.rs
+index c3aee53..ea51aa3 100644
+--- a/crates/victory-gpu/src/indirect.rs
++++ b/crates/victory-gpu/src/indirect.rs
+@@ -1748,6 +1748,11 @@ void main() {
+         assert_eq!((checked, differed), (2, 1), "two checks, the written record differs");
+         assert_eq!(window[..3], [5, 1, 1], "as the window clamped it");
+         assert_eq!(fresh[..3], [11, 2, 1], "as it is now");
++        eprintln!(
++            "DIRECT_GPU_WRITE checked={checked} differed={differed} window={:?} fresh={:?}",
++            &window[..3],
++            &fresh[..3]
++        );
+     }
+ 
+     /// Records the dispatch records `groups` (three words each, `step`
+diff --git a/crates/victory-gpu/src/pipeline/feedback_window_checker.rs b/crates/victory-gpu/src/pipeline/feedback_window_checker.rs
+new file mode 100644
+index 0000000..0974ef9
+--- /dev/null
++++ b/crates/victory-gpu/src/pipeline/feedback_window_checker.rs
+@@ -0,0 +1,329 @@
++use super::Pending;
++use crate::draw::State;
++use crate::host::{HostList, host, transition};
++use crate::object::Object;
++use crate::pipeline::{FUNCTIONS, Pipeline, host::HostPipeline};
++use std::sync::{Arc, atomic::AtomicBool};
++use windows::Win32::Foundation::RECT;
++use windows::Win32::Graphics::Direct3D::{Fxc::D3DCompile, ID3DBlob};
++use windows::Win32::Graphics::Direct3D12::*;
++use windows::Win32::Graphics::Dxgi::Common::*;
++use windows::core::{PCSTR, s};
++
++const TRIANGLE: &str = r#"
++[RootSignature("RootFlags(ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT)")]
++float4 vs(uint id : SV_VertexID) : SV_Position {
++    float2 p = id == 0 ? float2(-1,-1) : (id == 1 ? float2(-1,3) : float2(3,-1));
++    return float4(p, 0.5, 1);
++}
++[RootSignature("RootFlags(ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT)")]
++float4 ps() : SV_Target { return float4(0,1,0,1); }
++"#;
++
++fn compile(source: &str, entry: PCSTR, target: PCSTR) -> Vec<u8> {
++    let mut blob: Option<ID3DBlob> = None;
++    let mut diagnostics: Option<ID3DBlob> = None;
++    // SAFETY: input and output objects are live across the compile.
++    unsafe {
++        D3DCompile(
++            source.as_ptr().cast(),
++            source.len(),
++            s!("triangle"),
++            None,
++            None,
++            entry,
++            target,
++            0,
++            0,
++            &mut blob,
++            Some(&mut diagnostics),
++        )
++        .unwrap();
++        let blob = blob.unwrap();
++        std::slice::from_raw_parts(blob.GetBufferPointer().cast(), blob.GetBufferSize()).to_vec()
++    }
++}
++
++// Only the two test shaders are supplied by the fixture. Root binding, indirect signatures,
++// clamp, argument refresh, copy-back and queue submission run the port's implementation.
++fn ready_triangle(device: &ID3D12Device) -> Box<Pipeline> {
++    let vs = compile(TRIANGLE, s!("vs"), s!("vs_5_1"));
++    let ps = compile(TRIANGLE, s!("ps"), s!("ps_5_1"));
++    let bytecode = |b: &[u8]| D3D12_SHADER_BYTECODE {
++        pShaderBytecode: b.as_ptr().cast(),
++        BytecodeLength: b.len(),
++    };
++    // SAFETY: the blobs, root and pipeline description live through the calls.
++    let (root, pso) = unsafe {
++        let root: ID3D12RootSignature = device.CreateRootSignature(0, &vs).unwrap();
++        let mut desc = D3D12_GRAPHICS_PIPELINE_STATE_DESC {
++            pRootSignature: std::mem::transmute_copy(&root),
++            VS: bytecode(&vs),
++            PS: bytecode(&ps),
++            SampleMask: u32::MAX,
++            RasterizerState: D3D12_RASTERIZER_DESC {
++                FillMode: D3D12_FILL_MODE_SOLID,
++                CullMode: D3D12_CULL_MODE_NONE,
++                DepthClipEnable: true.into(),
++                ..Default::default()
++            },
++            PrimitiveTopologyType: D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE,
++            NumRenderTargets: 1,
++            SampleDesc: DXGI_SAMPLE_DESC {
++                Count: 1,
++                Quality: 0,
++            },
++            ..Default::default()
++        };
++        desc.BlendState.RenderTarget[0].RenderTargetWriteMask =
++            D3D12_COLOR_WRITE_ENABLE_ALL.0 as u8;
++        desc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
++        let pso = device.CreateGraphicsPipelineState(&desc).unwrap();
++        (root, pso)
++    };
++    ready(HostPipeline {
++        compute: false,
++        mesh: false,
++        root,
++        pso,
++        rects: false,
++        state: String::new(),
++        stages: Vec::new(),
++        slots: 0,
++        inputs: Vec::new(),
++        name: "audit triangle".to_owned(),
++    })
++}
++
++fn ready(pipeline: HostPipeline) -> Box<Pipeline> {
++    let p = Pending::new(Vec::new(), None);
++    assert!(p.made.set(Some(pipeline)).is_ok());
++    Box::new(Pipeline {
++        object: Object::new(&FUNCTIONS),
++        packet: [0; 8],
++        shaders: Vec::new(),
++        bound: AtomicBool::new(false),
++        host: Arc::new(p),
++        builder: false,
++    })
++}
++
++// Heap storage remains stable across moves; lists only use it within the fixture lifetime.
++struct TitleBuffer(Box<[std::cell::UnsafeCell<u32>]>);
++
++impl TitleBuffer {
++    fn new(words: Vec<u32>) -> Self {
++        let b = Self(words.into_iter().map(std::cell::UnsafeCell::new).collect());
++        crate::shadow::register(b.at(0) as usize, b.at(0), (b.0.len() * 4) as u64);
++        b
++    }
++    fn at(&self, word: usize) -> u64 {
++        self.0[word].get() as u64
++    }
++}
++
++impl Drop for TitleBuffer {
++    fn drop(&mut self) {
++        crate::shadow::unregister(self.at(0) as usize, self.at(0));
++    }
++}
++
++fn render(
++    ready: &Pipeline,
++    record: impl FnOnce(&mut State, &HostList),
++) -> (
++    Vec<[u8; 4]>,
++    D3D12_QUERY_DATA_PIPELINE_STATISTICS,
++    (u32, u32),
++) {
++    const SIZE: u32 = 4;
++    let host = host().unwrap();
++    let list = host.new_list().unwrap();
++    let mut state = State::default();
++    let fixture = (&ready.object) as *const Object;
++    state.reset(fixture);
++    state.set_topology(&list, 4);
++    let heap = D3D12_HEAP_PROPERTIES {
++        Type: D3D12_HEAP_TYPE_DEFAULT,
++        ..Default::default()
++    };
++    let texture_desc = D3D12_RESOURCE_DESC {
++        Dimension: D3D12_RESOURCE_DIMENSION_TEXTURE2D,
++        Width: SIZE.into(),
++        Height: SIZE,
++        DepthOrArraySize: 1,
++        MipLevels: 1,
++        Format: DXGI_FORMAT_R8G8B8A8_UNORM,
++        SampleDesc: DXGI_SAMPLE_DESC {
++            Count: 1,
++            Quality: 0,
++        },
++        Flags: D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET,
++        ..Default::default()
++    };
++    let mut target: Option<ID3D12Resource> = None;
++    // SAFETY: open list and live texture and viewport descriptions.
++    unsafe {
++        host.device
++            .CreateCommittedResource(
++                &heap,
++                D3D12_HEAP_FLAG_NONE,
++                &texture_desc,
++                D3D12_RESOURCE_STATE_RENDER_TARGET,
++                Some(&D3D12_CLEAR_VALUE {
++                    Format: texture_desc.Format,
++                    Anonymous: D3D12_CLEAR_VALUE_0 {
++                        Color: [0., 0., 0., 1.],
++                    },
++                }),
++                &mut target,
++            )
++            .unwrap();
++    }
++    let target = target.unwrap();
++    let rtv = host.rtv(Some(&target), None);
++    // SAFETY: a live RTV and an open list.
++    unsafe {
++        list.list.OMSetRenderTargets(1, Some(&rtv), false, None);
++        list.list
++            .ClearRenderTargetView(rtv, &[0., 0., 0., 1.], None);
++        list.list.RSSetViewports(&[D3D12_VIEWPORT {
++            Width: SIZE as f32,
++            Height: SIZE as f32,
++            MaxDepth: 1.,
++            ..Default::default()
++        }]);
++        list.list.RSSetScissorRects(&[RECT {
++            right: SIZE as i32,
++            bottom: SIZE as i32,
++            ..Default::default()
++        }]);
++    }
++    let mut query: Option<ID3D12QueryHeap> = None;
++    let query_desc = D3D12_QUERY_HEAP_DESC {
++        Type: D3D12_QUERY_HEAP_TYPE_PIPELINE_STATISTICS,
++        Count: 1,
++        NodeMask: 0,
++    };
++    let (stats, mapped) = host
++        .shared_buffer(size_of::<D3D12_QUERY_DATA_PIPELINE_STATISTICS>() as u64)
++        .unwrap();
++    // SAFETY: the query and its destination outlive the submission.
++    unsafe {
++        host.device
++            .CreateQueryHeap(&query_desc, &mut query)
++            .unwrap();
++    }
++    let query = query.unwrap();
++    // SAFETY: a pipeline statistics query on a direct list.
++    unsafe {
++        list.list
++            .BeginQuery(&query, D3D12_QUERY_TYPE_PIPELINE_STATISTICS, 0);
++    }
++    record(&mut state, &list);
++
++    // SAFETY: the active query is ended before its result is copied.
++    unsafe {
++        list.list
++            .EndQuery(&query, D3D12_QUERY_TYPE_PIPELINE_STATISTICS, 0);
++        list.list.ResolveQueryData(
++            &query,
++            D3D12_QUERY_TYPE_PIPELINE_STATISTICS,
++            0,
++            1,
++            &stats,
++            0,
++        );
++    }
++    // SAFETY: target is still in RENDER_TARGET; GPU is done before Map.
++    unsafe {
++        list.list.ResourceBarrier(&[transition(
++            &target,
++            D3D12_RESOURCE_STATE_RENDER_TARGET,
++            D3D12_RESOURCE_STATE_COPY_SOURCE,
++        )])
++    };
++    let (readback, footprint) =
++        crate::capture::read_back(&host.device, &list.list, &target).unwrap();
++    list.close();
++    host.execute(&[&list]);
++    let mut ptr = std::ptr::null_mut();
++    let mut pixels = Vec::new();
++    // SAFETY: the fence completed, and the footprint covers these pixels.
++    unsafe {
++        readback.Map(0, None, Some(&mut ptr)).unwrap();
++        for y in 0..SIZE as usize {
++            for x in 0..SIZE as usize {
++                let offset =
++                    footprint.Offset as usize + y * footprint.Footprint.RowPitch as usize + 4 * x;
++                pixels.push(
++                    ptr.cast::<u8>()
++                        .add(offset)
++                        .cast::<[u8; 4]>()
++                        .read_unaligned(),
++                );
++            }
++        }
++        readback.Unmap(0, None);
++    }
++    // SAFETY: Host::execute waited for the fence before the CPU reads the query.
++    let statistics = unsafe { mapped.cast::<D3D12_QUERY_DATA_PIPELINE_STATISTICS>().read() };
++    let (checked, differed, _, _) = list.window_check().unwrap().take();
++    (pixels, statistics, (checked, differed))
++}
++
++#[test]
++fn compare_window_checker_with_executed_vertices() {
++    use windows::Win32::Graphics::Dxgi::{
++        CreateDXGIFactory2, DXGI_ADAPTER_FLAG_SOFTWARE, DXGI_CREATE_FACTORY_FLAGS, IDXGIAdapter1,
++        IDXGIFactory4,
++    };
++    let h = host().expect("a D3D12 adapter");
++    assert_eq!(std::env::var("VICTORY_INDIRECT_WINDOW").as_deref(), Ok("1"));
++    assert!(crate::indirect::window_check());
++    // SAFETY: the selected device belongs to the adapter returned for its LUID.
++    let desc = unsafe {
++        let factory = CreateDXGIFactory2::<IDXGIFactory4>(DXGI_CREATE_FACTORY_FLAGS(0)).unwrap();
++        let adapter: IDXGIAdapter1 = factory
++            .EnumAdapterByLuid(h.device.GetAdapterLuid())
++            .unwrap();
++        adapter.GetDesc1().unwrap()
++    };
++    let software = desc.Flags & DXGI_ADAPTER_FLAG_SOFTWARE.0 as u32 != 0;
++    assert_eq!(software, std::env::var_os("VICTORY_D3D12_WARP").is_some());
++    eprintln!(
++        "ADAPTER vendor={:04x} device={:04x} software={software}",
++        desc.VendorId, desc.DeviceId
++    );
++    let triangle = ready_triangle(&h.device);
++    for copy in [false, true] {
++        let args = TitleBuffer::new([3u32, 1, 0, 0].repeat(24));
++        let replacement = [0u32, 1, 0, 0];
++        let (pixels, stats, (checked, differed)) = render(&triangle, |state, list| {
++            for record in 0..6 {
++                if copy && record == 2 {
++                    list.defer_copy(args.at(8) as *mut u8, replacement.as_ptr().cast(), 16);
++                }
++                assert!(state.execute_indirect(list, (0, 16, 1), args.at(record * 4), None));
++            }
++        });
++        // SAFETY: the list has completed, and the guest storage is still live.
++        let guest = unsafe { (args.at(8) as *const u32).read_volatile() };
++        let green = pixels
++            .iter()
++            .filter(|pixel| **pixel == [0, 255, 0, 255])
++            .count();
++        eprintln!(
++            "GUEST_COPY copy={copy} guest_word={guest} ia_vertices={} checked={checked} differed={differed} green={green}",
++            stats.IAVertices
++        );
++        assert_eq!(guest, if copy { 0 } else { 3 });
++        assert_eq!(green, 16);
++        assert!(checked > 0);
++        assert_eq!(
++            stats.IAVertices,
++            if copy { 15 } else { 18 },
++            "executed vertices must match the recorded inputs"
++        );
++    }
++}
+diff --git a/crates/victory-gpu/src/pipeline/make.rs b/crates/victory-gpu/src/pipeline/make.rs
+index 9862446..cfe3e13 100644
+--- a/crates/victory-gpu/src/pipeline/make.rs
++++ b/crates/victory-gpu/src/pipeline/make.rs
+@@ -397,3 +397,8 @@ mod tests {
+         assert!(queue.pop().is_none());
+     }
+ }
++
++#[cfg(all(test, feature = "diagnostics"))]
++mod feedback_window_checker {
++    include!("feedback_window_checker.rs");
++}
