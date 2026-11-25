@@ -922,6 +922,84 @@ mod tests {
     const MEM_WRITE_WATCH: u32 = 0x20_0000;
 
     #[test]
+    fn actual_shadow_readbacks_follow_each_alias() {
+        let mut shown = Shown::new();
+        let (a, b) = (shown.map(true), shown.map(true));
+        let host = crate::host::host().unwrap();
+        for v in [a, b] {
+            crate::shadow::register(v, v as u64, PAGE as u64);
+        }
+        let copies = [a, b].map(|v| crate::shadow::find(v as u64, PAGE as u64).unwrap());
+        assert_ne!(copies[0].id(), copies[1].id());
+        let (back, data) = host.shared_buffer(8).unwrap();
+        let sample = || {
+            let list = host.new_list().unwrap();
+            for (i, v) in [a, b].into_iter().enumerate() {
+                copies[i].refresh(&list, v as u64, PAGE as u64);
+                // SAFETY: both copy ranges are within live buffers held through execution.
+                unsafe {
+                    list.list.CopyBufferRegion(
+                        &back,
+                        (i * 4) as u64,
+                        &copies[i].buffer,
+                        copies[i].offset(v as u64),
+                        4,
+                    );
+                }
+            }
+            list.close();
+            host.execute(&[&list]);
+            // SAFETY: execution has completed and both words of the mapped buffer were written.
+            unsafe { data.cast::<[u32; 2]>().read_unaligned() }
+        };
+        let first = sample();
+        // SAFETY: the live writable sibling maps the same section at offset zero.
+        unsafe {
+            (b as *mut u32).write_volatile(0x11223344);
+        }
+        let second = sample();
+        for v in [a, b] {
+            crate::shadow::unregister(v, v as u64);
+        }
+        drop(copies);
+        drop(shown);
+        assert_eq!(first, [0, 0]);
+        assert_eq!(second, [0x11223344; 2]);
+    }
+
+    #[test]
+    fn kernel_destination_stays_writable_until_a_synchronous_read_returns() {
+        use std::io::{Read, Seek, Write};
+        let mut shown = Shown::new();
+        let (a, b) = (shown.map(true), shown.map(true));
+        let mut file = tempfile::tempfile().unwrap();
+        file.write_all(b"TEST").unwrap();
+        file.rewind().unwrap();
+        guard(a, a + PAGE).unwrap();
+        let lease = writing_held(b, 4);
+        // A second consumer refreshes after the destination has been opened,
+        // before the kernel lands its write. No concurrent Rust references.
+        guard(a, a + PAGE).unwrap();
+        // SAFETY: this live section view contains the four-byte destination.
+        let target = unsafe { std::slice::from_raw_parts_mut(b as *mut u8, 4) };
+        let second = writing_held(b + 1, 1);
+        drop(lease);
+        guard(a, a + PAGE).unwrap();
+        let res = file.read_exact(target);
+        drop(second);
+        // SAFETY: the synchronous read completed and the sibling mapping is still live.
+        let actual = unsafe { std::ptr::read_unaligned(a as *const [u8; 4]) };
+        let dirty = guard(a, a + PAGE).unwrap();
+        drop(shown);
+        assert!(
+            res.is_ok(),
+            "Windows read into an announced destination returned {res:?}"
+        );
+        assert_eq!(&actual, b"TEST");
+        assert_eq!(dirty, vec![a / PAGE]);
+    }
+
+    #[test]
     fn written_pages_are_reported_to_every_asker() {
         // SAFETY: a fresh write-watched allocation, freed at the end.
         let p = unsafe {
@@ -1521,5 +1599,85 @@ mod mapping_tests {
         drop(changing);
         reader.join().unwrap();
         assert!(read.load(Ordering::SeqCst));
+    }
+}
+
+#[cfg(test)]
+mod alias_epoch_regression {
+    use super::{PAGE, title_memory_remapped, writes};
+    use windows_sys::Win32::Foundation::{CloseHandle, INVALID_HANDLE_VALUE};
+    use windows_sys::Win32::System::Memory::{
+        CreateFileMappingW, FILE_MAP_WRITE, MEMORY_MAPPED_VIEW_ADDRESS, MapViewOfFile,
+        PAGE_READWRITE, UnmapViewOfFile,
+    };
+
+    #[test]
+    fn both_alias_consumers_observe_a_write() {
+        // Two virtual addresses show the same physical bytes. Each address has
+        // a separate consumer that already copied its data at a recorded epoch.
+        // SAFETY: a fresh pagefile section and two views, all checked below.
+        let section = unsafe {
+            CreateFileMappingW(
+                INVALID_HANDLE_VALUE,
+                std::ptr::null(),
+                PAGE_READWRITE,
+                0,
+                PAGE as u32,
+                std::ptr::null(),
+            )
+        };
+        assert!(!section.is_null());
+        // SAFETY: the section is live and holds PAGE bytes.
+        let a = unsafe { MapViewOfFile(section, FILE_MAP_WRITE, 0, 0, PAGE) }.Value as usize;
+        // SAFETY: a second view of that same live section.
+        let b = unsafe { MapViewOfFile(section, FILE_MAP_WRITE, 0, 0, PAGE) }.Value as usize;
+        assert_ne!(a, 0);
+        assert_ne!(b, 0);
+        assert_ne!(a, b);
+        for address in [a, b] {
+            title_memory_remapped(address, PAGE);
+            crate::inplace::title_memory_view(address, PAGE, section as usize, 0);
+        }
+
+        let (copied_a_at, _) = writes(a, a + PAGE, true).expect("A is section memory");
+        let (copied_b_at, _) = writes(b, b + PAGE, true).expect("B is section memory");
+        // This writes through the real alias, exercising the vectored handler
+        // if that alias is guarded. One physical write must invalidate BOTH
+        // consumers, regardless of the order in which they refresh.
+        // SAFETY: B is a live writable view; our guard handler restores access.
+        unsafe { (b as *mut u8).write_volatile(0x5a) };
+        let (_, seen_a) = writes(a, a + PAGE, true).unwrap();
+        let (_, seen_b) = writes(b, b + PAGE, true).unwrap();
+        let changed_a = seen_a
+            .iter()
+            .any(|&(p, epoch)| p == a / PAGE && epoch > copied_a_at);
+        let changed_b = seen_b
+            .iter()
+            .any(|&(p, epoch)| p == b / PAGE && epoch > copied_b_at);
+        // SAFETY: the views are still mapped and refer to identical bytes.
+        let (byte_a, byte_b) = unsafe {
+            (
+                (a as *const u8).read_volatile(),
+                (b as *const u8).read_volatile(),
+            )
+        };
+
+        for address in [a, b] {
+            title_memory_remapped(address, PAGE);
+            // SAFETY: the live view returned above, no later memory access.
+            unsafe {
+                UnmapViewOfFile(MEMORY_MAPPED_VIEW_ADDRESS {
+                    Value: address as *mut _,
+                })
+            };
+        }
+        // SAFETY: our section handle; both views are gone.
+        unsafe { CloseHandle(section) };
+        assert_eq!((byte_a, byte_b), (0x5a, 0x5a));
+        assert_eq!(
+            (changed_a, changed_b),
+            (true, true),
+            "one physical write must invalidate both already-copied aliases; A={seen_a:?}, B={seen_b:?}"
+        );
     }
 }
