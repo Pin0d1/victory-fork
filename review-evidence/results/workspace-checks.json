@@ -1,0 +1,214 @@
+{
+  "platform": "Windows 11 x64, Rust 1.98.1 MSVC",
+  "tested": {
+    "310c6eb6c16822ab95076aad61fce19bba86bb98": [
+      {
+        "command": "cargo clippy --workspace --all-targets --locked -- -D warnings",
+        "exit": 101,
+        "diagnostics": [
+          {
+            "message": "function `placed_filler_twins` is never used",
+            "location": "crates/victory-gpu/src/resource.rs:2257:15"
+          },
+          {
+            "message": "consider using `sort_unstable_by_key`",
+            "location": "crates/victory-gpu/src/draw.rs:2339:17"
+          },
+          {
+            "message": "field `depth_written` is never read",
+            "location": "crates/victory-gpu/src/indirect.rs:1322:9"
+          }
+        ]
+      },
+      {
+        "command": "cargo clippy --workspace --all-targets --all-features --locked -- -D warnings",
+        "exit": 101,
+        "diagnostics": [
+          {
+            "message": "consider using `sort_unstable_by_key`",
+            "location": "crates/victory-gpu/src/draw.rs:2339:17"
+          },
+          {
+            "message": "field `depth_written` is never read",
+            "location": "crates/victory-gpu/src/indirect.rs:1322:9"
+          }
+        ]
+      },
+      {
+        "command": "cargo fmt --all -- --check",
+        "exit": 1,
+        "files_reported": 56
+      }
+    ],
+    "9576cc278a6ebad457641235698506a548847c5a": [
+      {
+        "command": "cargo test --workspace --locked",
+        "exit": 0,
+        "passed": 511,
+        "failed": 0,
+        "ignored": 9
+      },
+      {
+        "command": "cargo test --workspace --all-features --locked",
+        "exit": 0,
+        "passed": 519,
+        "failed": 0,
+        "ignored": 9
+      },
+      {
+        "command": "cargo clippy --workspace --all-targets --locked -- -D warnings",
+        "exit": 101,
+        "diagnostics": [
+          {
+            "message": "function `placed_filler_twins` is never used",
+            "location": "crates/victory-gpu/src/resource.rs:2257:15"
+          },
+          {
+            "message": "consider using `sort_unstable_by_key`",
+            "location": "crates/victory-gpu/src/draw.rs:2339:17"
+          },
+          {
+            "message": "field `depth_written` is never read",
+            "location": "crates/victory-gpu/src/indirect.rs:1322:9"
+          }
+        ]
+      },
+      {
+        "command": "cargo clippy --workspace --all-targets --all-features --locked -- -D warnings",
+        "exit": 101,
+        "diagnostics": [
+          {
+            "message": "consider using `sort_unstable_by_key`",
+            "location": "crates/victory-gpu/src/draw.rs:2339:17"
+          },
+          {
+            "message": "field `depth_written` is never read",
+            "location": "crates/victory-gpu/src/indirect.rs:1322:9"
+          }
+        ]
+      },
+      {
+        "command": "cargo test -p xtask repository_passes_policy --locked",
+        "exit": 0,
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "command": "cargo fmt --all -- --check",
+        "exit": 1,
+        "files_reported": 56
+      },
+      {
+        "command": "cargo build --workspace --release --locked",
+        "exit": 0
+      }
+    ],
+    "845fc43e2c536d121b7f34df902e3395c4d7fe2d": [
+      {
+        "command": "cargo test --workspace --locked",
+        "exit": 0,
+        "passed": 511,
+        "failed": 0,
+        "ignored": 9
+      },
+      {
+        "command": "cargo test --workspace --all-features --locked",
+        "exit": 0,
+        "passed": 519,
+        "failed": 0,
+        "ignored": 9
+      },
+      {
+        "command": "cargo clippy --workspace --all-targets --locked -- -D warnings",
+        "exit": 101,
+        "diagnostics": [
+          {
+            "message": "function `placed_filler_twins` is never used",
+            "location": "crates/victory-gpu/src/resource.rs:2257:15"
+          },
+          {
+            "message": "consider using `sort_unstable_by_key`",
+            "location": "crates/victory-gpu/src/draw.rs:2339:17"
+          },
+          {
+            "message": "field `depth_written` is never read",
+            "location": "crates/victory-gpu/src/indirect.rs:1322:9"
+          }
+        ]
+      },
+      {
+        "command": "cargo clippy --workspace --all-targets --all-features --locked -- -D warnings",
+        "exit": 101,
+        "diagnostics": [
+          {
+            "message": "consider using `sort_unstable_by_key`",
+            "location": "crates/victory-gpu/src/draw.rs:2339:17"
+          },
+          {
+            "message": "field `depth_written` is never read",
+            "location": "crates/victory-gpu/src/indirect.rs:1322:9"
+          }
+        ]
+      },
+      {
+        "command": "cargo test -p xtask repository_passes_policy --locked",
+        "exit": 0,
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "command": "cargo fmt --all -- --check",
+        "exit": 1,
+        "files_reported": 56
+      },
+      {
+        "command": "cargo build --workspace --release --locked",
+        "exit": 0
+      }
+    ]
+  },
+  "optional_ci_comparison": {
+    "base_pr": 642,
+    "base": "3d33ef0dea7923ff896f4b3073762d406444d7da",
+    "cherry_pick": [
+      "9576cc278a6ebad457641235698506a548847c5a",
+      "845fc43e2c536d121b7f34df902e3395c4d7fe2d"
+    ],
+    "branch": "https://github.com/Pin0d1/victory-fork/tree/review/ci-642-662-663",
+    "commit": "290567c7fa6152b38a7881dc1b70375ee438596d",
+    "tree": "e5761bd22af541583bebe2b72e86ebc9ce472a5d",
+    "commands": [
+      {
+        "command": "cargo clippy --workspace --all-targets --locked -- -D warnings",
+        "exit": 0
+      },
+      {
+        "command": "cargo clippy --workspace --all-targets --all-features --locked -- -D warnings",
+        "exit": 0
+      }
+    ]
+  },
+  "public_replay": {
+    "evidence": "73f564e92ca86fe07be7c53492ee0e23a2471fa9",
+    "head": "845fc43e2c536d121b7f34df902e3395c4d7fe2d",
+    "case": "indirect-window",
+    "adapter": "WARP",
+    "fresh_public_clones": true,
+    "passed": [
+      "copied_arguments_replace_a_prefetched_record",
+      "indirect_window_ends_at_a_copy_or_unknown_writer"
+    ]
+  },
+  "formatting_in_changed_files": {
+    "845fc43e2c536d121b7f34df902e3395c4d7fe2d": {
+      "crates/victory-gpu/src/draw.rs": true,
+      "crates/victory-gpu/src/host.rs": true
+    },
+    "9576cc278a6ebad457641235698506a548847c5a": {
+      "crates/victory-gpu/src/descriptor/host.rs": true
+    }
+  },
+  "formatting_in_changed_files_method": "True means that the multiset of added and removed lines proposed by rustfmt --check matches the base file. Line numbers and diff context are excluded."
+}

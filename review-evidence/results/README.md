@@ -17,4 +17,6 @@ The [earlier snapshot controls](snapshot-control) each recorded 17 after the fir
 
 The candidate patches linked in the last rows were evaluated in the earlier audit on the prerequisite trees listed there. The public-head transcripts here come from reruns on the pinned PR revisions. The scripts and outputs use synthetic data. The table reports buffer contents, draw counts and D3D12 diagnostics. [Machine-readable results](checks.json) · [Commands and pinned sources](../README.md)
 
+Each clean production PR passed 511 default workspace tests and 519 all-feature tests, with nine upstream ignores per configuration. Both release builds and asset-policy checks passed. The base and the two PR heads reported the same Clippy diagnostics. Applying both changes to the public head of [PR #642](https://github.com/fxceless/victory-fork/pull/642) passed both Clippy commands. A fresh clone of the published reproducer also passed both indirect-window tests on WARP. [Commands, revisions and diagnostics](workspace-checks.json)
+
 Prepared with the help of Codex 6.2 Astra Max.
