@@ -1481,7 +1481,7 @@ fn give_chunks(chunks: Vec<(Chunk, u64)>) {
 /// What the host keeps for copies in the card's own memory
 /// ([`crate::shadow::cards`]): three lists of ours and the compare.
 struct CardWork {
-    snapshot_bytes: u64,
+    snapshots: SnapshotPool,
     /// Before a submission's lists: what changed on the copies' CPU side
     /// goes to their card side. Those not in use: a plan takes one and
     /// gives it back when its submission has run (`Host::card_done`), so
@@ -1677,12 +1677,60 @@ fn snapshot_allocation(in_use: u64, bytes: u64) -> Option<u64> {
     (size != 0 && size <= SNAPSHOT_LIMIT.saturating_sub(in_use)).then_some(size)
 }
 
+struct Snapshot {
+    buffer: ID3D12Resource,
+    capacity: u64,
+}
+
+#[derive(Default)]
+struct SnapshotPool {
+    live_bytes: u64,
+    idle: Vec<Snapshot>,
+}
+
+impl SnapshotPool {
+    fn take(&mut self, host: &Host, bytes: u64) -> Option<Snapshot> {
+        let exact = snapshot_allocation(self.live_bytes, bytes)?;
+        let remaining = SNAPSHOT_LIMIT - self.live_bytes;
+        // Keep common sizes reusable without forcing a live fetch when the
+        // exact (placement-aligned) allocation still fits.
+        let class = exact.next_power_of_two();
+        let capacity = if class <= remaining { class } else { exact };
+        let best = self
+            .idle
+            .iter()
+            .enumerate()
+            .filter(|(_, s)| (exact..=capacity).contains(&s.capacity))
+            .min_by_key(|(_, s)| s.capacity)
+            .map(|(i, _)| i);
+        let snapshot = if let Some(i) = best {
+            self.idle.swap_remove(i)
+        } else {
+            let mut free = remaining - self.idle.iter().map(|s| s.capacity).sum::<u64>();
+            while free < capacity {
+                free += self.idle.pop()?.capacity;
+            }
+            Snapshot {
+                buffer: host.uav_buffer(capacity)?,
+                capacity,
+            }
+        };
+        self.live_bytes += snapshot.capacity;
+        Some(snapshot)
+    }
+
+    // card_done runs after the landing has finished reading the snapshot.
+    fn put(&mut self, snapshot: Snapshot) {
+        self.live_bytes -= snapshot.capacity;
+        self.idle.push(snapshot);
+    }
+}
+
 /// What a submission does for copies in the card's memory.
 struct CardPlan {
     ranges: Vec<CardRange>,
     /// Immutable from completion of the producer until relay copy-back finishes.
-    snapshot: Option<ID3D12Resource>,
-    reservation: u64,
+    snapshot: Option<Snapshot>,
     live_fetch: bool,
     /// The compare, run after the submission's lists.
     check: Option<ID3D12CommandList>,
@@ -3149,7 +3197,7 @@ impl Host {
                 ..Default::default()
             })?;
             Ok(CardWork {
-                snapshot_bytes: 0,
+                snapshots: SnapshotPool::default(),
                 sync: vec![list()?],
                 check: vec![list()?],
                 fetch: list()?,
@@ -3299,7 +3347,6 @@ impl Host {
         let mut plan = CardPlan {
             ranges: Vec::new(),
             snapshot: None,
-            reservation: 0,
             live_fetch: false,
             check: None,
             _synced: dirty.into_iter().map(|(shadow, _)| shadow).collect(),
@@ -3342,13 +3389,8 @@ impl Host {
         }
         work.taken = at;
         if flown && relay() && snapshot_bytes != 0 {
-            if let Some(size) = snapshot_allocation(work.snapshot_bytes, snapshot_bytes)
-                && let Some(snapshot) = self.uav_buffer(snapshot_bytes)
-            {
-                plan.snapshot = Some(snapshot);
-                plan.reservation = size;
-                work.snapshot_bytes += size;
-            } else {
+            plan.snapshot = work.snapshots.take(self, snapshot_bytes);
+            if plan.snapshot.is_none() {
                 plan.live_fetch = true;
                 LIVE_FETCH.store(true, Ordering::Release);
             }
@@ -3398,7 +3440,7 @@ impl Host {
                     if let Some(snapshot) = &plan.snapshot {
                         for r in &plan.ranges {
                             list.CopyBufferRegion(
-                                snapshot,
+                                &snapshot.buffer,
                                 r.snapshot_offset,
                                 &r.shadow.buffer,
                                 u64::from(r.span.from),
@@ -3440,7 +3482,9 @@ impl Host {
         let Some(work) = work.as_mut() else {
             return;
         };
-        work.snapshot_bytes -= plan.reservation;
+        if let Some(snapshot) = plan.snapshot {
+            work.snapshots.put(snapshot);
+        }
         if plan.live_fetch {
             LIVE_FETCH.store(false, Ordering::Release);
         }
@@ -3552,7 +3596,10 @@ impl Host {
                         let (lo, hi) = r.shadow.card_piece(&r.span, p);
                         if lo < hi {
                             let (source, source_offset) = match &plan.snapshot {
-                                Some(buffer) => (buffer, r.snapshot_offset + (lo - r.span.from as usize) as u64),
+                                Some(snapshot) => (
+                                    &snapshot.buffer,
+                                    r.snapshot_offset + (lo - r.span.from as usize) as u64,
+                                ),
                                 None => {
                                     debug_assert!(plan.live_fetch);
                                     (&r.shadow.buffer, lo as u64)
@@ -6936,6 +6983,40 @@ mod relay_snapshot_tests {
     }
 
     #[test]
+    fn snapshots_reuse_retired_buffers_and_bound_idle_and_live_bytes() {
+        let host = host().expect("D3D12 device");
+        let mut pool = SnapshotPool::default();
+        let a = pool.take(host, 4).unwrap();
+        let b = pool.take(host, 4).unwrap();
+        assert_ne!(a.buffer, b.buffer);
+        let first = a.buffer.as_raw();
+        pool.put(a);
+        let reused = pool.take(host, 4096).unwrap();
+        assert_eq!(reused.buffer.as_raw(), first);
+        // Reuse covers the whole allocation, even though the first use was four bytes.
+        // SAFETY: the lease owns the resource throughout the descriptor query.
+        assert_eq!(unsafe { reused.buffer.GetDesc() }.Width, reused.capacity);
+        pool.put(reused);
+        pool.put(b);
+
+        let half = pool.take(host, 32 << 20).unwrap();
+        let eighth = pool.take(host, 8 << 20).unwrap();
+        let rest = pool.take(host, 24 << 20).unwrap();
+        assert_eq!(rest.capacity, 24 << 20);
+        assert!(pool.idle.is_empty());
+        assert_eq!(pool.live_bytes, SNAPSHOT_LIMIT);
+        assert!(pool.take(host, 1).is_none());
+        for item in [half, eighth, rest] {
+            pool.put(item);
+        }
+        assert_eq!(pool.live_bytes, 0);
+        assert_eq!(
+            pool.idle.iter().map(|s| s.capacity).sum::<u64>(),
+            SNAPSHOT_LIMIT
+        );
+    }
+
+    #[test]
     fn relay_snapshot_pressure_guards_live_bytes_until_the_copy_finishes() {
         if std::env::var_os("VICTORY_TEST_SNAPSHOT_PRESSURE").is_none() {
             let thread = std::thread::current();
@@ -6976,7 +7057,7 @@ mod relay_snapshot_tests {
         let next = host.new_list().unwrap();
         put(&next, 29);
         next.close();
-        CARD_WORK.lock().unwrap().as_mut().unwrap().snapshot_bytes = SNAPSHOT_LIMIT;
+        CARD_WORK.lock().unwrap().as_mut().unwrap().snapshots.live_bytes = SNAPSHOT_LIMIT;
         // Hold the producer in the queue. A separate thread always opens the gate
         // after a bounded interval, including if the admission assertion fails.
         let gate: ID3D12Fence = unsafe { host.device.CreateFence(0, D3D12_FENCE_FLAG_NONE).unwrap() };
