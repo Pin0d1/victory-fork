@@ -1,0 +1,6 @@
+running 1 test
+test host::relay_persistence_tests::unchanged_hash_does_not_repair_a_mismatched_readback ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 121 filtered out; finished in 0.24s
+
+PERSISTENCE first=17 second=17 second_hash_flag=0

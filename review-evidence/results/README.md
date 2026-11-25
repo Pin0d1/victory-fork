@@ -13,6 +13,8 @@ The GPU comparisons used separate Cargo target directories per source tree. Befo
 | #191 overlapping bytes through sibling mappings | All three checks returned `None`. Only the middle interval should produce a read dependency. | [Physical-dependency candidate](../candidates/README.md) | 2 per adapter |
 | #220 ordered reference with GPU count 63 | Record 50 was `[0, 0, 50, 250]`. Expected `[5, 1, 50, 250]`. | [Admission policy candidate](../candidates/README.md) | 2 per adapter |
 
+The [earlier snapshot controls](snapshot-control) each recorded 17 after the first fetch and again after restoration, with the second GPU change flag equal to zero. Three runs per adapter are retained.
+
 The candidate patches linked in the last rows were evaluated in the earlier audit on the prerequisite trees listed there. The public-head transcripts here come from reruns on the pinned PR revisions. The scripts and outputs use synthetic data. The table reports buffer contents, draw counts and D3D12 diagnostics. [Machine-readable results](checks.json) · [Commands and pinned sources](../README.md)
 
 Prepared with the help of Codex 6.2 Astra Max.
