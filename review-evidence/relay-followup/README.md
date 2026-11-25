@@ -27,7 +27,7 @@ The comparison is between ef4f510 and its single follow-up commit 981eaae. Both 
 
 The allocation test warms up one flight at each of 1, 2, 4 and 8 MiB, then repeats the size sequence for 48 flights. One word changes per flight. It waits for landing, checks the CPU word every time and reads the delta of the renderer's device-local UAV buffer creation and requested-byte counters. Three fresh processes were run per build and adapter, alternating build order. After warm-up the original made 48 allocations totalling 180 MiB per run. The pool made zero in each run. The measured workload still copies 180 MiB on DIRECT. Wall time in each log covers the 48 complete synthetic flights, including CPU work and fence waits. The allocation counters accumulate over the run. Repeated game measurements on the new branch remain outstanding. [RTX 5080 report on the original snapshot](https://github.com/fxceless/victory-fork/pull/71#issuecomment-7156304501)
 
-On the clean pooled branch, the locked all-features workspace suite passed 524 tests with 9 ignored. The release build of victory-gpu and the asset policy check passed. The policy checked 169 files.
+On the clean pooled branch, the locked all-features workspace suite passed 522 tests with 9 ignored. Two GPU tests also launched child processes for isolation. The release build of victory-gpu and the asset policy check passed. The policy checked 169 files.
 
 ## Ordered queue waits on #785
 
