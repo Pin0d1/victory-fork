@@ -1,0 +1,273 @@
+===== pooled-snapshot/bench-RTX-1.log =====
+running 1 test
+test host::followup_pool_bench::repeated_flights_measure_committed_snapshot_creation ... POOL device=10de:1f06 flights=48 verified=48 created=0 created_bytes=0 wall_us=85132
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 132 filtered out; finished in 0.44s
+
+===== pooled-snapshot/bench-RTX-2.log =====
+running 1 test
+test host::followup_pool_bench::repeated_flights_measure_committed_snapshot_creation ... POOL device=10de:1f06 flights=48 verified=48 created=0 created_bytes=0 wall_us=81852
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 132 filtered out; finished in 0.46s
+
+===== pooled-snapshot/bench-RTX-3.log =====
+running 1 test
+test host::followup_pool_bench::repeated_flights_measure_committed_snapshot_creation ... POOL device=10de:1f06 flights=48 verified=48 created=0 created_bytes=0 wall_us=73945
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 132 filtered out; finished in 0.44s
+
+===== pooled-snapshot/bench-WARP-1.log =====
+running 1 test
+test host::followup_pool_bench::repeated_flights_measure_committed_snapshot_creation ... POOL device=1414:008c flights=48 verified=48 created=0 created_bytes=0 wall_us=103540
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 132 filtered out; finished in 0.22s
+
+===== pooled-snapshot/bench-WARP-2.log =====
+running 1 test
+test host::followup_pool_bench::repeated_flights_measure_committed_snapshot_creation ... POOL device=1414:008c flights=48 verified=48 created=0 created_bytes=0 wall_us=103753
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 132 filtered out; finished in 0.22s
+
+===== pooled-snapshot/bench-WARP-3.log =====
+running 1 test
+test host::followup_pool_bench::repeated_flights_measure_committed_snapshot_creation ... POOL device=1414:008c flights=48 verified=48 created=0 created_bytes=0 wall_us=104429
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 132 filtered out; finished in 0.22s
+
+===== pooled-snapshot/readback-RTX-1-1.log =====
+running 1 test
+test host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER 10de:1f06 software=false
+VALIDATION_MESSAGE id=1016 severity=4 Device Debug Layer Startup Options: GPU-Based Validation is enabled (disabled by default). This results in new validation not possible during API calls on the CPU, by creating patched shaders that have validation added directly to the shader. However, it can slow things down a lot, especially for applications with numerous PSOs. Time to see the first render frame may take several minutes.
+BYTES pages=1 staged=0 overflow=0 first17=1 first29=0 unchanged_flags=0 second17=1 second29=0 debug_error=None
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 132 filtered out; finished in 0.56s
+
+===== pooled-snapshot/readback-RTX-1-257-yes.log =====
+running 1 test
+test host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER 10de:1f06 software=false
+VALIDATION_MESSAGE id=1016 severity=4 Device Debug Layer Startup Options: GPU-Based Validation is enabled (disabled by default). This results in new validation not possible during API calls on the CPU, by creating patched shaders that have validation added directly to the shader. However, it can slow things down a lot, especially for applications with numerous PSOs. Time to see the first render frame may take several minutes.
+TRACKED pages=257 staged=0 overflow=0 first17=257 first29=0 second29=257 debug_error=None
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 132 filtered out; finished in 0.73s
+
+===== pooled-snapshot/readback-RTX-1-257.log =====
+running 1 test
+test host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER 10de:1f06 software=false
+VALIDATION_MESSAGE id=1016 severity=4 Device Debug Layer Startup Options: GPU-Based Validation is enabled (disabled by default). This results in new validation not possible during API calls on the CPU, by creating patched shaders that have validation added directly to the shader. However, it can slow things down a lot, especially for applications with numerous PSOs. Time to see the first render frame may take several minutes.
+BYTES pages=257 staged=0 overflow=0 first17=257 first29=0 unchanged_flags=0 second17=257 second29=0 debug_error=None
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 132 filtered out; finished in 0.59s
+
+===== pooled-snapshot/readback-RTX-2-1.log =====
+running 1 test
+test host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER 10de:1f06 software=false
+VALIDATION_MESSAGE id=1016 severity=4 Device Debug Layer Startup Options: GPU-Based Validation is enabled (disabled by default). This results in new validation not possible during API calls on the CPU, by creating patched shaders that have validation added directly to the shader. However, it can slow things down a lot, especially for applications with numerous PSOs. Time to see the first render frame may take several minutes.
+BYTES pages=1 staged=0 overflow=0 first17=1 first29=0 unchanged_flags=0 second17=1 second29=0 debug_error=None
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 132 filtered out; finished in 0.51s
+
+===== pooled-snapshot/readback-RTX-2-257-yes.log =====
+running 1 test
+test host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER 10de:1f06 software=false
+VALIDATION_MESSAGE id=1016 severity=4 Device Debug Layer Startup Options: GPU-Based Validation is enabled (disabled by default). This results in new validation not possible during API calls on the CPU, by creating patched shaders that have validation added directly to the shader. However, it can slow things down a lot, especially for applications with numerous PSOs. Time to see the first render frame may take several minutes.
+TRACKED pages=257 staged=0 overflow=0 first17=257 first29=0 second29=257 debug_error=None
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 132 filtered out; finished in 0.70s
+
+===== pooled-snapshot/readback-RTX-2-257.log =====
+running 1 test
+test host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER 10de:1f06 software=false
+VALIDATION_MESSAGE id=1016 severity=4 Device Debug Layer Startup Options: GPU-Based Validation is enabled (disabled by default). This results in new validation not possible during API calls on the CPU, by creating patched shaders that have validation added directly to the shader. However, it can slow things down a lot, especially for applications with numerous PSOs. Time to see the first render frame may take several minutes.
+BYTES pages=257 staged=0 overflow=0 first17=257 first29=0 unchanged_flags=0 second17=257 second29=0 debug_error=None
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 132 filtered out; finished in 0.57s
+
+===== pooled-snapshot/readback-WARP-1-1.log =====
+running 1 test
+test host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER 1414:008c software=true
+VALIDATION_MESSAGE id=1016 severity=4 Device Debug Layer Startup Options: GPU-Based Validation is enabled (disabled by default). This results in new validation not possible during API calls on the CPU, by creating patched shaders that have validation added directly to the shader. However, it can slow things down a lot, especially for applications with numerous PSOs. Time to see the first render frame may take several minutes.
+BYTES pages=1 staged=0 overflow=0 first17=1 first29=0 unchanged_flags=0 second17=1 second29=0 debug_error=None
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 132 filtered out; finished in 0.18s
+
+===== pooled-snapshot/readback-WARP-1-257-yes.log =====
+running 1 test
+test host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER 1414:008c software=true
+VALIDATION_MESSAGE id=1016 severity=4 Device Debug Layer Startup Options: GPU-Based Validation is enabled (disabled by default). This results in new validation not possible during API calls on the CPU, by creating patched shaders that have validation added directly to the shader. However, it can slow things down a lot, especially for applications with numerous PSOs. Time to see the first render frame may take several minutes.
+TRACKED pages=257 staged=0 overflow=0 first17=257 first29=0 second29=257 debug_error=None
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 132 filtered out; finished in 0.36s
+
+===== pooled-snapshot/readback-WARP-1-257.log =====
+running 1 test
+test host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER 1414:008c software=true
+VALIDATION_MESSAGE id=1016 severity=4 Device Debug Layer Startup Options: GPU-Based Validation is enabled (disabled by default). This results in new validation not possible during API calls on the CPU, by creating patched shaders that have validation added directly to the shader. However, it can slow things down a lot, especially for applications with numerous PSOs. Time to see the first render frame may take several minutes.
+BYTES pages=257 staged=0 overflow=0 first17=257 first29=0 unchanged_flags=0 second17=257 second29=0 debug_error=None
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 132 filtered out; finished in 0.30s
+
+===== pooled-snapshot/readback-WARP-2-1.log =====
+running 1 test
+test host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER 1414:008c software=true
+VALIDATION_MESSAGE id=1016 severity=4 Device Debug Layer Startup Options: GPU-Based Validation is enabled (disabled by default). This results in new validation not possible during API calls on the CPU, by creating patched shaders that have validation added directly to the shader. However, it can slow things down a lot, especially for applications with numerous PSOs. Time to see the first render frame may take several minutes.
+BYTES pages=1 staged=0 overflow=0 first17=1 first29=0 unchanged_flags=0 second17=1 second29=0 debug_error=None
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 132 filtered out; finished in 0.18s
+
+===== pooled-snapshot/readback-WARP-2-257-yes.log =====
+running 1 test
+test host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER 1414:008c software=true
+VALIDATION_MESSAGE id=1016 severity=4 Device Debug Layer Startup Options: GPU-Based Validation is enabled (disabled by default). This results in new validation not possible during API calls on the CPU, by creating patched shaders that have validation added directly to the shader. However, it can slow things down a lot, especially for applications with numerous PSOs. Time to see the first render frame may take several minutes.
+TRACKED pages=257 staged=0 overflow=0 first17=257 first29=0 second29=257 debug_error=None
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 132 filtered out; finished in 0.36s
+
+===== pooled-snapshot/readback-WARP-2-257.log =====
+running 1 test
+test host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER 1414:008c software=true
+VALIDATION_MESSAGE id=1016 severity=4 Device Debug Layer Startup Options: GPU-Based Validation is enabled (disabled by default). This results in new validation not possible during API calls on the CPU, by creating patched shaders that have validation added directly to the shader. However, it can slow things down a lot, especially for applications with numerous PSOs. Time to see the first render frame may take several minutes.
+BYTES pages=257 staged=0 overflow=0 first17=257 first29=0 unchanged_flags=0 second17=257 second29=0 debug_error=None
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 132 filtered out; finished in 0.30s
+
+===== pooled-snapshot/relay_fetch_observes_the_producer_with_a_later_write_already_complete-RTX-1.log =====
+running 1 test
+test host::relay_snapshot_tests::relay_fetch_observes_the_producer_with_a_later_write_already_complete ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 132 filtered out; finished in 0.48s
+
+===== pooled-snapshot/relay_fetch_observes_the_producer_with_a_later_write_already_complete-RTX-2.log =====
+running 1 test
+test host::relay_snapshot_tests::relay_fetch_observes_the_producer_with_a_later_write_already_complete ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 132 filtered out; finished in 0.47s
+
+===== pooled-snapshot/relay_fetch_observes_the_producer_with_a_later_write_already_complete-WARP-1.log =====
+running 1 test
+test host::relay_snapshot_tests::relay_fetch_observes_the_producer_with_a_later_write_already_complete ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 132 filtered out; finished in 0.19s
+
+===== pooled-snapshot/relay_fetch_observes_the_producer_with_a_later_write_already_complete-WARP-2.log =====
+running 1 test
+test host::relay_snapshot_tests::relay_fetch_observes_the_producer_with_a_later_write_already_complete ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 132 filtered out; finished in 0.18s
+
+===== pooled-snapshot/relay_snapshot_pressure_guards_live_bytes_until_the_copy_finishes-RTX-1.log =====
+running 1 test
+test host::relay_snapshot_tests::relay_snapshot_pressure_guards_live_bytes_until_the_copy_finishes ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+VALIDATION_MESSAGE id=1016 severity=4 Device Debug Layer Startup Options: GPU-Based Validation is enabled (disabled by default). This results in new validation not possible during API calls on the CPU, by creating patched shaders that have validation added directly to the shader. However, it can slow things down a lot, especially for applications with numerous PSOs. Time to see the first render frame may take several minutes.
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 132 filtered out; finished in 0.52s
+
+===== pooled-snapshot/relay_snapshot_pressure_guards_live_bytes_until_the_copy_finishes-RTX-2.log =====
+running 1 test
+test host::relay_snapshot_tests::relay_snapshot_pressure_guards_live_bytes_until_the_copy_finishes ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+VALIDATION_MESSAGE id=1016 severity=4 Device Debug Layer Startup Options: GPU-Based Validation is enabled (disabled by default). This results in new validation not possible during API calls on the CPU, by creating patched shaders that have validation added directly to the shader. However, it can slow things down a lot, especially for applications with numerous PSOs. Time to see the first render frame may take several minutes.
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 132 filtered out; finished in 0.53s
+
+===== pooled-snapshot/relay_snapshot_pressure_guards_live_bytes_until_the_copy_finishes-WARP-1.log =====
+running 1 test
+test host::relay_snapshot_tests::relay_snapshot_pressure_guards_live_bytes_until_the_copy_finishes ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+VALIDATION_MESSAGE id=1016 severity=4 Device Debug Layer Startup Options: GPU-Based Validation is enabled (disabled by default). This results in new validation not possible during API calls on the CPU, by creating patched shaders that have validation added directly to the shader. However, it can slow things down a lot, especially for applications with numerous PSOs. Time to see the first render frame may take several minutes.
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 132 filtered out; finished in 0.23s
+
+===== pooled-snapshot/relay_snapshot_pressure_guards_live_bytes_until_the_copy_finishes-WARP-2.log =====
+running 1 test
+test host::relay_snapshot_tests::relay_snapshot_pressure_guards_live_bytes_until_the_copy_finishes ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+VALIDATION_MESSAGE id=1016 severity=4 Device Debug Layer Startup Options: GPU-Based Validation is enabled (disabled by default). This results in new validation not possible during API calls on the CPU, by creating patched shaders that have validation added directly to the shader. However, it can slow things down a lot, especially for applications with numerous PSOs. Time to see the first render frame may take several minutes.
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 132 filtered out; finished in 0.21s
+
+===== pooled-snapshot/snapshot_limit_counts_each_committed_allocation-RTX-1.log =====
+running 1 test
+test host::relay_snapshot_tests::snapshot_limit_counts_each_committed_allocation ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 132 filtered out; finished in 0.00s
+
+===== pooled-snapshot/snapshot_limit_counts_each_committed_allocation-RTX-2.log =====
+running 1 test
+test host::relay_snapshot_tests::snapshot_limit_counts_each_committed_allocation ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 132 filtered out; finished in 0.00s
+
+===== pooled-snapshot/snapshot_limit_counts_each_committed_allocation-WARP-1.log =====
+running 1 test
+test host::relay_snapshot_tests::snapshot_limit_counts_each_committed_allocation ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 132 filtered out; finished in 0.00s
+
+===== pooled-snapshot/snapshot_limit_counts_each_committed_allocation-WARP-2.log =====
+running 1 test
+test host::relay_snapshot_tests::snapshot_limit_counts_each_committed_allocation ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 132 filtered out; finished in 0.00s
+
+===== pooled-snapshot/snapshots_reuse_retired_buffers_and_bound_idle_and_live_bytes-RTX-1.log =====
+running 1 test
+test host::relay_snapshot_tests::snapshots_reuse_retired_buffers_and_bound_idle_and_live_bytes ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 132 filtered out; finished in 0.35s
+
+===== pooled-snapshot/snapshots_reuse_retired_buffers_and_bound_idle_and_live_bytes-RTX-2.log =====
+running 1 test
+test host::relay_snapshot_tests::snapshots_reuse_retired_buffers_and_bound_idle_and_live_bytes ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 132 filtered out; finished in 0.35s
+
+===== pooled-snapshot/snapshots_reuse_retired_buffers_and_bound_idle_and_live_bytes-WARP-1.log =====
+running 1 test
+test host::relay_snapshot_tests::snapshots_reuse_retired_buffers_and_bound_idle_and_live_bytes ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 132 filtered out; finished in 0.08s
+
+===== pooled-snapshot/snapshots_reuse_retired_buffers_and_bound_idle_and_live_bytes-WARP-2.log =====
+running 1 test
+test host::relay_snapshot_tests::snapshots_reuse_retired_buffers_and_bound_idle_and_live_bytes ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 132 filtered out; finished in 0.07s

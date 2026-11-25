@@ -1,0 +1,87 @@
+===== pr662-local-merge/heap-RTX-1-0.log =====
+running 1 test
+test descriptor::host::tests::shader_view_limit_fits_the_reported_heap ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER vendor=10de device=1f06 software=false
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 166 filtered out; finished in 0.39s
+
+===== pr662-local-merge/heap-RTX-2-0.log =====
+running 1 test
+test descriptor::host::tests::shader_view_limit_fits_the_reported_heap ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER vendor=10de device=1f06 software=false
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 166 filtered out; finished in 0.44s
+
+===== pr662-local-merge/heap-WARP-1-0.log =====
+running 1 test
+test descriptor::host::tests::shader_view_limit_fits_the_reported_heap ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER vendor=1414 device=008c software=true
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 166 filtered out; finished in 0.11s
+
+===== pr662-local-merge/heap-WARP-2-0.log =====
+running 1 test
+test descriptor::host::tests::shader_view_limit_fits_the_reported_heap ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER vendor=1414 device=008c software=true
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 166 filtered out; finished in 0.12s
+
+===== pr662-local-merge/raster-RTX-1-0.log =====
+running 1 test
+test pipeline::make::indirect_review_tests::audit_render_indirect ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER vendor=10de device=1f06 software=false
+VALIDATION_MESSAGE id=1016 severity=4 Device Debug Layer Startup Options: GPU-Based Validation is enabled (disabled by default). This results in new validation not possible during API calls on the CPU, by creating patched shaders that have validation added directly to the shader. However, it can slow things down a lot, especially for applications with numerous PSOs. Time to see the first render frame may take several minutes.
+omit inactive batch: 16/16 green, 3 vertices
+count=0, empty tail: 16/16 green, 3 vertices
+count=0, populated tail: 16/16 green, 3 vertices
+rejected pipeline, empty tail: 16/16 green, 3 vertices
+rejected pipeline, populated tail: 16/16 green, 3 vertices
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 166 filtered out; finished in 1.46s
+
+===== pr662-local-merge/raster-RTX-2-0.log =====
+running 1 test
+test pipeline::make::indirect_review_tests::audit_render_indirect ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER vendor=10de device=1f06 software=false
+VALIDATION_MESSAGE id=1016 severity=4 Device Debug Layer Startup Options: GPU-Based Validation is enabled (disabled by default). This results in new validation not possible during API calls on the CPU, by creating patched shaders that have validation added directly to the shader. However, it can slow things down a lot, especially for applications with numerous PSOs. Time to see the first render frame may take several minutes.
+omit inactive batch: 16/16 green, 3 vertices
+count=0, empty tail: 16/16 green, 3 vertices
+count=0, populated tail: 16/16 green, 3 vertices
+rejected pipeline, empty tail: 16/16 green, 3 vertices
+rejected pipeline, populated tail: 16/16 green, 3 vertices
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 166 filtered out; finished in 0.68s
+
+===== pr662-local-merge/raster-WARP-1-0.log =====
+running 1 test
+test pipeline::make::indirect_review_tests::audit_render_indirect ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER vendor=1414 device=008c software=true
+VALIDATION_MESSAGE id=1016 severity=4 Device Debug Layer Startup Options: GPU-Based Validation is enabled (disabled by default). This results in new validation not possible during API calls on the CPU, by creating patched shaders that have validation added directly to the shader. However, it can slow things down a lot, especially for applications with numerous PSOs. Time to see the first render frame may take several minutes.
+omit inactive batch: 16/16 green, 3 vertices
+count=0, empty tail: 16/16 green, 3 vertices
+count=0, populated tail: 16/16 green, 3 vertices
+rejected pipeline, empty tail: 16/16 green, 3 vertices
+rejected pipeline, populated tail: 16/16 green, 3 vertices
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 166 filtered out; finished in 0.89s
+
+===== pr662-local-merge/raster-WARP-2-0.log =====
+running 1 test
+test pipeline::make::indirect_review_tests::audit_render_indirect ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER vendor=1414 device=008c software=true
+VALIDATION_MESSAGE id=1016 severity=4 Device Debug Layer Startup Options: GPU-Based Validation is enabled (disabled by default). This results in new validation not possible during API calls on the CPU, by creating patched shaders that have validation added directly to the shader. However, it can slow things down a lot, especially for applications with numerous PSOs. Time to see the first render frame may take several minutes.
+omit inactive batch: 16/16 green, 3 vertices
+count=0, empty tail: 16/16 green, 3 vertices
+count=0, populated tail: 16/16 green, 3 vertices
+rejected pipeline, empty tail: 16/16 green, 3 vertices
+rejected pipeline, populated tail: 16/16 green, 3 vertices
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 166 filtered out; finished in 1.13s

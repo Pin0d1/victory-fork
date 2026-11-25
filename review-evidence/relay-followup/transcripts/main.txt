@@ -1,0 +1,407 @@
+===== main/readback-RTX-1-1-0-1.log =====
+running 1 test
+test host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER 10de:1f06 software=false
+VALIDATION_MESSAGE id=1016 severity=4 Device Debug Layer Startup Options: GPU-Based Validation is enabled (disabled by default). This results in new validation not possible during API calls on the CPU, by creating patched shaders that have validation added directly to the shader. However, it can slow things down a lot, especially for applications with numerous PSOs. Time to see the first render frame may take several minutes.
+BYTES pages=1 staged=0 overflow=0 first17=0 first29=1 unchanged_flags=0 second17=0 second29=1 debug_error=None
+
+thread 'host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write' (1780) panicked at crates\victory-gpu\src\host.rs:7487:9:
+assertion `left == right` failed: each CPU word must be the producer word after the unchanged-hash flight
+  left: 0
+ right: 1
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+
+failures:
+
+failures:
+    host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 155 filtered out; finished in 0.43s
+
+===== main/readback-RTX-1-1-1-1.log =====
+running 1 test
+test host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER 10de:1f06 software=false
+VALIDATION_MESSAGE id=1016 severity=4 Device Debug Layer Startup Options: GPU-Based Validation is enabled (disabled by default). This results in new validation not possible during API calls on the CPU, by creating patched shaders that have validation added directly to the shader. However, it can slow things down a lot, especially for applications with numerous PSOs. Time to see the first render frame may take several minutes.
+BYTES pages=1 staged=0 overflow=0 first17=1 first29=0 unchanged_flags=0 second17=1 second29=0 debug_error=None
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 155 filtered out; finished in 0.48s
+
+===== main/readback-RTX-1-16-1-1.log =====
+running 1 test
+test host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER 10de:1f06 software=false
+VALIDATION_MESSAGE id=1016 severity=4 Device Debug Layer Startup Options: GPU-Based Validation is enabled (disabled by default). This results in new validation not possible during API calls on the CPU, by creating patched shaders that have validation added directly to the shader. However, it can slow things down a lot, especially for applications with numerous PSOs. Time to see the first render frame may take several minutes.
+BYTES pages=16 staged=0 overflow=0 first17=16 first29=0 unchanged_flags=0 second17=16 second29=0 debug_error=None
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 155 filtered out; finished in 0.47s
+
+===== main/readback-RTX-1-16-yes-1-1.log =====
+running 1 test
+test host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER 10de:1f06 software=false
+VALIDATION_MESSAGE id=1016 severity=4 Device Debug Layer Startup Options: GPU-Based Validation is enabled (disabled by default). This results in new validation not possible during API calls on the CPU, by creating patched shaders that have validation added directly to the shader. However, it can slow things down a lot, especially for applications with numerous PSOs. Time to see the first render frame may take several minutes.
+TRACKED pages=16 staged=0 overflow=0 first17=16 first29=0 second29=16 debug_error=None
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 155 filtered out; finished in 0.48s
+
+===== main/readback-RTX-1-17-1-1.log =====
+running 1 test
+test host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER 10de:1f06 software=false
+VALIDATION_MESSAGE id=1016 severity=4 Device Debug Layer Startup Options: GPU-Based Validation is enabled (disabled by default). This results in new validation not possible during API calls on the CPU, by creating patched shaders that have validation added directly to the shader. However, it can slow things down a lot, especially for applications with numerous PSOs. Time to see the first render frame may take several minutes.
+BYTES pages=17 staged=0 overflow=0 first17=0 first29=17 unchanged_flags=0 second17=0 second29=17 debug_error=None
+
+thread 'host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write' (18796) panicked at crates\victory-gpu\src\host.rs:7487:9:
+assertion `left == right` failed: each CPU word must be the producer word after the unchanged-hash flight
+  left: 0
+ right: 17
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+
+failures:
+
+failures:
+    host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 155 filtered out; finished in 0.54s
+
+===== main/readback-RTX-1-17-yes-1-1.log =====
+running 1 test
+test host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER 10de:1f06 software=false
+VALIDATION_MESSAGE id=1016 severity=4 Device Debug Layer Startup Options: GPU-Based Validation is enabled (disabled by default). This results in new validation not possible during API calls on the CPU, by creating patched shaders that have validation added directly to the shader. However, it can slow things down a lot, especially for applications with numerous PSOs. Time to see the first render frame may take several minutes.
+TRACKED pages=17 staged=0 overflow=0 first17=0 first29=17 second29=17 debug_error=None
+
+thread 'host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write' (26172) panicked at crates\victory-gpu\src\host.rs:7450:13:
+assertion `left == right` failed: the first landing must see its producer after the second tracked flight
+  left: 0
+ right: 17
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+
+failures:
+
+failures:
+    host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 155 filtered out; finished in 0.50s
+
+===== main/readback-RTX-2-1-0-1.log =====
+running 1 test
+test host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER 10de:1f06 software=false
+VALIDATION_MESSAGE id=1016 severity=4 Device Debug Layer Startup Options: GPU-Based Validation is enabled (disabled by default). This results in new validation not possible during API calls on the CPU, by creating patched shaders that have validation added directly to the shader. However, it can slow things down a lot, especially for applications with numerous PSOs. Time to see the first render frame may take several minutes.
+BYTES pages=1 staged=0 overflow=0 first17=0 first29=1 unchanged_flags=0 second17=0 second29=1 debug_error=None
+
+thread 'host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write' (8960) panicked at crates\victory-gpu\src\host.rs:7487:9:
+assertion `left == right` failed: each CPU word must be the producer word after the unchanged-hash flight
+  left: 0
+ right: 1
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+
+failures:
+
+failures:
+    host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 155 filtered out; finished in 0.41s
+
+===== main/readback-RTX-2-1-1-1.log =====
+running 1 test
+test host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER 10de:1f06 software=false
+VALIDATION_MESSAGE id=1016 severity=4 Device Debug Layer Startup Options: GPU-Based Validation is enabled (disabled by default). This results in new validation not possible during API calls on the CPU, by creating patched shaders that have validation added directly to the shader. However, it can slow things down a lot, especially for applications with numerous PSOs. Time to see the first render frame may take several minutes.
+BYTES pages=1 staged=0 overflow=0 first17=1 first29=0 unchanged_flags=0 second17=1 second29=0 debug_error=None
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 155 filtered out; finished in 0.48s
+
+===== main/readback-RTX-2-16-1-1.log =====
+running 1 test
+test host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER 10de:1f06 software=false
+VALIDATION_MESSAGE id=1016 severity=4 Device Debug Layer Startup Options: GPU-Based Validation is enabled (disabled by default). This results in new validation not possible during API calls on the CPU, by creating patched shaders that have validation added directly to the shader. However, it can slow things down a lot, especially for applications with numerous PSOs. Time to see the first render frame may take several minutes.
+BYTES pages=16 staged=0 overflow=0 first17=16 first29=0 unchanged_flags=0 second17=16 second29=0 debug_error=None
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 155 filtered out; finished in 0.50s
+
+===== main/readback-RTX-2-16-yes-1-1.log =====
+running 1 test
+test host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER 10de:1f06 software=false
+VALIDATION_MESSAGE id=1016 severity=4 Device Debug Layer Startup Options: GPU-Based Validation is enabled (disabled by default). This results in new validation not possible during API calls on the CPU, by creating patched shaders that have validation added directly to the shader. However, it can slow things down a lot, especially for applications with numerous PSOs. Time to see the first render frame may take several minutes.
+TRACKED pages=16 staged=0 overflow=0 first17=16 first29=0 second29=16 debug_error=None
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 155 filtered out; finished in 0.52s
+
+===== main/readback-RTX-2-17-1-1.log =====
+running 1 test
+test host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER 10de:1f06 software=false
+VALIDATION_MESSAGE id=1016 severity=4 Device Debug Layer Startup Options: GPU-Based Validation is enabled (disabled by default). This results in new validation not possible during API calls on the CPU, by creating patched shaders that have validation added directly to the shader. However, it can slow things down a lot, especially for applications with numerous PSOs. Time to see the first render frame may take several minutes.
+BYTES pages=17 staged=0 overflow=0 first17=0 first29=17 unchanged_flags=0 second17=0 second29=17 debug_error=None
+
+thread 'host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write' (11788) panicked at crates\victory-gpu\src\host.rs:7487:9:
+assertion `left == right` failed: each CPU word must be the producer word after the unchanged-hash flight
+  left: 0
+ right: 17
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+
+failures:
+
+failures:
+    host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 155 filtered out; finished in 0.49s
+
+===== main/readback-RTX-2-17-yes-1-1.log =====
+running 1 test
+test host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER 10de:1f06 software=false
+VALIDATION_MESSAGE id=1016 severity=4 Device Debug Layer Startup Options: GPU-Based Validation is enabled (disabled by default). This results in new validation not possible during API calls on the CPU, by creating patched shaders that have validation added directly to the shader. However, it can slow things down a lot, especially for applications with numerous PSOs. Time to see the first render frame may take several minutes.
+TRACKED pages=17 staged=0 overflow=0 first17=0 first29=17 second29=17 debug_error=None
+
+thread 'host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write' (8220) panicked at crates\victory-gpu\src\host.rs:7450:13:
+assertion `left == right` failed: the first landing must see its producer after the second tracked flight
+  left: 0
+ right: 17
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+
+failures:
+
+failures:
+    host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 155 filtered out; finished in 0.55s
+
+===== main/readback-WARP-1-1-0-1.log =====
+running 1 test
+test host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER 1414:008c software=true
+VALIDATION_MESSAGE id=1016 severity=4 Device Debug Layer Startup Options: GPU-Based Validation is enabled (disabled by default). This results in new validation not possible during API calls on the CPU, by creating patched shaders that have validation added directly to the shader. However, it can slow things down a lot, especially for applications with numerous PSOs. Time to see the first render frame may take several minutes.
+BYTES pages=1 staged=0 overflow=0 first17=0 first29=1 unchanged_flags=0 second17=0 second29=1 debug_error=None
+
+thread 'host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write' (27984) panicked at crates\victory-gpu\src\host.rs:7487:9:
+assertion `left == right` failed: each CPU word must be the producer word after the unchanged-hash flight
+  left: 0
+ right: 1
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+
+failures:
+
+failures:
+    host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 155 filtered out; finished in 0.12s
+
+===== main/readback-WARP-1-1-1-1.log =====
+running 1 test
+test host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER 1414:008c software=true
+VALIDATION_MESSAGE id=1016 severity=4 Device Debug Layer Startup Options: GPU-Based Validation is enabled (disabled by default). This results in new validation not possible during API calls on the CPU, by creating patched shaders that have validation added directly to the shader. However, it can slow things down a lot, especially for applications with numerous PSOs. Time to see the first render frame may take several minutes.
+BYTES pages=1 staged=0 overflow=0 first17=1 first29=0 unchanged_flags=0 second17=1 second29=0 debug_error=None
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 155 filtered out; finished in 0.17s
+
+===== main/readback-WARP-1-16-1-1.log =====
+running 1 test
+test host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER 1414:008c software=true
+VALIDATION_MESSAGE id=1016 severity=4 Device Debug Layer Startup Options: GPU-Based Validation is enabled (disabled by default). This results in new validation not possible during API calls on the CPU, by creating patched shaders that have validation added directly to the shader. However, it can slow things down a lot, especially for applications with numerous PSOs. Time to see the first render frame may take several minutes.
+BYTES pages=16 staged=0 overflow=0 first17=16 first29=0 unchanged_flags=0 second17=16 second29=0 debug_error=None
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 155 filtered out; finished in 0.17s
+
+===== main/readback-WARP-1-16-yes-1-1.log =====
+running 1 test
+test host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER 1414:008c software=true
+VALIDATION_MESSAGE id=1016 severity=4 Device Debug Layer Startup Options: GPU-Based Validation is enabled (disabled by default). This results in new validation not possible during API calls on the CPU, by creating patched shaders that have validation added directly to the shader. However, it can slow things down a lot, especially for applications with numerous PSOs. Time to see the first render frame may take several minutes.
+TRACKED pages=16 staged=0 overflow=0 first17=16 first29=0 second29=16 debug_error=None
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 155 filtered out; finished in 0.19s
+
+===== main/readback-WARP-1-17-1-1.log =====
+running 1 test
+test host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER 1414:008c software=true
+VALIDATION_MESSAGE id=1016 severity=4 Device Debug Layer Startup Options: GPU-Based Validation is enabled (disabled by default). This results in new validation not possible during API calls on the CPU, by creating patched shaders that have validation added directly to the shader. However, it can slow things down a lot, especially for applications with numerous PSOs. Time to see the first render frame may take several minutes.
+BYTES pages=17 staged=0 overflow=0 first17=0 first29=17 unchanged_flags=0 second17=0 second29=17 debug_error=None
+
+thread 'host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write' (25716) panicked at crates\victory-gpu\src\host.rs:7487:9:
+assertion `left == right` failed: each CPU word must be the producer word after the unchanged-hash flight
+  left: 0
+ right: 17
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+
+failures:
+
+failures:
+    host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 155 filtered out; finished in 0.18s
+
+===== main/readback-WARP-1-17-yes-1-1.log =====
+running 1 test
+test host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER 1414:008c software=true
+VALIDATION_MESSAGE id=1016 severity=4 Device Debug Layer Startup Options: GPU-Based Validation is enabled (disabled by default). This results in new validation not possible during API calls on the CPU, by creating patched shaders that have validation added directly to the shader. However, it can slow things down a lot, especially for applications with numerous PSOs. Time to see the first render frame may take several minutes.
+TRACKED pages=17 staged=0 overflow=0 first17=0 first29=17 second29=17 debug_error=None
+
+thread 'host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write' (25856) panicked at crates\victory-gpu\src\host.rs:7450:13:
+assertion `left == right` failed: the first landing must see its producer after the second tracked flight
+  left: 0
+ right: 17
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+
+failures:
+
+failures:
+    host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 155 filtered out; finished in 0.18s
+
+===== main/readback-WARP-2-1-0-1.log =====
+running 1 test
+test host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER 1414:008c software=true
+VALIDATION_MESSAGE id=1016 severity=4 Device Debug Layer Startup Options: GPU-Based Validation is enabled (disabled by default). This results in new validation not possible during API calls on the CPU, by creating patched shaders that have validation added directly to the shader. However, it can slow things down a lot, especially for applications with numerous PSOs. Time to see the first render frame may take several minutes.
+BYTES pages=1 staged=0 overflow=0 first17=0 first29=1 unchanged_flags=0 second17=0 second29=1 debug_error=None
+
+thread 'host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write' (30656) panicked at crates\victory-gpu\src\host.rs:7487:9:
+assertion `left == right` failed: each CPU word must be the producer word after the unchanged-hash flight
+  left: 0
+ right: 1
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+
+failures:
+
+failures:
+    host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 155 filtered out; finished in 0.12s
+
+===== main/readback-WARP-2-1-1-1.log =====
+running 1 test
+test host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER 1414:008c software=true
+VALIDATION_MESSAGE id=1016 severity=4 Device Debug Layer Startup Options: GPU-Based Validation is enabled (disabled by default). This results in new validation not possible during API calls on the CPU, by creating patched shaders that have validation added directly to the shader. However, it can slow things down a lot, especially for applications with numerous PSOs. Time to see the first render frame may take several minutes.
+BYTES pages=1 staged=0 overflow=0 first17=1 first29=0 unchanged_flags=0 second17=1 second29=0 debug_error=None
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 155 filtered out; finished in 0.16s
+
+===== main/readback-WARP-2-16-1-1.log =====
+running 1 test
+test host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER 1414:008c software=true
+VALIDATION_MESSAGE id=1016 severity=4 Device Debug Layer Startup Options: GPU-Based Validation is enabled (disabled by default). This results in new validation not possible during API calls on the CPU, by creating patched shaders that have validation added directly to the shader. However, it can slow things down a lot, especially for applications with numerous PSOs. Time to see the first render frame may take several minutes.
+BYTES pages=16 staged=0 overflow=0 first17=16 first29=0 unchanged_flags=0 second17=16 second29=0 debug_error=None
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 155 filtered out; finished in 0.16s
+
+===== main/readback-WARP-2-16-yes-1-1.log =====
+running 1 test
+test host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER 1414:008c software=true
+VALIDATION_MESSAGE id=1016 severity=4 Device Debug Layer Startup Options: GPU-Based Validation is enabled (disabled by default). This results in new validation not possible during API calls on the CPU, by creating patched shaders that have validation added directly to the shader. However, it can slow things down a lot, especially for applications with numerous PSOs. Time to see the first render frame may take several minutes.
+TRACKED pages=16 staged=0 overflow=0 first17=16 first29=0 second29=16 debug_error=None
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 155 filtered out; finished in 0.17s
+
+===== main/readback-WARP-2-17-1-1.log =====
+running 1 test
+test host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER 1414:008c software=true
+VALIDATION_MESSAGE id=1016 severity=4 Device Debug Layer Startup Options: GPU-Based Validation is enabled (disabled by default). This results in new validation not possible during API calls on the CPU, by creating patched shaders that have validation added directly to the shader. However, it can slow things down a lot, especially for applications with numerous PSOs. Time to see the first render frame may take several minutes.
+BYTES pages=17 staged=0 overflow=0 first17=0 first29=17 unchanged_flags=0 second17=0 second29=17 debug_error=None
+
+thread 'host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write' (28916) panicked at crates\victory-gpu\src\host.rs:7487:9:
+assertion `left == right` failed: each CPU word must be the producer word after the unchanged-hash flight
+  left: 0
+ right: 17
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+
+failures:
+
+failures:
+    host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 155 filtered out; finished in 0.17s
+
+===== main/readback-WARP-2-17-yes-1-1.log =====
+running 1 test
+test host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER 1414:008c software=true
+VALIDATION_MESSAGE id=1016 severity=4 Device Debug Layer Startup Options: GPU-Based Validation is enabled (disabled by default). This results in new validation not possible during API calls on the CPU, by creating patched shaders that have validation added directly to the shader. However, it can slow things down a lot, especially for applications with numerous PSOs. Time to see the first render frame may take several minutes.
+TRACKED pages=17 staged=0 overflow=0 first17=0 first29=17 second29=17 debug_error=None
+
+thread 'host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write' (11220) panicked at crates\victory-gpu\src\host.rs:7450:13:
+assertion `left == right` failed: the first landing must see its producer after the second tracked flight
+  left: 0
+ right: 17
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+
+failures:
+
+failures:
+    host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 155 filtered out; finished in 0.17s
+
+===== main/wait-CPU-1-1.log =====
+running 1 test
+test list::pending_overwrite_goes_through_the_queue_predicate ... WAIT (prediction,queue) [(false, true), (true, true), (true, true), (true, true)]
+
+thread 'list::pending_overwrite_goes_through_the_queue_predicate' (25316) panicked at crates\victory-gpu\src\list.rs:2250:5:
+assertion `left == right` failed
+  left: [true, true, true, true]
+ right: [true, true, false, false]
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+
+failures:
+
+failures:
+    list::pending_overwrite_goes_through_the_queue_predicate
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 155 filtered out; finished in 0.00s
+
+===== main/wait-CPU-2-1.log =====
+running 1 test
+test list::pending_overwrite_goes_through_the_queue_predicate ... WAIT (prediction,queue) [(false, true), (true, true), (true, true), (true, true)]
+
+thread 'list::pending_overwrite_goes_through_the_queue_predicate' (8340) panicked at crates\victory-gpu\src\list.rs:2250:5:
+assertion `left == right` failed
+  left: [true, true, true, true]
+ right: [true, true, false, false]
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+
+failures:
+
+failures:
+    list::pending_overwrite_goes_through_the_queue_predicate
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 155 filtered out; finished in 0.00s

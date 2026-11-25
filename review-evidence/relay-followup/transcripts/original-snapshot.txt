@@ -1,0 +1,121 @@
+===== original-snapshot/bench-RTX-1.log =====
+running 1 test
+test host::followup_pool_bench::repeated_flights_measure_committed_snapshot_creation ... POOL device=10de:1f06 flights=48 verified=48 created=48 created_bytes=188743680 wall_us=117298
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 131 filtered out; finished in 0.49s
+
+===== original-snapshot/bench-RTX-2.log =====
+running 1 test
+test host::followup_pool_bench::repeated_flights_measure_committed_snapshot_creation ... POOL device=10de:1f06 flights=48 verified=48 created=48 created_bytes=188743680 wall_us=116321
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 131 filtered out; finished in 0.49s
+
+===== original-snapshot/bench-RTX-3.log =====
+running 1 test
+test host::followup_pool_bench::repeated_flights_measure_committed_snapshot_creation ... POOL device=10de:1f06 flights=48 verified=48 created=48 created_bytes=188743680 wall_us=122727
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 131 filtered out; finished in 0.53s
+
+===== original-snapshot/bench-WARP-1.log =====
+running 1 test
+test host::followup_pool_bench::repeated_flights_measure_committed_snapshot_creation ... POOL device=1414:008c flights=48 verified=48 created=48 created_bytes=188743680 wall_us=116944
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 131 filtered out; finished in 0.23s
+
+===== original-snapshot/bench-WARP-2.log =====
+running 1 test
+test host::followup_pool_bench::repeated_flights_measure_committed_snapshot_creation ... POOL device=1414:008c flights=48 verified=48 created=48 created_bytes=188743680 wall_us=118875
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 131 filtered out; finished in 0.23s
+
+===== original-snapshot/bench-WARP-3.log =====
+running 1 test
+test host::followup_pool_bench::repeated_flights_measure_committed_snapshot_creation ... POOL device=1414:008c flights=48 verified=48 created=48 created_bytes=188743680 wall_us=114888
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 131 filtered out; finished in 0.24s
+
+===== original-snapshot/readback-RTX-1-1.log =====
+running 1 test
+test host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER 10de:1f06 software=false
+VALIDATION_MESSAGE id=1016 severity=4 Device Debug Layer Startup Options: GPU-Based Validation is enabled (disabled by default). This results in new validation not possible during API calls on the CPU, by creating patched shaders that have validation added directly to the shader. However, it can slow things down a lot, especially for applications with numerous PSOs. Time to see the first render frame may take several minutes.
+BYTES pages=1 staged=0 overflow=0 first17=1 first29=0 unchanged_flags=0 second17=1 second29=0 debug_error=None
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 131 filtered out; finished in 0.48s
+
+===== original-snapshot/readback-RTX-1-257.log =====
+running 1 test
+test host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER 10de:1f06 software=false
+VALIDATION_MESSAGE id=1016 severity=4 Device Debug Layer Startup Options: GPU-Based Validation is enabled (disabled by default). This results in new validation not possible during API calls on the CPU, by creating patched shaders that have validation added directly to the shader. However, it can slow things down a lot, especially for applications with numerous PSOs. Time to see the first render frame may take several minutes.
+BYTES pages=257 staged=0 overflow=0 first17=257 first29=0 unchanged_flags=0 second17=257 second29=0 debug_error=None
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 131 filtered out; finished in 0.60s
+
+===== original-snapshot/readback-RTX-2-1.log =====
+running 1 test
+test host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER 10de:1f06 software=false
+VALIDATION_MESSAGE id=1016 severity=4 Device Debug Layer Startup Options: GPU-Based Validation is enabled (disabled by default). This results in new validation not possible during API calls on the CPU, by creating patched shaders that have validation added directly to the shader. However, it can slow things down a lot, especially for applications with numerous PSOs. Time to see the first render frame may take several minutes.
+BYTES pages=1 staged=0 overflow=0 first17=1 first29=0 unchanged_flags=0 second17=1 second29=0 debug_error=None
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 131 filtered out; finished in 0.51s
+
+===== original-snapshot/readback-RTX-2-257.log =====
+running 1 test
+test host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER 10de:1f06 software=false
+VALIDATION_MESSAGE id=1016 severity=4 Device Debug Layer Startup Options: GPU-Based Validation is enabled (disabled by default). This results in new validation not possible during API calls on the CPU, by creating patched shaders that have validation added directly to the shader. However, it can slow things down a lot, especially for applications with numerous PSOs. Time to see the first render frame may take several minutes.
+BYTES pages=257 staged=0 overflow=0 first17=257 first29=0 unchanged_flags=0 second17=257 second29=0 debug_error=None
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 131 filtered out; finished in 0.58s
+
+===== original-snapshot/readback-WARP-1-1.log =====
+running 1 test
+test host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER 1414:008c software=true
+VALIDATION_MESSAGE id=1016 severity=4 Device Debug Layer Startup Options: GPU-Based Validation is enabled (disabled by default). This results in new validation not possible during API calls on the CPU, by creating patched shaders that have validation added directly to the shader. However, it can slow things down a lot, especially for applications with numerous PSOs. Time to see the first render frame may take several minutes.
+BYTES pages=1 staged=0 overflow=0 first17=1 first29=0 unchanged_flags=0 second17=1 second29=0 debug_error=None
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 131 filtered out; finished in 0.18s
+
+===== original-snapshot/readback-WARP-1-257.log =====
+running 1 test
+test host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER 1414:008c software=true
+VALIDATION_MESSAGE id=1016 severity=4 Device Debug Layer Startup Options: GPU-Based Validation is enabled (disabled by default). This results in new validation not possible during API calls on the CPU, by creating patched shaders that have validation added directly to the shader. However, it can slow things down a lot, especially for applications with numerous PSOs. Time to see the first render frame may take several minutes.
+BYTES pages=257 staged=0 overflow=0 first17=257 first29=0 unchanged_flags=0 second17=257 second29=0 debug_error=None
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 131 filtered out; finished in 0.29s
+
+===== original-snapshot/readback-WARP-2-1.log =====
+running 1 test
+test host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER 1414:008c software=true
+VALIDATION_MESSAGE id=1016 severity=4 Device Debug Layer Startup Options: GPU-Based Validation is enabled (disabled by default). This results in new validation not possible during API calls on the CPU, by creating patched shaders that have validation added directly to the shader. However, it can slow things down a lot, especially for applications with numerous PSOs. Time to see the first render frame may take several minutes.
+BYTES pages=1 staged=0 overflow=0 first17=1 first29=0 unchanged_flags=0 second17=1 second29=0 debug_error=None
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 131 filtered out; finished in 0.17s
+
+===== original-snapshot/readback-WARP-2-257.log =====
+running 1 test
+test host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER 1414:008c software=true
+VALIDATION_MESSAGE id=1016 severity=4 Device Debug Layer Startup Options: GPU-Based Validation is enabled (disabled by default). This results in new validation not possible during API calls on the CPU, by creating patched shaders that have validation added directly to the shader. However, it can slow things down a lot, especially for applications with numerous PSOs. Time to see the first render frame may take several minutes.
+BYTES pages=257 staged=0 overflow=0 first17=257 first29=0 unchanged_flags=0 second17=257 second29=0 debug_error=None
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 131 filtered out; finished in 0.30s

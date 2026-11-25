@@ -1,0 +1,290 @@
+diff --git a/crates/victory-gpu/src/host.rs b/crates/victory-gpu/src/host.rs
+index 78a43cb..46afd51 100644
+--- a/crates/victory-gpu/src/host.rs
++++ b/crates/victory-gpu/src/host.rs
+@@ -556,28 +556,14 @@ fn create() -> windows::core::Result<Host> {
+         let debug =
+             cfg!(feature = "diagnostics") && std::env::var_os("VICTORY_D3D12_DEBUG").is_some();
+         if debug {
+-            let mut layer: Option<ID3D12Debug> = None;
+-            match D3D12GetDebugInterface(&mut layer) {
+-                Ok(()) => layer.iter().for_each(|l| l.EnableDebugLayer()),
+-                Err(e) => tracing::warn!(error = %e, "no D3D12 debug layer"),
+-            }
+-            // GPU-based validation (`VICTORY_D3D12_GBV`): out-of-range
+-            // descriptor heap indices and the like become messages naming
+-            // the command instead of page faults. Without state tracking
+-            // (directly indexed textures are not transitioned).
+-            if std::env::var_os("VICTORY_D3D12_GBV").is_some()
+-                && let Some(l) = &layer
+-            {
+-                if let Ok(d1) = l.cast::<ID3D12Debug1>() {
+-                    d1.SetEnableGPUBasedValidation(true);
+-                }
+-                if let Ok(d2) = l.cast::<ID3D12Debug2>() {
+-                    d2.SetGPUBasedValidationFlags(
+-                        D3D12_GPU_BASED_VALIDATION_FLAGS_DISABLE_STATE_TRACKING,
+-                    );
+-                }
+-                tracing::info!("GPU-based validation on");
+-            }
++            let mut layer: Option<ID3D12Debug1> = None;
++            D3D12GetDebugInterface(&mut layer)?;
++            let layer = layer.ok_or_else(windows::core::Error::empty)?;
++            layer.EnableDebugLayer();
++            layer.SetEnableGPUBasedValidation(true);
++            layer.SetEnableSynchronizedCommandQueueValidation(true);
++            layer.cast::<ID3D12Debug2>()?.SetGPUBasedValidationFlags(D3D12_GPU_BASED_VALIDATION_FLAGS_NONE);
++            eprintln!("VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1");
+         }
+         // Diagnostics: device-removed data (the command that faulted, the
+         // faulting address), read when the device is removed.
+@@ -4969,6 +4955,7 @@ impl Host {
+                     let text = std::slice::from_raw_parts(m.pDescription, m.DescriptionByteLength);
+                     let text = String::from_utf8_lossy(text);
+                     let text = text.trim_end_matches('\0');
++                    eprintln!("VALIDATION_MESSAGE id={} severity={} {}", m.ID.0, m.Severity.0, text);
+                     tracing::warn!(id = m.ID.0, severity = m.Severity.0, "D3D12: {text}");
+                     if m.Severity.0 <= D3D12_MESSAGE_SEVERITY_ERROR.0 && first_error.is_none() {
+                         first_error = Some(text.to_owned());
+@@ -7320,3 +7307,187 @@ mod batch {   // Batch::texture_due lives here; `mod tests` is already taken at
+         assert_eq!(ram_idle_ms(None), 10_000);
+     }
+ }
++
++#[cfg(test)]
++pub(crate) fn audit_pending_words_at(address: usize, values: &[u64]) {
++    let mut l = line();
++    assert!(l.line.iter().all(|x| matches!(x, Late::Write(..))));
++    l.line = values
++        .iter()
++        .map(|&v| Late::Write(address, crate::queue::Written::Value(v), 8))
++        .collect();
++}
++
++#[cfg(test)]
++mod followup_readback {
++    use super::*;
++    use windows::Win32::Graphics::Dxgi::{
++        CreateDXGIFactory2, DXGI_ADAPTER_FLAG_SOFTWARE, DXGI_CREATE_FACTORY_FLAGS, IDXGIAdapter1,
++        IDXGIFactory4,
++    };
++
++    #[test]
++    fn changed_pieces_preserve_the_producer_after_a_later_direct_write() {
++        let host = host().expect("D3D12 device");
++        let desc = unsafe {
++            let factory: IDXGIFactory4 = CreateDXGIFactory2(DXGI_CREATE_FACTORY_FLAGS(0)).unwrap();
++            let ad: IDXGIAdapter1 = factory
++                .EnumAdapterByLuid(host.device.GetAdapterLuid())
++                .unwrap();
++            ad.GetDesc1().unwrap()
++        };
++        let soft = desc.Flags & DXGI_ADAPTER_FLAG_SOFTWARE.0 as u32 != 0;
++        assert_eq!(soft, std::env::var_os("VICTORY_D3D12_WARP").is_some());
++        eprintln!(
++            "ADAPTER {:04x}:{:04x} software={soft}",
++            desc.VendorId, desc.DeviceId
++        );
++        const PIECE: usize = 65536;
++        let pages: usize = std::env::var("PROBE_PIECES").unwrap().parse().unwrap();
++        let n = pages * PIECE;
++        let mapped = n.max(1 << 20);
++        let mut backing = vec![0u32; (mapped + PIECE) / 4];
++        let address = (backing.as_mut_ptr() as usize).next_multiple_of(PIECE);
++        let start = (address - backing.as_ptr() as usize) / 4;
++        let words = &mut backing[start..start + mapped / 4];
++        crate::shadow::register(address, address as u64, mapped as u64);
++        let shadow = crate::shadow::find(address as u64, 4).unwrap();
++        assert!(shadow.carded());
++        let write = |list: &HostList, v: u32| {
++            let (upload, map) = host.upload_buffer(n as u64).unwrap();
++            unsafe {
++                std::ptr::write_bytes(map, 0, n);
++                for i in 0..pages {
++                    map.add(i * PIECE).cast::<u32>().write_unaligned(v);
++                }
++                list.list
++                    .CopyBufferRegion(&shadow.buffer, 0, &upload, 0, n as u64);
++                list.list.ResourceBarrier(&[transition(
++                    &shadow.buffer,
++                    D3D12_RESOURCE_STATE_COPY_DEST,
++                    D3D12_RESOURCE_STATE_COMMON,
++                )]);
++            }
++            list.keep(&upload);
++        };
++        let overwrite = |v| {
++            let l = host.new_list().unwrap();
++            write(&l, v);
++            l.close();
++            unsafe {
++                let f: ID3D12Fence = host.device.CreateFence(0, D3D12_FENCE_FLAG_NONE).unwrap();
++                host.queue
++                    .ExecuteCommandLists(&[Some(l.list.cast().unwrap())]);
++                host.queue.Signal(&f, 1).unwrap();
++                f.SetEventOnCompletion(1, Default::default()).unwrap();
++            }
++        };
++        let flags = |p: &CardPlan| {
++            let w = CARD_WORK.lock().unwrap();
++            let base = w.as_ref().unwrap().differs.1 as *const u32;
++            let r = &p.ranges[0];
++            assert!(r.compared);
++            assert_eq!(r.span.pieces as usize, pages);
++            unsafe { std::slice::from_raw_parts(base.add(r.at as usize), pages).to_vec() }
++        };
++        let producer = host.new_list().unwrap();
++        shadow.refresh(&producer, address as u64, n as u64);
++        shadow.gpu_writes(&producer, address as u64, n as u64);
++        write(&producer, 17);
++        producer.close();
++        let (lock, mut first) = host.submit(&[&producer], true).unwrap();
++        let fence1 = *lock;
++        drop(lock);
++        let tracked = std::env::var_os("PROBE_TRACKED_LATER").is_some();
++        let second = if tracked {
++            let list = host.new_list().unwrap();
++            shadow.gpu_writes(&list, address as u64, n as u64);
++            write(&list, 29);
++            list.close();
++            let (lock, sent) = host.submit(&[&list], true).unwrap();
++            let done = *lock;
++            drop(lock);
++            unsafe {
++                host.fence
++                    .SetEventOnCompletion(done, Default::default())
++                    .unwrap();
++            }
++            Some((list, sent, done))
++        } else {
++            overwrite(29);
++            None
++        };
++        let p = first.card.take().unwrap();
++        let fs = flags(&p);
++        assert_eq!(fs.iter().filter(|&&v| v != 0).count(), pages);
++        let staged = fs.iter().filter(|&&v| v & 0x8000_0000 != 0).count();
++        let overflow = fs.iter().filter(|&&v| v & 0x4000_0000 != 0).count();
++        let mut fetch = None;
++        host.relay_card_back(&[&p], &mut fetch);
++        let count =
++            |words: &[u32], v: u32| (0..pages).filter(|i| words[i * PIECE / 4] == v).count();
++        let first17 = count(words, 17);
++        let first29 = count(words, 29);
++        if let Some((_list, mut second, fence2)) = second {
++            host.card_done(p);
++            for (s, rs) in first.back {
++                s.copy_back_done(&rs);
++            }
++            let p = second.card.take().unwrap();
++            assert_eq!(flags(&p).iter().filter(|&&v| v != 0).count(), pages);
++            host.relay_card_back(&[&p], &mut fetch);
++            let second29 = count(words, 29);
++            host.card_done(p);
++            for (s, rs) in second.back {
++                s.copy_back_done(&rs);
++            }
++            crate::shadow::unregister(address, address as u64);
++            let error = host.log_messages();
++            eprintln!(
++                "TRACKED pages={pages} staged={staged} overflow={overflow} first17={first17} first29={first29} second29={second29} debug_error={error:?}"
++            );
++            assert_eq!(second29, pages);
++            assert_eq!(
++                first17, pages,
++                "the first landing must see its producer after the second tracked flight"
++            );
++            return;
++        }
++        overwrite(17);
++        host.card_done(p);
++        for (s, rs) in first.back {
++            s.copy_back_done(&rs);
++        }
++        let idle = host.new_list().unwrap();
++        shadow.gpu_writes(&idle, address as u64, n as u64);
++        idle.close();
++        let (lock, mut again) = host.submit(&[&idle], true).unwrap();
++        let fence2 = *lock;
++        drop(lock);
++        unsafe {
++            host.fence
++                .SetEventOnCompletion(fence2, Default::default())
++                .unwrap();
++        }
++        let p = again.card.take().unwrap();
++        let changed = flags(&p).iter().filter(|&&v| v != 0).count();
++        host.relay_card_back(&[&p], &mut fetch);
++        let second17 = count(words, 17);
++        let second29 = count(words, 29);
++        host.card_done(p);
++        for (s, rs) in again.back {
++            s.copy_back_done(&rs);
++        }
++        crate::shadow::unregister(address, address as u64);
++        let error = host.log_messages();
++        eprintln!(
++            "BYTES pages={pages} staged={staged} overflow={overflow} first17={first17} first29={first29} unchanged_flags={changed} second17={second17} second29={second29} debug_error={error:?}"
++        );
++        assert_eq!(changed, 0);
++        assert_eq!(
++            second17, pages,
++            "each CPU word must be the producer word after the unchanged-hash flight"
++        );
++        assert_eq!(first17, pages);
++    }
++}
+diff --git a/crates/victory-gpu/src/list.rs b/crates/victory-gpu/src/list.rs
+index f9edaab..5c97970 100644
+--- a/crates/victory-gpu/src/list.rs
++++ b/crates/victory-gpu/src/list.rs
+@@ -2220,3 +2220,35 @@ mod tests {
+         assert_eq!(release(allocator), 0);
+     }
+ }
++
++#[cfg(all(test, windows))]
++#[test]
++fn pending_overwrite_goes_through_the_queue_predicate() {
++    assert!(crate::host::late());
++    let mut readings = vec![];
++    for (memory, stores) in [
++        (1u64, &[][..]),
++        (0, &[0u64, 1][..]),
++        (0, &[1u64, 0][..]),
++        (1, &[1u64, 0][..]),
++    ] {
++        let address = std::ptr::from_ref(&memory) as usize;
++        let w = ValueWait {
++            address: address as u64,
++            comparison: 3,
++            reference: 1,
++            wide: true,
++        };
++        crate::host::audit_pending_words_at(address, stores);
++        readings.push((
++            crate::host::late_met(&w),
++            crate::queue::audit_queue_value_met(&w),
++        ));
++        crate::host::audit_pending_words_at(address, &[]);
++    }
++    eprintln!("WAIT (prediction,queue) {readings:?}");
++    assert_eq!(
++        readings.iter().map(|v| v.1).collect::<Vec<_>>(),
++        [true, true, false, false]
++    );
++}
+diff --git a/crates/victory-gpu/src/queue.rs b/crates/victory-gpu/src/queue.rs
+index 11d3a8c..0928ab7 100644
+--- a/crates/victory-gpu/src/queue.rs
++++ b/crates/victory-gpu/src/queue.rs
+@@ -1084,3 +1084,8 @@ mod tests {
+         assert!(at[1] > first);
+     }
+ }
++
++#[cfg(test)]
++pub(crate) fn audit_queue_value_met(w: &crate::list::ValueWait) -> bool {
++    value_met(w)
++}

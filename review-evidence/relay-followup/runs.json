@@ -1,0 +1,2756 @@
+{
+  "fixtures": {
+    "pr688": {
+      "revision": "7e7bb180625298dd418cb7ce71923140363ff02f",
+      "patch": "patches/pr688.patch.txt",
+      "sha256": "40d16aaa453fbf680939fc50bf99ae314d37bf9c7d91a16b9d5d8572e03567c6"
+    },
+    "pr648": {
+      "revision": "4d28486528d239800a79766ee6c2f9f348dca4b5",
+      "patch": "patches/pr648.patch.txt",
+      "sha256": "cbc4995a4258a0d1e0a4381bfe71c77f553056645b25f3b92f256b2239a0a51a"
+    },
+    "main": {
+      "revision": "9376fd60c0ba0e76a74c39b49b1407dbac0a64c7",
+      "patch": "patches/main.patch.txt",
+      "sha256": "206c45e7f950db2388aecc403b546f84aa0cfad030843569e048ee169c0f16c2"
+    },
+    "pr785": {
+      "revision": "67c6c89d21d104e23191da5335fbc6e2b9977b6f",
+      "patch": "patches/pr785.patch.txt",
+      "sha256": "7ae0bb311e0dc0624885c9e6624f667422d8a595a8f4b7839f282812cb4ebc8d"
+    },
+    "original-snapshot": {
+      "revision": "ef4f5100f9145236fee6c1ca18026a7074ed4027",
+      "patch": "patches/original-snapshot.patch.txt",
+      "sha256": "6f5ea68b5ed38cd279e84210002693a8bae738f668998a58d89b22b43c29b53b"
+    },
+    "pooled-snapshot": {
+      "revision": "981eaaecdb50a44b59d0cc7d79d37ada190101fa",
+      "patch": "patches/pooled-snapshot.patch.txt",
+      "sha256": "9d85ef579ca07d9f6a71de25a40af2d3f3b143d18fd35bb8af178355cab6187e"
+    }
+  },
+  "runs": [
+    {
+      "group": "pool",
+      "build": "original-snapshot",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "RTX",
+      "repeat": 1,
+      "env": {
+        "PROBE_PIECES": "1"
+      },
+      "exit": 0,
+      "values": [
+        "BYTES pages=1 staged=0 overflow=0 first17=1 first29=0 unchanged_flags=0 second17=1 second29=0 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "original-snapshot/readback-RTX-1-1.log"
+    },
+    {
+      "group": "pool",
+      "build": "original-snapshot",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "RTX",
+      "repeat": 1,
+      "env": {
+        "PROBE_PIECES": "257"
+      },
+      "exit": 0,
+      "values": [
+        "BYTES pages=257 staged=0 overflow=0 first17=257 first29=0 unchanged_flags=0 second17=257 second29=0 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "original-snapshot/readback-RTX-1-257.log"
+    },
+    {
+      "group": "pool",
+      "build": "pooled-snapshot",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "RTX",
+      "repeat": 1,
+      "env": {
+        "PROBE_PIECES": "1"
+      },
+      "exit": 0,
+      "values": [
+        "BYTES pages=1 staged=0 overflow=0 first17=1 first29=0 unchanged_flags=0 second17=1 second29=0 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pooled-snapshot/readback-RTX-1-1.log"
+    },
+    {
+      "group": "pool",
+      "build": "pooled-snapshot",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "RTX",
+      "repeat": 1,
+      "env": {
+        "PROBE_PIECES": "257"
+      },
+      "exit": 0,
+      "values": [
+        "BYTES pages=257 staged=0 overflow=0 first17=257 first29=0 unchanged_flags=0 second17=257 second29=0 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pooled-snapshot/readback-RTX-1-257.log"
+    },
+    {
+      "group": "pool",
+      "build": "pooled-snapshot",
+      "test": "host::relay_snapshot_tests::snapshot_limit_counts_each_committed_allocation",
+      "adapter": "RTX",
+      "repeat": 1,
+      "env": {},
+      "exit": 0,
+      "values": [],
+      "validation_warnings_and_errors": [],
+      "transcript": "pooled-snapshot/snapshot_limit_counts_each_committed_allocation-RTX-1.log"
+    },
+    {
+      "group": "pool",
+      "build": "pooled-snapshot",
+      "test": "host::relay_snapshot_tests::snapshots_reuse_retired_buffers_and_bound_idle_and_live_bytes",
+      "adapter": "RTX",
+      "repeat": 1,
+      "env": {},
+      "exit": 0,
+      "values": [],
+      "validation_warnings_and_errors": [],
+      "transcript": "pooled-snapshot/snapshots_reuse_retired_buffers_and_bound_idle_and_live_bytes-RTX-1.log"
+    },
+    {
+      "group": "pool",
+      "build": "pooled-snapshot",
+      "test": "host::relay_snapshot_tests::relay_snapshot_pressure_guards_live_bytes_until_the_copy_finishes",
+      "adapter": "RTX",
+      "repeat": 1,
+      "env": {},
+      "exit": 0,
+      "values": [],
+      "validation_warnings_and_errors": [],
+      "transcript": "pooled-snapshot/relay_snapshot_pressure_guards_live_bytes_until_the_copy_finishes-RTX-1.log"
+    },
+    {
+      "group": "pool",
+      "build": "pooled-snapshot",
+      "test": "host::relay_snapshot_tests::relay_fetch_observes_the_producer_with_a_later_write_already_complete",
+      "adapter": "RTX",
+      "repeat": 1,
+      "env": {},
+      "exit": 0,
+      "values": [],
+      "validation_warnings_and_errors": [],
+      "transcript": "pooled-snapshot/relay_fetch_observes_the_producer_with_a_later_write_already_complete-RTX-1.log"
+    },
+    {
+      "group": "pool",
+      "build": "original-snapshot",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "RTX",
+      "repeat": 2,
+      "env": {
+        "PROBE_PIECES": "1"
+      },
+      "exit": 0,
+      "values": [
+        "BYTES pages=1 staged=0 overflow=0 first17=1 first29=0 unchanged_flags=0 second17=1 second29=0 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "original-snapshot/readback-RTX-2-1.log"
+    },
+    {
+      "group": "pool",
+      "build": "original-snapshot",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "RTX",
+      "repeat": 2,
+      "env": {
+        "PROBE_PIECES": "257"
+      },
+      "exit": 0,
+      "values": [
+        "BYTES pages=257 staged=0 overflow=0 first17=257 first29=0 unchanged_flags=0 second17=257 second29=0 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "original-snapshot/readback-RTX-2-257.log"
+    },
+    {
+      "group": "pool",
+      "build": "pooled-snapshot",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "RTX",
+      "repeat": 2,
+      "env": {
+        "PROBE_PIECES": "1"
+      },
+      "exit": 0,
+      "values": [
+        "BYTES pages=1 staged=0 overflow=0 first17=1 first29=0 unchanged_flags=0 second17=1 second29=0 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pooled-snapshot/readback-RTX-2-1.log"
+    },
+    {
+      "group": "pool",
+      "build": "pooled-snapshot",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "RTX",
+      "repeat": 2,
+      "env": {
+        "PROBE_PIECES": "257"
+      },
+      "exit": 0,
+      "values": [
+        "BYTES pages=257 staged=0 overflow=0 first17=257 first29=0 unchanged_flags=0 second17=257 second29=0 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pooled-snapshot/readback-RTX-2-257.log"
+    },
+    {
+      "group": "pool",
+      "build": "pooled-snapshot",
+      "test": "host::relay_snapshot_tests::snapshot_limit_counts_each_committed_allocation",
+      "adapter": "RTX",
+      "repeat": 2,
+      "env": {},
+      "exit": 0,
+      "values": [],
+      "validation_warnings_and_errors": [],
+      "transcript": "pooled-snapshot/snapshot_limit_counts_each_committed_allocation-RTX-2.log"
+    },
+    {
+      "group": "pool",
+      "build": "pooled-snapshot",
+      "test": "host::relay_snapshot_tests::snapshots_reuse_retired_buffers_and_bound_idle_and_live_bytes",
+      "adapter": "RTX",
+      "repeat": 2,
+      "env": {},
+      "exit": 0,
+      "values": [],
+      "validation_warnings_and_errors": [],
+      "transcript": "pooled-snapshot/snapshots_reuse_retired_buffers_and_bound_idle_and_live_bytes-RTX-2.log"
+    },
+    {
+      "group": "pool",
+      "build": "pooled-snapshot",
+      "test": "host::relay_snapshot_tests::relay_snapshot_pressure_guards_live_bytes_until_the_copy_finishes",
+      "adapter": "RTX",
+      "repeat": 2,
+      "env": {},
+      "exit": 0,
+      "values": [],
+      "validation_warnings_and_errors": [],
+      "transcript": "pooled-snapshot/relay_snapshot_pressure_guards_live_bytes_until_the_copy_finishes-RTX-2.log"
+    },
+    {
+      "group": "pool",
+      "build": "pooled-snapshot",
+      "test": "host::relay_snapshot_tests::relay_fetch_observes_the_producer_with_a_later_write_already_complete",
+      "adapter": "RTX",
+      "repeat": 2,
+      "env": {},
+      "exit": 0,
+      "values": [],
+      "validation_warnings_and_errors": [],
+      "transcript": "pooled-snapshot/relay_fetch_observes_the_producer_with_a_later_write_already_complete-RTX-2.log"
+    },
+    {
+      "group": "pool",
+      "build": "original-snapshot",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "WARP",
+      "repeat": 1,
+      "env": {
+        "PROBE_PIECES": "1"
+      },
+      "exit": 0,
+      "values": [
+        "BYTES pages=1 staged=0 overflow=0 first17=1 first29=0 unchanged_flags=0 second17=1 second29=0 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "original-snapshot/readback-WARP-1-1.log"
+    },
+    {
+      "group": "pool",
+      "build": "original-snapshot",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "WARP",
+      "repeat": 1,
+      "env": {
+        "PROBE_PIECES": "257"
+      },
+      "exit": 0,
+      "values": [
+        "BYTES pages=257 staged=0 overflow=0 first17=257 first29=0 unchanged_flags=0 second17=257 second29=0 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "original-snapshot/readback-WARP-1-257.log"
+    },
+    {
+      "group": "pool",
+      "build": "pooled-snapshot",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "WARP",
+      "repeat": 1,
+      "env": {
+        "PROBE_PIECES": "1"
+      },
+      "exit": 0,
+      "values": [
+        "BYTES pages=1 staged=0 overflow=0 first17=1 first29=0 unchanged_flags=0 second17=1 second29=0 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pooled-snapshot/readback-WARP-1-1.log"
+    },
+    {
+      "group": "pool",
+      "build": "pooled-snapshot",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "WARP",
+      "repeat": 1,
+      "env": {
+        "PROBE_PIECES": "257"
+      },
+      "exit": 0,
+      "values": [
+        "BYTES pages=257 staged=0 overflow=0 first17=257 first29=0 unchanged_flags=0 second17=257 second29=0 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pooled-snapshot/readback-WARP-1-257.log"
+    },
+    {
+      "group": "pool",
+      "build": "pooled-snapshot",
+      "test": "host::relay_snapshot_tests::snapshot_limit_counts_each_committed_allocation",
+      "adapter": "WARP",
+      "repeat": 1,
+      "env": {},
+      "exit": 0,
+      "values": [],
+      "validation_warnings_and_errors": [],
+      "transcript": "pooled-snapshot/snapshot_limit_counts_each_committed_allocation-WARP-1.log"
+    },
+    {
+      "group": "pool",
+      "build": "pooled-snapshot",
+      "test": "host::relay_snapshot_tests::snapshots_reuse_retired_buffers_and_bound_idle_and_live_bytes",
+      "adapter": "WARP",
+      "repeat": 1,
+      "env": {},
+      "exit": 0,
+      "values": [],
+      "validation_warnings_and_errors": [],
+      "transcript": "pooled-snapshot/snapshots_reuse_retired_buffers_and_bound_idle_and_live_bytes-WARP-1.log"
+    },
+    {
+      "group": "pool",
+      "build": "pooled-snapshot",
+      "test": "host::relay_snapshot_tests::relay_snapshot_pressure_guards_live_bytes_until_the_copy_finishes",
+      "adapter": "WARP",
+      "repeat": 1,
+      "env": {},
+      "exit": 0,
+      "values": [],
+      "validation_warnings_and_errors": [],
+      "transcript": "pooled-snapshot/relay_snapshot_pressure_guards_live_bytes_until_the_copy_finishes-WARP-1.log"
+    },
+    {
+      "group": "pool",
+      "build": "pooled-snapshot",
+      "test": "host::relay_snapshot_tests::relay_fetch_observes_the_producer_with_a_later_write_already_complete",
+      "adapter": "WARP",
+      "repeat": 1,
+      "env": {},
+      "exit": 0,
+      "values": [],
+      "validation_warnings_and_errors": [],
+      "transcript": "pooled-snapshot/relay_fetch_observes_the_producer_with_a_later_write_already_complete-WARP-1.log"
+    },
+    {
+      "group": "pool",
+      "build": "original-snapshot",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "WARP",
+      "repeat": 2,
+      "env": {
+        "PROBE_PIECES": "1"
+      },
+      "exit": 0,
+      "values": [
+        "BYTES pages=1 staged=0 overflow=0 first17=1 first29=0 unchanged_flags=0 second17=1 second29=0 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "original-snapshot/readback-WARP-2-1.log"
+    },
+    {
+      "group": "pool",
+      "build": "original-snapshot",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "WARP",
+      "repeat": 2,
+      "env": {
+        "PROBE_PIECES": "257"
+      },
+      "exit": 0,
+      "values": [
+        "BYTES pages=257 staged=0 overflow=0 first17=257 first29=0 unchanged_flags=0 second17=257 second29=0 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "original-snapshot/readback-WARP-2-257.log"
+    },
+    {
+      "group": "pool",
+      "build": "pooled-snapshot",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "WARP",
+      "repeat": 2,
+      "env": {
+        "PROBE_PIECES": "1"
+      },
+      "exit": 0,
+      "values": [
+        "BYTES pages=1 staged=0 overflow=0 first17=1 first29=0 unchanged_flags=0 second17=1 second29=0 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pooled-snapshot/readback-WARP-2-1.log"
+    },
+    {
+      "group": "pool",
+      "build": "pooled-snapshot",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "WARP",
+      "repeat": 2,
+      "env": {
+        "PROBE_PIECES": "257"
+      },
+      "exit": 0,
+      "values": [
+        "BYTES pages=257 staged=0 overflow=0 first17=257 first29=0 unchanged_flags=0 second17=257 second29=0 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pooled-snapshot/readback-WARP-2-257.log"
+    },
+    {
+      "group": "pool",
+      "build": "pooled-snapshot",
+      "test": "host::relay_snapshot_tests::snapshot_limit_counts_each_committed_allocation",
+      "adapter": "WARP",
+      "repeat": 2,
+      "env": {},
+      "exit": 0,
+      "values": [],
+      "validation_warnings_and_errors": [],
+      "transcript": "pooled-snapshot/snapshot_limit_counts_each_committed_allocation-WARP-2.log"
+    },
+    {
+      "group": "pool",
+      "build": "pooled-snapshot",
+      "test": "host::relay_snapshot_tests::snapshots_reuse_retired_buffers_and_bound_idle_and_live_bytes",
+      "adapter": "WARP",
+      "repeat": 2,
+      "env": {},
+      "exit": 0,
+      "values": [],
+      "validation_warnings_and_errors": [],
+      "transcript": "pooled-snapshot/snapshots_reuse_retired_buffers_and_bound_idle_and_live_bytes-WARP-2.log"
+    },
+    {
+      "group": "pool",
+      "build": "pooled-snapshot",
+      "test": "host::relay_snapshot_tests::relay_snapshot_pressure_guards_live_bytes_until_the_copy_finishes",
+      "adapter": "WARP",
+      "repeat": 2,
+      "env": {},
+      "exit": 0,
+      "values": [],
+      "validation_warnings_and_errors": [],
+      "transcript": "pooled-snapshot/relay_snapshot_pressure_guards_live_bytes_until_the_copy_finishes-WARP-2.log"
+    },
+    {
+      "group": "pool",
+      "build": "pooled-snapshot",
+      "test": "host::relay_snapshot_tests::relay_fetch_observes_the_producer_with_a_later_write_already_complete",
+      "adapter": "WARP",
+      "repeat": 2,
+      "env": {},
+      "exit": 0,
+      "values": [],
+      "validation_warnings_and_errors": [],
+      "transcript": "pooled-snapshot/relay_fetch_observes_the_producer_with_a_later_write_already_complete-WARP-2.log"
+    },
+    {
+      "group": "stages",
+      "build": "pr688",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "RTX",
+      "repeat": 1,
+      "env": {
+        "PROBE_PIECES": "1",
+        "VICTORY_CARD_INLINE_STAGE": "1"
+      },
+      "exit": 0,
+      "values": [
+        "BYTES pages=1 staged=1 overflow=0 first17=1 first29=0 unchanged_flags=0 second17=1 second29=0 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr688/readback-RTX-1-1-1.log"
+    },
+    {
+      "group": "stages",
+      "build": "pr688",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "RTX",
+      "repeat": 1,
+      "env": {
+        "PROBE_PIECES": "256",
+        "VICTORY_CARD_INLINE_STAGE": "1"
+      },
+      "exit": 0,
+      "values": [
+        "BYTES pages=256 staged=256 overflow=0 first17=256 first29=0 unchanged_flags=0 second17=256 second29=0 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr688/readback-RTX-1-256-1.log"
+    },
+    {
+      "group": "stages",
+      "build": "pr688",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "RTX",
+      "repeat": 1,
+      "env": {
+        "PROBE_PIECES": "257",
+        "VICTORY_CARD_INLINE_STAGE": "1"
+      },
+      "exit": 101,
+      "values": [
+        "BYTES pages=257 staged=256 overflow=1 first17=256 first29=1 unchanged_flags=0 second17=256 second29=1 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr688/readback-RTX-1-257-1.log"
+    },
+    {
+      "group": "stages",
+      "build": "pr688",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "RTX",
+      "repeat": 1,
+      "env": {
+        "PROBE_PIECES": "1",
+        "VICTORY_CARD_INLINE_STAGE": "0"
+      },
+      "exit": 101,
+      "values": [
+        "BYTES pages=1 staged=0 overflow=0 first17=0 first29=1 unchanged_flags=0 second17=0 second29=1 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr688/readback-RTX-1-1-0.log"
+    },
+    {
+      "group": "stages",
+      "build": "main",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "RTX",
+      "repeat": 1,
+      "env": {
+        "PROBE_PIECES": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1"
+      },
+      "exit": 0,
+      "values": [
+        "BYTES pages=1 staged=0 overflow=0 first17=1 first29=0 unchanged_flags=0 second17=1 second29=0 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "main/readback-RTX-1-1-1-1.log"
+    },
+    {
+      "group": "stages",
+      "build": "main",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "RTX",
+      "repeat": 1,
+      "env": {
+        "PROBE_PIECES": "16",
+        "VICTORY_CARD_FETCH_INFLIGHT": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1"
+      },
+      "exit": 0,
+      "values": [
+        "BYTES pages=16 staged=0 overflow=0 first17=16 first29=0 unchanged_flags=0 second17=16 second29=0 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "main/readback-RTX-1-16-1-1.log"
+    },
+    {
+      "group": "stages",
+      "build": "main",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "RTX",
+      "repeat": 1,
+      "env": {
+        "PROBE_PIECES": "17",
+        "VICTORY_CARD_FETCH_INFLIGHT": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1"
+      },
+      "exit": 101,
+      "values": [
+        "BYTES pages=17 staged=0 overflow=0 first17=0 first29=17 unchanged_flags=0 second17=0 second29=17 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "main/readback-RTX-1-17-1-1.log"
+    },
+    {
+      "group": "stages",
+      "build": "main",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "RTX",
+      "repeat": 1,
+      "env": {
+        "PROBE_PIECES": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT": "0",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1"
+      },
+      "exit": 101,
+      "values": [
+        "BYTES pages=1 staged=0 overflow=0 first17=0 first29=1 unchanged_flags=0 second17=0 second29=1 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "main/readback-RTX-1-1-0-1.log"
+    },
+    {
+      "group": "stages",
+      "build": "pr688",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "RTX",
+      "repeat": 2,
+      "env": {
+        "PROBE_PIECES": "1",
+        "VICTORY_CARD_INLINE_STAGE": "1"
+      },
+      "exit": 0,
+      "values": [
+        "BYTES pages=1 staged=1 overflow=0 first17=1 first29=0 unchanged_flags=0 second17=1 second29=0 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr688/readback-RTX-2-1-1.log"
+    },
+    {
+      "group": "stages",
+      "build": "pr688",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "RTX",
+      "repeat": 2,
+      "env": {
+        "PROBE_PIECES": "256",
+        "VICTORY_CARD_INLINE_STAGE": "1"
+      },
+      "exit": 0,
+      "values": [
+        "BYTES pages=256 staged=256 overflow=0 first17=256 first29=0 unchanged_flags=0 second17=256 second29=0 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr688/readback-RTX-2-256-1.log"
+    },
+    {
+      "group": "stages",
+      "build": "pr688",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "RTX",
+      "repeat": 2,
+      "env": {
+        "PROBE_PIECES": "257",
+        "VICTORY_CARD_INLINE_STAGE": "1"
+      },
+      "exit": 101,
+      "values": [
+        "BYTES pages=257 staged=256 overflow=1 first17=256 first29=1 unchanged_flags=0 second17=256 second29=1 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr688/readback-RTX-2-257-1.log"
+    },
+    {
+      "group": "stages",
+      "build": "pr688",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "RTX",
+      "repeat": 2,
+      "env": {
+        "PROBE_PIECES": "1",
+        "VICTORY_CARD_INLINE_STAGE": "0"
+      },
+      "exit": 101,
+      "values": [
+        "BYTES pages=1 staged=0 overflow=0 first17=0 first29=1 unchanged_flags=0 second17=0 second29=1 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr688/readback-RTX-2-1-0.log"
+    },
+    {
+      "group": "stages",
+      "build": "main",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "RTX",
+      "repeat": 2,
+      "env": {
+        "PROBE_PIECES": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1"
+      },
+      "exit": 0,
+      "values": [
+        "BYTES pages=1 staged=0 overflow=0 first17=1 first29=0 unchanged_flags=0 second17=1 second29=0 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "main/readback-RTX-2-1-1-1.log"
+    },
+    {
+      "group": "stages",
+      "build": "main",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "RTX",
+      "repeat": 2,
+      "env": {
+        "PROBE_PIECES": "16",
+        "VICTORY_CARD_FETCH_INFLIGHT": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1"
+      },
+      "exit": 0,
+      "values": [
+        "BYTES pages=16 staged=0 overflow=0 first17=16 first29=0 unchanged_flags=0 second17=16 second29=0 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "main/readback-RTX-2-16-1-1.log"
+    },
+    {
+      "group": "stages",
+      "build": "main",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "RTX",
+      "repeat": 2,
+      "env": {
+        "PROBE_PIECES": "17",
+        "VICTORY_CARD_FETCH_INFLIGHT": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1"
+      },
+      "exit": 101,
+      "values": [
+        "BYTES pages=17 staged=0 overflow=0 first17=0 first29=17 unchanged_flags=0 second17=0 second29=17 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "main/readback-RTX-2-17-1-1.log"
+    },
+    {
+      "group": "stages",
+      "build": "main",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "RTX",
+      "repeat": 2,
+      "env": {
+        "PROBE_PIECES": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT": "0",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1"
+      },
+      "exit": 101,
+      "values": [
+        "BYTES pages=1 staged=0 overflow=0 first17=0 first29=1 unchanged_flags=0 second17=0 second29=1 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "main/readback-RTX-2-1-0-1.log"
+    },
+    {
+      "group": "stages",
+      "build": "pr688",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "WARP",
+      "repeat": 1,
+      "env": {
+        "PROBE_PIECES": "1",
+        "VICTORY_CARD_INLINE_STAGE": "1"
+      },
+      "exit": 0,
+      "values": [
+        "BYTES pages=1 staged=1 overflow=0 first17=1 first29=0 unchanged_flags=0 second17=1 second29=0 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr688/readback-WARP-1-1-1.log"
+    },
+    {
+      "group": "stages",
+      "build": "pr688",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "WARP",
+      "repeat": 1,
+      "env": {
+        "PROBE_PIECES": "256",
+        "VICTORY_CARD_INLINE_STAGE": "1"
+      },
+      "exit": 0,
+      "values": [
+        "BYTES pages=256 staged=256 overflow=0 first17=256 first29=0 unchanged_flags=0 second17=256 second29=0 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr688/readback-WARP-1-256-1.log"
+    },
+    {
+      "group": "stages",
+      "build": "pr688",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "WARP",
+      "repeat": 1,
+      "env": {
+        "PROBE_PIECES": "257",
+        "VICTORY_CARD_INLINE_STAGE": "1"
+      },
+      "exit": 101,
+      "values": [
+        "BYTES pages=257 staged=256 overflow=1 first17=256 first29=1 unchanged_flags=0 second17=256 second29=1 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr688/readback-WARP-1-257-1.log"
+    },
+    {
+      "group": "stages",
+      "build": "pr688",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "WARP",
+      "repeat": 1,
+      "env": {
+        "PROBE_PIECES": "1",
+        "VICTORY_CARD_INLINE_STAGE": "0"
+      },
+      "exit": 101,
+      "values": [
+        "BYTES pages=1 staged=0 overflow=0 first17=0 first29=1 unchanged_flags=0 second17=0 second29=1 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr688/readback-WARP-1-1-0.log"
+    },
+    {
+      "group": "stages",
+      "build": "main",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "WARP",
+      "repeat": 1,
+      "env": {
+        "PROBE_PIECES": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1"
+      },
+      "exit": 0,
+      "values": [
+        "BYTES pages=1 staged=0 overflow=0 first17=1 first29=0 unchanged_flags=0 second17=1 second29=0 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "main/readback-WARP-1-1-1-1.log"
+    },
+    {
+      "group": "stages",
+      "build": "main",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "WARP",
+      "repeat": 1,
+      "env": {
+        "PROBE_PIECES": "16",
+        "VICTORY_CARD_FETCH_INFLIGHT": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1"
+      },
+      "exit": 0,
+      "values": [
+        "BYTES pages=16 staged=0 overflow=0 first17=16 first29=0 unchanged_flags=0 second17=16 second29=0 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "main/readback-WARP-1-16-1-1.log"
+    },
+    {
+      "group": "stages",
+      "build": "main",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "WARP",
+      "repeat": 1,
+      "env": {
+        "PROBE_PIECES": "17",
+        "VICTORY_CARD_FETCH_INFLIGHT": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1"
+      },
+      "exit": 101,
+      "values": [
+        "BYTES pages=17 staged=0 overflow=0 first17=0 first29=17 unchanged_flags=0 second17=0 second29=17 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "main/readback-WARP-1-17-1-1.log"
+    },
+    {
+      "group": "stages",
+      "build": "main",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "WARP",
+      "repeat": 1,
+      "env": {
+        "PROBE_PIECES": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT": "0",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1"
+      },
+      "exit": 101,
+      "values": [
+        "BYTES pages=1 staged=0 overflow=0 first17=0 first29=1 unchanged_flags=0 second17=0 second29=1 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "main/readback-WARP-1-1-0-1.log"
+    },
+    {
+      "group": "stages",
+      "build": "pr688",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "WARP",
+      "repeat": 2,
+      "env": {
+        "PROBE_PIECES": "1",
+        "VICTORY_CARD_INLINE_STAGE": "1"
+      },
+      "exit": 0,
+      "values": [
+        "BYTES pages=1 staged=1 overflow=0 first17=1 first29=0 unchanged_flags=0 second17=1 second29=0 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr688/readback-WARP-2-1-1.log"
+    },
+    {
+      "group": "stages",
+      "build": "pr688",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "WARP",
+      "repeat": 2,
+      "env": {
+        "PROBE_PIECES": "256",
+        "VICTORY_CARD_INLINE_STAGE": "1"
+      },
+      "exit": 0,
+      "values": [
+        "BYTES pages=256 staged=256 overflow=0 first17=256 first29=0 unchanged_flags=0 second17=256 second29=0 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr688/readback-WARP-2-256-1.log"
+    },
+    {
+      "group": "stages",
+      "build": "pr688",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "WARP",
+      "repeat": 2,
+      "env": {
+        "PROBE_PIECES": "257",
+        "VICTORY_CARD_INLINE_STAGE": "1"
+      },
+      "exit": 101,
+      "values": [
+        "BYTES pages=257 staged=256 overflow=1 first17=256 first29=1 unchanged_flags=0 second17=256 second29=1 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr688/readback-WARP-2-257-1.log"
+    },
+    {
+      "group": "stages",
+      "build": "pr688",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "WARP",
+      "repeat": 2,
+      "env": {
+        "PROBE_PIECES": "1",
+        "VICTORY_CARD_INLINE_STAGE": "0"
+      },
+      "exit": 101,
+      "values": [
+        "BYTES pages=1 staged=0 overflow=0 first17=0 first29=1 unchanged_flags=0 second17=0 second29=1 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr688/readback-WARP-2-1-0.log"
+    },
+    {
+      "group": "stages",
+      "build": "main",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "WARP",
+      "repeat": 2,
+      "env": {
+        "PROBE_PIECES": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1"
+      },
+      "exit": 0,
+      "values": [
+        "BYTES pages=1 staged=0 overflow=0 first17=1 first29=0 unchanged_flags=0 second17=1 second29=0 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "main/readback-WARP-2-1-1-1.log"
+    },
+    {
+      "group": "stages",
+      "build": "main",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "WARP",
+      "repeat": 2,
+      "env": {
+        "PROBE_PIECES": "16",
+        "VICTORY_CARD_FETCH_INFLIGHT": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1"
+      },
+      "exit": 0,
+      "values": [
+        "BYTES pages=16 staged=0 overflow=0 first17=16 first29=0 unchanged_flags=0 second17=16 second29=0 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "main/readback-WARP-2-16-1-1.log"
+    },
+    {
+      "group": "stages",
+      "build": "main",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "WARP",
+      "repeat": 2,
+      "env": {
+        "PROBE_PIECES": "17",
+        "VICTORY_CARD_FETCH_INFLIGHT": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1"
+      },
+      "exit": 101,
+      "values": [
+        "BYTES pages=17 staged=0 overflow=0 first17=0 first29=17 unchanged_flags=0 second17=0 second29=17 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "main/readback-WARP-2-17-1-1.log"
+    },
+    {
+      "group": "stages",
+      "build": "main",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "WARP",
+      "repeat": 2,
+      "env": {
+        "PROBE_PIECES": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT": "0",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1"
+      },
+      "exit": 101,
+      "values": [
+        "BYTES pages=1 staged=0 overflow=0 first17=0 first29=1 unchanged_flags=0 second17=0 second29=1 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "main/readback-WARP-2-1-0-1.log"
+    },
+    {
+      "group": "tracked",
+      "build": "pr688",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "RTX",
+      "repeat": 1,
+      "env": {
+        "PROBE_PIECES": "256",
+        "PROBE_TRACKED_LATER": "yes",
+        "VICTORY_CARD_INLINE_STAGE": "1"
+      },
+      "exit": 0,
+      "values": [
+        "TRACKED pages=256 staged=256 overflow=0 first17=256 first29=0 second29=256 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr688/readback-RTX-1-256-yes-1.log"
+    },
+    {
+      "group": "tracked",
+      "build": "pr688",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "RTX",
+      "repeat": 1,
+      "env": {
+        "PROBE_PIECES": "257",
+        "PROBE_TRACKED_LATER": "yes",
+        "VICTORY_CARD_INLINE_STAGE": "1"
+      },
+      "exit": 101,
+      "values": [
+        "TRACKED pages=257 staged=256 overflow=1 first17=256 first29=1 second29=257 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr688/readback-RTX-1-257-yes-1.log"
+    },
+    {
+      "group": "tracked",
+      "build": "main",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "RTX",
+      "repeat": 1,
+      "env": {
+        "PROBE_PIECES": "16",
+        "PROBE_TRACKED_LATER": "yes",
+        "VICTORY_CARD_FETCH_INFLIGHT": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1"
+      },
+      "exit": 0,
+      "values": [
+        "TRACKED pages=16 staged=0 overflow=0 first17=16 first29=0 second29=16 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "main/readback-RTX-1-16-yes-1-1.log"
+    },
+    {
+      "group": "tracked",
+      "build": "main",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "RTX",
+      "repeat": 1,
+      "env": {
+        "PROBE_PIECES": "17",
+        "PROBE_TRACKED_LATER": "yes",
+        "VICTORY_CARD_FETCH_INFLIGHT": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1"
+      },
+      "exit": 101,
+      "values": [
+        "TRACKED pages=17 staged=0 overflow=0 first17=0 first29=17 second29=17 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "main/readback-RTX-1-17-yes-1-1.log"
+    },
+    {
+      "group": "tracked",
+      "build": "pooled-snapshot",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "RTX",
+      "repeat": 1,
+      "env": {
+        "PROBE_PIECES": "257",
+        "PROBE_TRACKED_LATER": "yes"
+      },
+      "exit": 0,
+      "values": [
+        "TRACKED pages=257 staged=0 overflow=0 first17=257 first29=0 second29=257 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pooled-snapshot/readback-RTX-1-257-yes.log"
+    },
+    {
+      "group": "tracked",
+      "build": "pr688",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "RTX",
+      "repeat": 2,
+      "env": {
+        "PROBE_PIECES": "256",
+        "PROBE_TRACKED_LATER": "yes",
+        "VICTORY_CARD_INLINE_STAGE": "1"
+      },
+      "exit": 0,
+      "values": [
+        "TRACKED pages=256 staged=256 overflow=0 first17=256 first29=0 second29=256 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr688/readback-RTX-2-256-yes-1.log"
+    },
+    {
+      "group": "tracked",
+      "build": "pr688",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "RTX",
+      "repeat": 2,
+      "env": {
+        "PROBE_PIECES": "257",
+        "PROBE_TRACKED_LATER": "yes",
+        "VICTORY_CARD_INLINE_STAGE": "1"
+      },
+      "exit": 101,
+      "values": [
+        "TRACKED pages=257 staged=256 overflow=1 first17=256 first29=1 second29=257 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr688/readback-RTX-2-257-yes-1.log"
+    },
+    {
+      "group": "tracked",
+      "build": "main",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "RTX",
+      "repeat": 2,
+      "env": {
+        "PROBE_PIECES": "16",
+        "PROBE_TRACKED_LATER": "yes",
+        "VICTORY_CARD_FETCH_INFLIGHT": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1"
+      },
+      "exit": 0,
+      "values": [
+        "TRACKED pages=16 staged=0 overflow=0 first17=16 first29=0 second29=16 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "main/readback-RTX-2-16-yes-1-1.log"
+    },
+    {
+      "group": "tracked",
+      "build": "main",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "RTX",
+      "repeat": 2,
+      "env": {
+        "PROBE_PIECES": "17",
+        "PROBE_TRACKED_LATER": "yes",
+        "VICTORY_CARD_FETCH_INFLIGHT": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1"
+      },
+      "exit": 101,
+      "values": [
+        "TRACKED pages=17 staged=0 overflow=0 first17=0 first29=17 second29=17 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "main/readback-RTX-2-17-yes-1-1.log"
+    },
+    {
+      "group": "tracked",
+      "build": "pooled-snapshot",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "RTX",
+      "repeat": 2,
+      "env": {
+        "PROBE_PIECES": "257",
+        "PROBE_TRACKED_LATER": "yes"
+      },
+      "exit": 0,
+      "values": [
+        "TRACKED pages=257 staged=0 overflow=0 first17=257 first29=0 second29=257 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pooled-snapshot/readback-RTX-2-257-yes.log"
+    },
+    {
+      "group": "tracked",
+      "build": "pr688",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "WARP",
+      "repeat": 1,
+      "env": {
+        "PROBE_PIECES": "256",
+        "PROBE_TRACKED_LATER": "yes",
+        "VICTORY_CARD_INLINE_STAGE": "1"
+      },
+      "exit": 0,
+      "values": [
+        "TRACKED pages=256 staged=256 overflow=0 first17=256 first29=0 second29=256 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr688/readback-WARP-1-256-yes-1.log"
+    },
+    {
+      "group": "tracked",
+      "build": "pr688",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "WARP",
+      "repeat": 1,
+      "env": {
+        "PROBE_PIECES": "257",
+        "PROBE_TRACKED_LATER": "yes",
+        "VICTORY_CARD_INLINE_STAGE": "1"
+      },
+      "exit": 101,
+      "values": [
+        "TRACKED pages=257 staged=256 overflow=1 first17=256 first29=1 second29=257 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr688/readback-WARP-1-257-yes-1.log"
+    },
+    {
+      "group": "tracked",
+      "build": "main",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "WARP",
+      "repeat": 1,
+      "env": {
+        "PROBE_PIECES": "16",
+        "PROBE_TRACKED_LATER": "yes",
+        "VICTORY_CARD_FETCH_INFLIGHT": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1"
+      },
+      "exit": 0,
+      "values": [
+        "TRACKED pages=16 staged=0 overflow=0 first17=16 first29=0 second29=16 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "main/readback-WARP-1-16-yes-1-1.log"
+    },
+    {
+      "group": "tracked",
+      "build": "main",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "WARP",
+      "repeat": 1,
+      "env": {
+        "PROBE_PIECES": "17",
+        "PROBE_TRACKED_LATER": "yes",
+        "VICTORY_CARD_FETCH_INFLIGHT": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1"
+      },
+      "exit": 101,
+      "values": [
+        "TRACKED pages=17 staged=0 overflow=0 first17=0 first29=17 second29=17 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "main/readback-WARP-1-17-yes-1-1.log"
+    },
+    {
+      "group": "tracked",
+      "build": "pooled-snapshot",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "WARP",
+      "repeat": 1,
+      "env": {
+        "PROBE_PIECES": "257",
+        "PROBE_TRACKED_LATER": "yes"
+      },
+      "exit": 0,
+      "values": [
+        "TRACKED pages=257 staged=0 overflow=0 first17=257 first29=0 second29=257 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pooled-snapshot/readback-WARP-1-257-yes.log"
+    },
+    {
+      "group": "tracked",
+      "build": "pr688",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "WARP",
+      "repeat": 2,
+      "env": {
+        "PROBE_PIECES": "256",
+        "PROBE_TRACKED_LATER": "yes",
+        "VICTORY_CARD_INLINE_STAGE": "1"
+      },
+      "exit": 0,
+      "values": [
+        "TRACKED pages=256 staged=256 overflow=0 first17=256 first29=0 second29=256 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr688/readback-WARP-2-256-yes-1.log"
+    },
+    {
+      "group": "tracked",
+      "build": "pr688",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "WARP",
+      "repeat": 2,
+      "env": {
+        "PROBE_PIECES": "257",
+        "PROBE_TRACKED_LATER": "yes",
+        "VICTORY_CARD_INLINE_STAGE": "1"
+      },
+      "exit": 101,
+      "values": [
+        "TRACKED pages=257 staged=256 overflow=1 first17=256 first29=1 second29=257 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr688/readback-WARP-2-257-yes-1.log"
+    },
+    {
+      "group": "tracked",
+      "build": "main",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "WARP",
+      "repeat": 2,
+      "env": {
+        "PROBE_PIECES": "16",
+        "PROBE_TRACKED_LATER": "yes",
+        "VICTORY_CARD_FETCH_INFLIGHT": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1"
+      },
+      "exit": 0,
+      "values": [
+        "TRACKED pages=16 staged=0 overflow=0 first17=16 first29=0 second29=16 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "main/readback-WARP-2-16-yes-1-1.log"
+    },
+    {
+      "group": "tracked",
+      "build": "main",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "WARP",
+      "repeat": 2,
+      "env": {
+        "PROBE_PIECES": "17",
+        "PROBE_TRACKED_LATER": "yes",
+        "VICTORY_CARD_FETCH_INFLIGHT": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1"
+      },
+      "exit": 101,
+      "values": [
+        "TRACKED pages=17 staged=0 overflow=0 first17=0 first29=17 second29=17 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "main/readback-WARP-2-17-yes-1-1.log"
+    },
+    {
+      "group": "tracked",
+      "build": "pooled-snapshot",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "WARP",
+      "repeat": 2,
+      "env": {
+        "PROBE_PIECES": "257",
+        "PROBE_TRACKED_LATER": "yes"
+      },
+      "exit": 0,
+      "values": [
+        "TRACKED pages=257 staged=0 overflow=0 first17=257 first29=0 second29=257 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pooled-snapshot/readback-WARP-2-257-yes.log"
+    },
+    {
+      "group": "wait",
+      "build": "main",
+      "test": "list::pending_overwrite_goes_through_the_queue_predicate",
+      "adapter": "CPU",
+      "repeat": 1,
+      "env": {
+        "VICTORY_LATE_WAIT": "1"
+      },
+      "exit": 101,
+      "values": [
+        "WAIT (prediction,queue) [(false, true), (true, true), (true, true), (true, true)]"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "main/wait-CPU-1-1.log"
+    },
+    {
+      "group": "wait",
+      "build": "main",
+      "test": "list::pending_overwrite_goes_through_the_queue_predicate",
+      "adapter": "CPU",
+      "repeat": 2,
+      "env": {
+        "VICTORY_LATE_WAIT": "1"
+      },
+      "exit": 101,
+      "values": [
+        "WAIT (prediction,queue) [(false, true), (true, true), (true, true), (true, true)]"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "main/wait-CPU-2-1.log"
+    },
+    {
+      "group": "wait",
+      "build": "pr785",
+      "test": "list::pending_overwrite_goes_through_the_queue_predicate",
+      "adapter": "CPU",
+      "repeat": 1,
+      "env": {
+        "VICTORY_LATE_WAIT": "1"
+      },
+      "exit": 101,
+      "values": [
+        "WAIT (prediction,queue) [(false, true), (true, true), (false, false), (false, true)]"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr785/wait-CPU-1-1.log"
+    },
+    {
+      "group": "wait",
+      "build": "pr785",
+      "test": "list::pending_overwrite_goes_through_the_queue_predicate",
+      "adapter": "CPU",
+      "repeat": 2,
+      "env": {
+        "VICTORY_LATE_WAIT": "1"
+      },
+      "exit": 101,
+      "values": [
+        "WAIT (prediction,queue) [(false, true), (true, true), (false, false), (false, true)]"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr785/wait-CPU-2-1.log"
+    },
+    {
+      "group": "exact648",
+      "build": "pr648",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "RTX",
+      "repeat": 1,
+      "env": {
+        "PROBE_PIECES": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1"
+      },
+      "exit": 0,
+      "values": [
+        "BYTES pages=1 staged=0 overflow=0 first17=1 first29=0 unchanged_flags=0 second17=1 second29=0 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr648/readback-RTX-1-1-1-1.log"
+    },
+    {
+      "group": "exact648",
+      "build": "pr648",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "RTX",
+      "repeat": 1,
+      "env": {
+        "PROBE_PIECES": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1",
+        "PROBE_TRACKED_LATER": "yes"
+      },
+      "exit": 0,
+      "values": [
+        "TRACKED pages=1 staged=0 overflow=0 first17=1 first29=0 second29=1 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr648/readback-RTX-1-1-1-1-yes.log"
+    },
+    {
+      "group": "exact648",
+      "build": "pr648",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "RTX",
+      "repeat": 1,
+      "env": {
+        "PROBE_PIECES": "4",
+        "VICTORY_CARD_FETCH_INFLIGHT": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1"
+      },
+      "exit": 0,
+      "values": [
+        "BYTES pages=4 staged=0 overflow=0 first17=4 first29=0 unchanged_flags=0 second17=4 second29=0 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr648/readback-RTX-1-4-1-1.log"
+    },
+    {
+      "group": "exact648",
+      "build": "pr648",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "RTX",
+      "repeat": 1,
+      "env": {
+        "PROBE_PIECES": "4",
+        "VICTORY_CARD_FETCH_INFLIGHT": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1",
+        "PROBE_TRACKED_LATER": "yes"
+      },
+      "exit": 0,
+      "values": [
+        "TRACKED pages=4 staged=0 overflow=0 first17=4 first29=0 second29=4 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr648/readback-RTX-1-4-1-1-yes.log"
+    },
+    {
+      "group": "exact648",
+      "build": "pr648",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "RTX",
+      "repeat": 1,
+      "env": {
+        "PROBE_PIECES": "5",
+        "VICTORY_CARD_FETCH_INFLIGHT": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1"
+      },
+      "exit": 101,
+      "values": [
+        "BYTES pages=5 staged=0 overflow=0 first17=4 first29=1 unchanged_flags=0 second17=4 second29=1 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr648/readback-RTX-1-5-1-1.log"
+    },
+    {
+      "group": "exact648",
+      "build": "pr648",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "RTX",
+      "repeat": 1,
+      "env": {
+        "PROBE_PIECES": "5",
+        "VICTORY_CARD_FETCH_INFLIGHT": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1",
+        "PROBE_TRACKED_LATER": "yes"
+      },
+      "exit": 101,
+      "values": [
+        "TRACKED pages=5 staged=0 overflow=0 first17=4 first29=1 second29=5 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr648/readback-RTX-1-5-1-1-yes.log"
+    },
+    {
+      "group": "exact648",
+      "build": "pr648",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "RTX",
+      "repeat": 1,
+      "env": {
+        "PROBE_PIECES": "16",
+        "VICTORY_CARD_FETCH_INFLIGHT": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1"
+      },
+      "exit": 101,
+      "values": [
+        "BYTES pages=16 staged=0 overflow=0 first17=4 first29=12 unchanged_flags=0 second17=4 second29=12 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr648/readback-RTX-1-16-1-1.log"
+    },
+    {
+      "group": "exact648",
+      "build": "pr648",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "RTX",
+      "repeat": 1,
+      "env": {
+        "PROBE_PIECES": "16",
+        "VICTORY_CARD_FETCH_INFLIGHT": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1",
+        "PROBE_TRACKED_LATER": "yes"
+      },
+      "exit": 101,
+      "values": [
+        "TRACKED pages=16 staged=0 overflow=0 first17=4 first29=12 second29=16 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr648/readback-RTX-1-16-1-1-yes.log"
+    },
+    {
+      "group": "exact648",
+      "build": "pr648",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "RTX",
+      "repeat": 1,
+      "env": {
+        "PROBE_PIECES": "17",
+        "VICTORY_CARD_FETCH_INFLIGHT": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1"
+      },
+      "exit": 101,
+      "values": [
+        "BYTES pages=17 staged=0 overflow=0 first17=4 first29=13 unchanged_flags=0 second17=4 second29=13 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr648/readback-RTX-1-17-1-1.log"
+    },
+    {
+      "group": "exact648",
+      "build": "pr648",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "RTX",
+      "repeat": 1,
+      "env": {
+        "PROBE_PIECES": "17",
+        "VICTORY_CARD_FETCH_INFLIGHT": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1",
+        "PROBE_TRACKED_LATER": "yes"
+      },
+      "exit": 101,
+      "values": [
+        "TRACKED pages=17 staged=0 overflow=0 first17=4 first29=13 second29=17 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr648/readback-RTX-1-17-1-1-yes.log"
+    },
+    {
+      "group": "exact648",
+      "build": "pr648",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "RTX",
+      "repeat": 2,
+      "env": {
+        "PROBE_PIECES": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1"
+      },
+      "exit": 0,
+      "values": [
+        "BYTES pages=1 staged=0 overflow=0 first17=1 first29=0 unchanged_flags=0 second17=1 second29=0 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr648/readback-RTX-2-1-1-1.log"
+    },
+    {
+      "group": "exact648",
+      "build": "pr648",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "RTX",
+      "repeat": 2,
+      "env": {
+        "PROBE_PIECES": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1",
+        "PROBE_TRACKED_LATER": "yes"
+      },
+      "exit": 0,
+      "values": [
+        "TRACKED pages=1 staged=0 overflow=0 first17=1 first29=0 second29=1 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr648/readback-RTX-2-1-1-1-yes.log"
+    },
+    {
+      "group": "exact648",
+      "build": "pr648",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "RTX",
+      "repeat": 2,
+      "env": {
+        "PROBE_PIECES": "4",
+        "VICTORY_CARD_FETCH_INFLIGHT": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1"
+      },
+      "exit": 0,
+      "values": [
+        "BYTES pages=4 staged=0 overflow=0 first17=4 first29=0 unchanged_flags=0 second17=4 second29=0 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr648/readback-RTX-2-4-1-1.log"
+    },
+    {
+      "group": "exact648",
+      "build": "pr648",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "RTX",
+      "repeat": 2,
+      "env": {
+        "PROBE_PIECES": "4",
+        "VICTORY_CARD_FETCH_INFLIGHT": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1",
+        "PROBE_TRACKED_LATER": "yes"
+      },
+      "exit": 0,
+      "values": [
+        "TRACKED pages=4 staged=0 overflow=0 first17=4 first29=0 second29=4 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr648/readback-RTX-2-4-1-1-yes.log"
+    },
+    {
+      "group": "exact648",
+      "build": "pr648",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "RTX",
+      "repeat": 2,
+      "env": {
+        "PROBE_PIECES": "5",
+        "VICTORY_CARD_FETCH_INFLIGHT": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1"
+      },
+      "exit": 101,
+      "values": [
+        "BYTES pages=5 staged=0 overflow=0 first17=4 first29=1 unchanged_flags=0 second17=4 second29=1 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr648/readback-RTX-2-5-1-1.log"
+    },
+    {
+      "group": "exact648",
+      "build": "pr648",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "RTX",
+      "repeat": 2,
+      "env": {
+        "PROBE_PIECES": "5",
+        "VICTORY_CARD_FETCH_INFLIGHT": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1",
+        "PROBE_TRACKED_LATER": "yes"
+      },
+      "exit": 101,
+      "values": [
+        "TRACKED pages=5 staged=0 overflow=0 first17=4 first29=1 second29=5 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr648/readback-RTX-2-5-1-1-yes.log"
+    },
+    {
+      "group": "exact648",
+      "build": "pr648",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "RTX",
+      "repeat": 2,
+      "env": {
+        "PROBE_PIECES": "16",
+        "VICTORY_CARD_FETCH_INFLIGHT": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1"
+      },
+      "exit": 101,
+      "values": [
+        "BYTES pages=16 staged=0 overflow=0 first17=4 first29=12 unchanged_flags=0 second17=4 second29=12 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr648/readback-RTX-2-16-1-1.log"
+    },
+    {
+      "group": "exact648",
+      "build": "pr648",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "RTX",
+      "repeat": 2,
+      "env": {
+        "PROBE_PIECES": "16",
+        "VICTORY_CARD_FETCH_INFLIGHT": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1",
+        "PROBE_TRACKED_LATER": "yes"
+      },
+      "exit": 101,
+      "values": [
+        "TRACKED pages=16 staged=0 overflow=0 first17=4 first29=12 second29=16 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr648/readback-RTX-2-16-1-1-yes.log"
+    },
+    {
+      "group": "exact648",
+      "build": "pr648",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "RTX",
+      "repeat": 2,
+      "env": {
+        "PROBE_PIECES": "17",
+        "VICTORY_CARD_FETCH_INFLIGHT": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1"
+      },
+      "exit": 101,
+      "values": [
+        "BYTES pages=17 staged=0 overflow=0 first17=4 first29=13 unchanged_flags=0 second17=4 second29=13 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr648/readback-RTX-2-17-1-1.log"
+    },
+    {
+      "group": "exact648",
+      "build": "pr648",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "RTX",
+      "repeat": 2,
+      "env": {
+        "PROBE_PIECES": "17",
+        "VICTORY_CARD_FETCH_INFLIGHT": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1",
+        "PROBE_TRACKED_LATER": "yes"
+      },
+      "exit": 101,
+      "values": [
+        "TRACKED pages=17 staged=0 overflow=0 first17=4 first29=13 second29=17 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr648/readback-RTX-2-17-1-1-yes.log"
+    },
+    {
+      "group": "exact648",
+      "build": "pr648",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "WARP",
+      "repeat": 1,
+      "env": {
+        "PROBE_PIECES": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1"
+      },
+      "exit": 0,
+      "values": [
+        "BYTES pages=1 staged=0 overflow=0 first17=1 first29=0 unchanged_flags=0 second17=1 second29=0 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr648/readback-WARP-1-1-1-1.log"
+    },
+    {
+      "group": "exact648",
+      "build": "pr648",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "WARP",
+      "repeat": 1,
+      "env": {
+        "PROBE_PIECES": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1",
+        "PROBE_TRACKED_LATER": "yes"
+      },
+      "exit": 0,
+      "values": [
+        "TRACKED pages=1 staged=0 overflow=0 first17=1 first29=0 second29=1 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr648/readback-WARP-1-1-1-1-yes.log"
+    },
+    {
+      "group": "exact648",
+      "build": "pr648",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "WARP",
+      "repeat": 1,
+      "env": {
+        "PROBE_PIECES": "4",
+        "VICTORY_CARD_FETCH_INFLIGHT": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1"
+      },
+      "exit": 0,
+      "values": [
+        "BYTES pages=4 staged=0 overflow=0 first17=4 first29=0 unchanged_flags=0 second17=4 second29=0 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr648/readback-WARP-1-4-1-1.log"
+    },
+    {
+      "group": "exact648",
+      "build": "pr648",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "WARP",
+      "repeat": 1,
+      "env": {
+        "PROBE_PIECES": "4",
+        "VICTORY_CARD_FETCH_INFLIGHT": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1",
+        "PROBE_TRACKED_LATER": "yes"
+      },
+      "exit": 0,
+      "values": [
+        "TRACKED pages=4 staged=0 overflow=0 first17=4 first29=0 second29=4 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr648/readback-WARP-1-4-1-1-yes.log"
+    },
+    {
+      "group": "exact648",
+      "build": "pr648",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "WARP",
+      "repeat": 1,
+      "env": {
+        "PROBE_PIECES": "5",
+        "VICTORY_CARD_FETCH_INFLIGHT": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1"
+      },
+      "exit": 101,
+      "values": [
+        "BYTES pages=5 staged=0 overflow=0 first17=4 first29=1 unchanged_flags=0 second17=4 second29=1 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr648/readback-WARP-1-5-1-1.log"
+    },
+    {
+      "group": "exact648",
+      "build": "pr648",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "WARP",
+      "repeat": 1,
+      "env": {
+        "PROBE_PIECES": "5",
+        "VICTORY_CARD_FETCH_INFLIGHT": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1",
+        "PROBE_TRACKED_LATER": "yes"
+      },
+      "exit": 101,
+      "values": [
+        "TRACKED pages=5 staged=0 overflow=0 first17=4 first29=1 second29=5 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr648/readback-WARP-1-5-1-1-yes.log"
+    },
+    {
+      "group": "exact648",
+      "build": "pr648",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "WARP",
+      "repeat": 1,
+      "env": {
+        "PROBE_PIECES": "16",
+        "VICTORY_CARD_FETCH_INFLIGHT": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1"
+      },
+      "exit": 101,
+      "values": [
+        "BYTES pages=16 staged=0 overflow=0 first17=4 first29=12 unchanged_flags=0 second17=4 second29=12 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr648/readback-WARP-1-16-1-1.log"
+    },
+    {
+      "group": "exact648",
+      "build": "pr648",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "WARP",
+      "repeat": 1,
+      "env": {
+        "PROBE_PIECES": "16",
+        "VICTORY_CARD_FETCH_INFLIGHT": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1",
+        "PROBE_TRACKED_LATER": "yes"
+      },
+      "exit": 101,
+      "values": [
+        "TRACKED pages=16 staged=0 overflow=0 first17=4 first29=12 second29=16 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr648/readback-WARP-1-16-1-1-yes.log"
+    },
+    {
+      "group": "exact648",
+      "build": "pr648",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "WARP",
+      "repeat": 1,
+      "env": {
+        "PROBE_PIECES": "17",
+        "VICTORY_CARD_FETCH_INFLIGHT": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1"
+      },
+      "exit": 101,
+      "values": [
+        "BYTES pages=17 staged=0 overflow=0 first17=4 first29=13 unchanged_flags=0 second17=4 second29=13 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr648/readback-WARP-1-17-1-1.log"
+    },
+    {
+      "group": "exact648",
+      "build": "pr648",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "WARP",
+      "repeat": 1,
+      "env": {
+        "PROBE_PIECES": "17",
+        "VICTORY_CARD_FETCH_INFLIGHT": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1",
+        "PROBE_TRACKED_LATER": "yes"
+      },
+      "exit": 101,
+      "values": [
+        "TRACKED pages=17 staged=0 overflow=0 first17=4 first29=13 second29=17 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr648/readback-WARP-1-17-1-1-yes.log"
+    },
+    {
+      "group": "exact648",
+      "build": "pr648",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "WARP",
+      "repeat": 2,
+      "env": {
+        "PROBE_PIECES": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1"
+      },
+      "exit": 0,
+      "values": [
+        "BYTES pages=1 staged=0 overflow=0 first17=1 first29=0 unchanged_flags=0 second17=1 second29=0 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr648/readback-WARP-2-1-1-1.log"
+    },
+    {
+      "group": "exact648",
+      "build": "pr648",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "WARP",
+      "repeat": 2,
+      "env": {
+        "PROBE_PIECES": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1",
+        "PROBE_TRACKED_LATER": "yes"
+      },
+      "exit": 0,
+      "values": [
+        "TRACKED pages=1 staged=0 overflow=0 first17=1 first29=0 second29=1 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr648/readback-WARP-2-1-1-1-yes.log"
+    },
+    {
+      "group": "exact648",
+      "build": "pr648",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "WARP",
+      "repeat": 2,
+      "env": {
+        "PROBE_PIECES": "4",
+        "VICTORY_CARD_FETCH_INFLIGHT": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1"
+      },
+      "exit": 0,
+      "values": [
+        "BYTES pages=4 staged=0 overflow=0 first17=4 first29=0 unchanged_flags=0 second17=4 second29=0 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr648/readback-WARP-2-4-1-1.log"
+    },
+    {
+      "group": "exact648",
+      "build": "pr648",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "WARP",
+      "repeat": 2,
+      "env": {
+        "PROBE_PIECES": "4",
+        "VICTORY_CARD_FETCH_INFLIGHT": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1",
+        "PROBE_TRACKED_LATER": "yes"
+      },
+      "exit": 0,
+      "values": [
+        "TRACKED pages=4 staged=0 overflow=0 first17=4 first29=0 second29=4 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr648/readback-WARP-2-4-1-1-yes.log"
+    },
+    {
+      "group": "exact648",
+      "build": "pr648",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "WARP",
+      "repeat": 2,
+      "env": {
+        "PROBE_PIECES": "5",
+        "VICTORY_CARD_FETCH_INFLIGHT": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1"
+      },
+      "exit": 101,
+      "values": [
+        "BYTES pages=5 staged=0 overflow=0 first17=4 first29=1 unchanged_flags=0 second17=4 second29=1 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr648/readback-WARP-2-5-1-1.log"
+    },
+    {
+      "group": "exact648",
+      "build": "pr648",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "WARP",
+      "repeat": 2,
+      "env": {
+        "PROBE_PIECES": "5",
+        "VICTORY_CARD_FETCH_INFLIGHT": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1",
+        "PROBE_TRACKED_LATER": "yes"
+      },
+      "exit": 101,
+      "values": [
+        "TRACKED pages=5 staged=0 overflow=0 first17=4 first29=1 second29=5 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr648/readback-WARP-2-5-1-1-yes.log"
+    },
+    {
+      "group": "exact648",
+      "build": "pr648",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "WARP",
+      "repeat": 2,
+      "env": {
+        "PROBE_PIECES": "16",
+        "VICTORY_CARD_FETCH_INFLIGHT": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1"
+      },
+      "exit": 101,
+      "values": [
+        "BYTES pages=16 staged=0 overflow=0 first17=4 first29=12 unchanged_flags=0 second17=4 second29=12 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr648/readback-WARP-2-16-1-1.log"
+    },
+    {
+      "group": "exact648",
+      "build": "pr648",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "WARP",
+      "repeat": 2,
+      "env": {
+        "PROBE_PIECES": "16",
+        "VICTORY_CARD_FETCH_INFLIGHT": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1",
+        "PROBE_TRACKED_LATER": "yes"
+      },
+      "exit": 101,
+      "values": [
+        "TRACKED pages=16 staged=0 overflow=0 first17=4 first29=12 second29=16 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr648/readback-WARP-2-16-1-1-yes.log"
+    },
+    {
+      "group": "exact648",
+      "build": "pr648",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "WARP",
+      "repeat": 2,
+      "env": {
+        "PROBE_PIECES": "17",
+        "VICTORY_CARD_FETCH_INFLIGHT": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1"
+      },
+      "exit": 101,
+      "values": [
+        "BYTES pages=17 staged=0 overflow=0 first17=4 first29=13 unchanged_flags=0 second17=4 second29=13 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr648/readback-WARP-2-17-1-1.log"
+    },
+    {
+      "group": "exact648",
+      "build": "pr648",
+      "test": "host::followup_readback::changed_pieces_preserve_the_producer_after_a_later_direct_write",
+      "adapter": "WARP",
+      "repeat": 2,
+      "env": {
+        "PROBE_PIECES": "17",
+        "VICTORY_CARD_FETCH_INFLIGHT": "1",
+        "VICTORY_CARD_FETCH_INFLIGHT_MB": "1",
+        "PROBE_TRACKED_LATER": "yes"
+      },
+      "exit": 101,
+      "values": [
+        "TRACKED pages=17 staged=0 overflow=0 first17=4 first29=13 second29=17 debug_error=None"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr648/readback-WARP-2-17-1-1-yes.log"
+    },
+    {
+      "group": "bench",
+      "build": "original-snapshot",
+      "test": "host::followup_pool_bench::repeated_flights_measure_committed_snapshot_creation",
+      "adapter": "RTX",
+      "repeat": 1,
+      "env": {},
+      "exit": 0,
+      "values": [
+        "POOL device=10de:1f06 flights=48 verified=48 created=48 created_bytes=188743680 wall_us=117298"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "original-snapshot/bench-RTX-1.log"
+    },
+    {
+      "group": "bench",
+      "build": "pooled-snapshot",
+      "test": "host::followup_pool_bench::repeated_flights_measure_committed_snapshot_creation",
+      "adapter": "RTX",
+      "repeat": 1,
+      "env": {},
+      "exit": 0,
+      "values": [
+        "POOL device=10de:1f06 flights=48 verified=48 created=0 created_bytes=0 wall_us=85132"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pooled-snapshot/bench-RTX-1.log"
+    },
+    {
+      "group": "bench",
+      "build": "pooled-snapshot",
+      "test": "host::followup_pool_bench::repeated_flights_measure_committed_snapshot_creation",
+      "adapter": "RTX",
+      "repeat": 2,
+      "env": {},
+      "exit": 0,
+      "values": [
+        "POOL device=10de:1f06 flights=48 verified=48 created=0 created_bytes=0 wall_us=81852"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pooled-snapshot/bench-RTX-2.log"
+    },
+    {
+      "group": "bench",
+      "build": "original-snapshot",
+      "test": "host::followup_pool_bench::repeated_flights_measure_committed_snapshot_creation",
+      "adapter": "RTX",
+      "repeat": 2,
+      "env": {},
+      "exit": 0,
+      "values": [
+        "POOL device=10de:1f06 flights=48 verified=48 created=48 created_bytes=188743680 wall_us=116321"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "original-snapshot/bench-RTX-2.log"
+    },
+    {
+      "group": "bench",
+      "build": "original-snapshot",
+      "test": "host::followup_pool_bench::repeated_flights_measure_committed_snapshot_creation",
+      "adapter": "RTX",
+      "repeat": 3,
+      "env": {},
+      "exit": 0,
+      "values": [
+        "POOL device=10de:1f06 flights=48 verified=48 created=48 created_bytes=188743680 wall_us=122727"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "original-snapshot/bench-RTX-3.log"
+    },
+    {
+      "group": "bench",
+      "build": "pooled-snapshot",
+      "test": "host::followup_pool_bench::repeated_flights_measure_committed_snapshot_creation",
+      "adapter": "RTX",
+      "repeat": 3,
+      "env": {},
+      "exit": 0,
+      "values": [
+        "POOL device=10de:1f06 flights=48 verified=48 created=0 created_bytes=0 wall_us=73945"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pooled-snapshot/bench-RTX-3.log"
+    },
+    {
+      "group": "bench",
+      "build": "original-snapshot",
+      "test": "host::followup_pool_bench::repeated_flights_measure_committed_snapshot_creation",
+      "adapter": "WARP",
+      "repeat": 1,
+      "env": {},
+      "exit": 0,
+      "values": [
+        "POOL device=1414:008c flights=48 verified=48 created=48 created_bytes=188743680 wall_us=116944"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "original-snapshot/bench-WARP-1.log"
+    },
+    {
+      "group": "bench",
+      "build": "pooled-snapshot",
+      "test": "host::followup_pool_bench::repeated_flights_measure_committed_snapshot_creation",
+      "adapter": "WARP",
+      "repeat": 1,
+      "env": {},
+      "exit": 0,
+      "values": [
+        "POOL device=1414:008c flights=48 verified=48 created=0 created_bytes=0 wall_us=103540"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pooled-snapshot/bench-WARP-1.log"
+    },
+    {
+      "group": "bench",
+      "build": "pooled-snapshot",
+      "test": "host::followup_pool_bench::repeated_flights_measure_committed_snapshot_creation",
+      "adapter": "WARP",
+      "repeat": 2,
+      "env": {},
+      "exit": 0,
+      "values": [
+        "POOL device=1414:008c flights=48 verified=48 created=0 created_bytes=0 wall_us=103753"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pooled-snapshot/bench-WARP-2.log"
+    },
+    {
+      "group": "bench",
+      "build": "original-snapshot",
+      "test": "host::followup_pool_bench::repeated_flights_measure_committed_snapshot_creation",
+      "adapter": "WARP",
+      "repeat": 2,
+      "env": {},
+      "exit": 0,
+      "values": [
+        "POOL device=1414:008c flights=48 verified=48 created=48 created_bytes=188743680 wall_us=118875"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "original-snapshot/bench-WARP-2.log"
+    },
+    {
+      "group": "bench",
+      "build": "original-snapshot",
+      "test": "host::followup_pool_bench::repeated_flights_measure_committed_snapshot_creation",
+      "adapter": "WARP",
+      "repeat": 3,
+      "env": {},
+      "exit": 0,
+      "values": [
+        "POOL device=1414:008c flights=48 verified=48 created=48 created_bytes=188743680 wall_us=114888"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "original-snapshot/bench-WARP-3.log"
+    },
+    {
+      "group": "bench",
+      "build": "pooled-snapshot",
+      "test": "host::followup_pool_bench::repeated_flights_measure_committed_snapshot_creation",
+      "adapter": "WARP",
+      "repeat": 3,
+      "env": {},
+      "exit": 0,
+      "values": [
+        "POOL device=1414:008c flights=48 verified=48 created=0 created_bytes=0 wall_us=104429"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pooled-snapshot/bench-WARP-3.log"
+    },
+    {
+      "group": "others",
+      "build": "pr438-tests",
+      "test": "watch::tests::actual_shadow_readbacks_follow_each_alias",
+      "adapter": "RTX",
+      "repeat": 1,
+      "env": {},
+      "exit": 0,
+      "values": [],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr438-tests/actual_shadow_readbacks_follow_each_alias-RTX-1.log"
+    },
+    {
+      "group": "others",
+      "build": "pr438-tests",
+      "test": "watch::tests::kernel_destination_stays_writable_until_a_synchronous_read_returns",
+      "adapter": "RTX",
+      "repeat": 1,
+      "env": {},
+      "exit": 0,
+      "values": [],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr438-tests/kernel_destination_stays_writable_until_a_synchronous_read_returns-RTX-1.log"
+    },
+    {
+      "group": "others",
+      "build": "pr438-tests",
+      "test": "watch::alias_epoch_regression::both_alias_consumers_observe_a_write",
+      "adapter": "RTX",
+      "repeat": 1,
+      "env": {},
+      "exit": 0,
+      "values": [],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr438-tests/both_alias_consumers_observe_a_write-RTX-1.log"
+    },
+    {
+      "group": "others",
+      "build": "pr662-local-merge",
+      "test": "pipeline::make::indirect_review_tests::audit_render_indirect",
+      "adapter": "RTX",
+      "repeat": 1,
+      "env": {
+        "VICTORY_INDIRECT_WINDOW": "0"
+      },
+      "exit": 0,
+      "values": [],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr662-local-merge/raster-RTX-1-0.log"
+    },
+    {
+      "group": "others",
+      "build": "pr662-local-merge",
+      "test": "descriptor::host::tests::shader_view_limit_fits_the_reported_heap",
+      "adapter": "RTX",
+      "repeat": 1,
+      "env": {
+        "VICTORY_INDIRECT_WINDOW": "0"
+      },
+      "exit": 0,
+      "values": [],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr662-local-merge/heap-RTX-1-0.log"
+    },
+    {
+      "group": "others",
+      "build": "pr663-local-merge",
+      "test": "pipeline::make::indirect_review_tests::copied_arguments_replace_a_prefetched_record",
+      "adapter": "RTX",
+      "repeat": 1,
+      "env": {
+        "VICTORY_INDIRECT_WINDOW": "1"
+      },
+      "exit": 0,
+      "values": [
+        "COPY_READBACK ia_vertices=6"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr663-local-merge/copy-RTX-1-1.log"
+    },
+    {
+      "group": "others",
+      "build": "pr663-local-merge",
+      "test": "host::late_tests::indirect_window_ends_at_a_copy_or_unknown_writer",
+      "adapter": "RTX",
+      "repeat": 1,
+      "env": {
+        "VICTORY_INDIRECT_WINDOW": "0"
+      },
+      "exit": 0,
+      "values": [],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr663-local-merge/window-RTX-1-0.log"
+    },
+    {
+      "group": "others",
+      "build": "pr438-tests",
+      "test": "watch::tests::actual_shadow_readbacks_follow_each_alias",
+      "adapter": "RTX",
+      "repeat": 2,
+      "env": {},
+      "exit": 0,
+      "values": [],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr438-tests/actual_shadow_readbacks_follow_each_alias-RTX-2.log"
+    },
+    {
+      "group": "others",
+      "build": "pr438-tests",
+      "test": "watch::tests::kernel_destination_stays_writable_until_a_synchronous_read_returns",
+      "adapter": "RTX",
+      "repeat": 2,
+      "env": {},
+      "exit": 0,
+      "values": [],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr438-tests/kernel_destination_stays_writable_until_a_synchronous_read_returns-RTX-2.log"
+    },
+    {
+      "group": "others",
+      "build": "pr438-tests",
+      "test": "watch::alias_epoch_regression::both_alias_consumers_observe_a_write",
+      "adapter": "RTX",
+      "repeat": 2,
+      "env": {},
+      "exit": 0,
+      "values": [],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr438-tests/both_alias_consumers_observe_a_write-RTX-2.log"
+    },
+    {
+      "group": "others",
+      "build": "pr662-local-merge",
+      "test": "pipeline::make::indirect_review_tests::audit_render_indirect",
+      "adapter": "RTX",
+      "repeat": 2,
+      "env": {
+        "VICTORY_INDIRECT_WINDOW": "0"
+      },
+      "exit": 0,
+      "values": [],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr662-local-merge/raster-RTX-2-0.log"
+    },
+    {
+      "group": "others",
+      "build": "pr662-local-merge",
+      "test": "descriptor::host::tests::shader_view_limit_fits_the_reported_heap",
+      "adapter": "RTX",
+      "repeat": 2,
+      "env": {
+        "VICTORY_INDIRECT_WINDOW": "0"
+      },
+      "exit": 0,
+      "values": [],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr662-local-merge/heap-RTX-2-0.log"
+    },
+    {
+      "group": "others",
+      "build": "pr663-local-merge",
+      "test": "pipeline::make::indirect_review_tests::copied_arguments_replace_a_prefetched_record",
+      "adapter": "RTX",
+      "repeat": 2,
+      "env": {
+        "VICTORY_INDIRECT_WINDOW": "1"
+      },
+      "exit": 0,
+      "values": [
+        "COPY_READBACK ia_vertices=6"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr663-local-merge/copy-RTX-2-1.log"
+    },
+    {
+      "group": "others",
+      "build": "pr663-local-merge",
+      "test": "host::late_tests::indirect_window_ends_at_a_copy_or_unknown_writer",
+      "adapter": "RTX",
+      "repeat": 2,
+      "env": {
+        "VICTORY_INDIRECT_WINDOW": "0"
+      },
+      "exit": 0,
+      "values": [],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr663-local-merge/window-RTX-2-0.log"
+    },
+    {
+      "group": "others",
+      "build": "pr438-tests",
+      "test": "watch::tests::actual_shadow_readbacks_follow_each_alias",
+      "adapter": "WARP",
+      "repeat": 1,
+      "env": {},
+      "exit": 0,
+      "values": [],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr438-tests/actual_shadow_readbacks_follow_each_alias-WARP-1.log"
+    },
+    {
+      "group": "others",
+      "build": "pr438-tests",
+      "test": "watch::tests::kernel_destination_stays_writable_until_a_synchronous_read_returns",
+      "adapter": "WARP",
+      "repeat": 1,
+      "env": {},
+      "exit": 0,
+      "values": [],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr438-tests/kernel_destination_stays_writable_until_a_synchronous_read_returns-WARP-1.log"
+    },
+    {
+      "group": "others",
+      "build": "pr438-tests",
+      "test": "watch::alias_epoch_regression::both_alias_consumers_observe_a_write",
+      "adapter": "WARP",
+      "repeat": 1,
+      "env": {},
+      "exit": 0,
+      "values": [],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr438-tests/both_alias_consumers_observe_a_write-WARP-1.log"
+    },
+    {
+      "group": "others",
+      "build": "pr662-local-merge",
+      "test": "pipeline::make::indirect_review_tests::audit_render_indirect",
+      "adapter": "WARP",
+      "repeat": 1,
+      "env": {
+        "VICTORY_INDIRECT_WINDOW": "0"
+      },
+      "exit": 0,
+      "values": [],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr662-local-merge/raster-WARP-1-0.log"
+    },
+    {
+      "group": "others",
+      "build": "pr662-local-merge",
+      "test": "descriptor::host::tests::shader_view_limit_fits_the_reported_heap",
+      "adapter": "WARP",
+      "repeat": 1,
+      "env": {
+        "VICTORY_INDIRECT_WINDOW": "0"
+      },
+      "exit": 0,
+      "values": [],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr662-local-merge/heap-WARP-1-0.log"
+    },
+    {
+      "group": "others",
+      "build": "pr663-local-merge",
+      "test": "pipeline::make::indirect_review_tests::copied_arguments_replace_a_prefetched_record",
+      "adapter": "WARP",
+      "repeat": 1,
+      "env": {
+        "VICTORY_INDIRECT_WINDOW": "1"
+      },
+      "exit": 0,
+      "values": [
+        "COPY_READBACK ia_vertices=6"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr663-local-merge/copy-WARP-1-1.log"
+    },
+    {
+      "group": "others",
+      "build": "pr663-local-merge",
+      "test": "host::late_tests::indirect_window_ends_at_a_copy_or_unknown_writer",
+      "adapter": "WARP",
+      "repeat": 1,
+      "env": {
+        "VICTORY_INDIRECT_WINDOW": "0"
+      },
+      "exit": 0,
+      "values": [],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr663-local-merge/window-WARP-1-0.log"
+    },
+    {
+      "group": "others",
+      "build": "pr438-tests",
+      "test": "watch::tests::actual_shadow_readbacks_follow_each_alias",
+      "adapter": "WARP",
+      "repeat": 2,
+      "env": {},
+      "exit": 0,
+      "values": [],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr438-tests/actual_shadow_readbacks_follow_each_alias-WARP-2.log"
+    },
+    {
+      "group": "others",
+      "build": "pr438-tests",
+      "test": "watch::tests::kernel_destination_stays_writable_until_a_synchronous_read_returns",
+      "adapter": "WARP",
+      "repeat": 2,
+      "env": {},
+      "exit": 0,
+      "values": [],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr438-tests/kernel_destination_stays_writable_until_a_synchronous_read_returns-WARP-2.log"
+    },
+    {
+      "group": "others",
+      "build": "pr438-tests",
+      "test": "watch::alias_epoch_regression::both_alias_consumers_observe_a_write",
+      "adapter": "WARP",
+      "repeat": 2,
+      "env": {},
+      "exit": 0,
+      "values": [],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr438-tests/both_alias_consumers_observe_a_write-WARP-2.log"
+    },
+    {
+      "group": "others",
+      "build": "pr662-local-merge",
+      "test": "pipeline::make::indirect_review_tests::audit_render_indirect",
+      "adapter": "WARP",
+      "repeat": 2,
+      "env": {
+        "VICTORY_INDIRECT_WINDOW": "0"
+      },
+      "exit": 0,
+      "values": [],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr662-local-merge/raster-WARP-2-0.log"
+    },
+    {
+      "group": "others",
+      "build": "pr662-local-merge",
+      "test": "descriptor::host::tests::shader_view_limit_fits_the_reported_heap",
+      "adapter": "WARP",
+      "repeat": 2,
+      "env": {
+        "VICTORY_INDIRECT_WINDOW": "0"
+      },
+      "exit": 0,
+      "values": [],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr662-local-merge/heap-WARP-2-0.log"
+    },
+    {
+      "group": "others",
+      "build": "pr663-local-merge",
+      "test": "pipeline::make::indirect_review_tests::copied_arguments_replace_a_prefetched_record",
+      "adapter": "WARP",
+      "repeat": 2,
+      "env": {
+        "VICTORY_INDIRECT_WINDOW": "1"
+      },
+      "exit": 0,
+      "values": [
+        "COPY_READBACK ia_vertices=6"
+      ],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr663-local-merge/copy-WARP-2-1.log"
+    },
+    {
+      "group": "others",
+      "build": "pr663-local-merge",
+      "test": "host::late_tests::indirect_window_ends_at_a_copy_or_unknown_writer",
+      "adapter": "WARP",
+      "repeat": 2,
+      "env": {
+        "VICTORY_INDIRECT_WINDOW": "0"
+      },
+      "exit": 0,
+      "values": [],
+      "validation_warnings_and_errors": [],
+      "transcript": "pr663-local-merge/window-WARP-2-0.log"
+    }
+  ]
+}

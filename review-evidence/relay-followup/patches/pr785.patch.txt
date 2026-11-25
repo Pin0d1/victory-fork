@@ -1,0 +1,71 @@
+diff --git a/crates/victory-gpu/src/host.rs b/crates/victory-gpu/src/host.rs
+index c3d5613..a0261fd 100644
+--- a/crates/victory-gpu/src/host.rs
++++ b/crates/victory-gpu/src/host.rs
+@@ -7436,3 +7436,13 @@ mod batch {   // Batch::texture_due lives here; `mod tests` is already taken at
+         );
+     }
+ }
++
++#[cfg(test)]
++pub(crate) fn audit_pending_words_at(address: usize, values: &[u64]) {
++    let mut l = line();
++    assert!(l.line.iter().all(|x| matches!(x, Late::Write(..))));
++    l.line = values
++        .iter()
++        .map(|&v| Late::Write(address, crate::queue::Written::Value(v), 8))
++        .collect();
++}
+diff --git a/crates/victory-gpu/src/list.rs b/crates/victory-gpu/src/list.rs
+index f9edaab..5c97970 100644
+--- a/crates/victory-gpu/src/list.rs
++++ b/crates/victory-gpu/src/list.rs
+@@ -2220,3 +2220,35 @@ mod tests {
+         assert_eq!(release(allocator), 0);
+     }
+ }
++
++#[cfg(all(test, windows))]
++#[test]
++fn pending_overwrite_goes_through_the_queue_predicate() {
++    assert!(crate::host::late());
++    let mut readings = vec![];
++    for (memory, stores) in [
++        (1u64, &[][..]),
++        (0, &[0u64, 1][..]),
++        (0, &[1u64, 0][..]),
++        (1, &[1u64, 0][..]),
++    ] {
++        let address = std::ptr::from_ref(&memory) as usize;
++        let w = ValueWait {
++            address: address as u64,
++            comparison: 3,
++            reference: 1,
++            wide: true,
++        };
++        crate::host::audit_pending_words_at(address, stores);
++        readings.push((
++            crate::host::late_met(&w),
++            crate::queue::audit_queue_value_met(&w),
++        ));
++        crate::host::audit_pending_words_at(address, &[]);
++    }
++    eprintln!("WAIT (prediction,queue) {readings:?}");
++    assert_eq!(
++        readings.iter().map(|v| v.1).collect::<Vec<_>>(),
++        [true, true, false, false]
++    );
++}
+diff --git a/crates/victory-gpu/src/queue.rs b/crates/victory-gpu/src/queue.rs
+index 11d3a8c..0928ab7 100644
+--- a/crates/victory-gpu/src/queue.rs
++++ b/crates/victory-gpu/src/queue.rs
+@@ -1084,3 +1084,8 @@ mod tests {
+         assert!(at[1] > first);
+     }
+ }
++
++#[cfg(test)]
++pub(crate) fn audit_queue_value_met(w: &crate::list::ValueWait) -> bool {
++    value_met(w)
++}

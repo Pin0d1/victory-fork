@@ -1,0 +1,71 @@
+===== pr438-tests/actual_shadow_readbacks_follow_each_alias-RTX-1.log =====
+running 1 test
+test watch::tests::actual_shadow_readbacks_follow_each_alias ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 127 filtered out; finished in 0.46s
+
+===== pr438-tests/actual_shadow_readbacks_follow_each_alias-RTX-2.log =====
+running 1 test
+test watch::tests::actual_shadow_readbacks_follow_each_alias ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 127 filtered out; finished in 0.38s
+
+===== pr438-tests/actual_shadow_readbacks_follow_each_alias-WARP-1.log =====
+running 1 test
+test watch::tests::actual_shadow_readbacks_follow_each_alias ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 127 filtered out; finished in 0.06s
+
+===== pr438-tests/actual_shadow_readbacks_follow_each_alias-WARP-2.log =====
+running 1 test
+test watch::tests::actual_shadow_readbacks_follow_each_alias ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 127 filtered out; finished in 0.06s
+
+===== pr438-tests/both_alias_consumers_observe_a_write-RTX-1.log =====
+running 1 test
+test watch::alias_epoch_regression::both_alias_consumers_observe_a_write ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 127 filtered out; finished in 0.00s
+
+===== pr438-tests/both_alias_consumers_observe_a_write-RTX-2.log =====
+running 1 test
+test watch::alias_epoch_regression::both_alias_consumers_observe_a_write ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 127 filtered out; finished in 0.00s
+
+===== pr438-tests/both_alias_consumers_observe_a_write-WARP-1.log =====
+running 1 test
+test watch::alias_epoch_regression::both_alias_consumers_observe_a_write ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 127 filtered out; finished in 0.00s
+
+===== pr438-tests/both_alias_consumers_observe_a_write-WARP-2.log =====
+running 1 test
+test watch::alias_epoch_regression::both_alias_consumers_observe_a_write ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 127 filtered out; finished in 0.00s
+
+===== pr438-tests/kernel_destination_stays_writable_until_a_synchronous_read_returns-RTX-1.log =====
+running 1 test
+test watch::tests::kernel_destination_stays_writable_until_a_synchronous_read_returns ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 127 filtered out; finished in 0.00s
+
+===== pr438-tests/kernel_destination_stays_writable_until_a_synchronous_read_returns-RTX-2.log =====
+running 1 test
+test watch::tests::kernel_destination_stays_writable_until_a_synchronous_read_returns ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 127 filtered out; finished in 0.00s
+
+===== pr438-tests/kernel_destination_stays_writable_until_a_synchronous_read_returns-WARP-1.log =====
+running 1 test
+test watch::tests::kernel_destination_stays_writable_until_a_synchronous_read_returns ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 127 filtered out; finished in 0.00s
+
+===== pr438-tests/kernel_destination_stays_writable_until_a_synchronous_read_returns-WARP-2.log =====
+running 1 test
+test watch::tests::kernel_destination_stays_writable_until_a_synchronous_read_returns ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 127 filtered out; finished in 0.00s

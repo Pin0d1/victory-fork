@@ -1,0 +1,71 @@
+===== pr663-local-merge/copy-RTX-1-1.log =====
+running 1 test
+test pipeline::make::indirect_review_tests::copied_arguments_replace_a_prefetched_record ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER vendor=10de device=1f06 software=false
+VALIDATION_MESSAGE id=1016 severity=4 Device Debug Layer Startup Options: GPU-Based Validation is enabled (disabled by default). This results in new validation not possible during API calls on the CPU, by creating patched shaders that have validation added directly to the shader. However, it can slow things down a lot, especially for applications with numerous PSOs. Time to see the first render frame may take several minutes.
+COPY_READBACK ia_vertices=6
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 166 filtered out; finished in 1.60s
+
+===== pr663-local-merge/copy-RTX-2-1.log =====
+running 1 test
+test pipeline::make::indirect_review_tests::copied_arguments_replace_a_prefetched_record ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER vendor=10de device=1f06 software=false
+VALIDATION_MESSAGE id=1016 severity=4 Device Debug Layer Startup Options: GPU-Based Validation is enabled (disabled by default). This results in new validation not possible during API calls on the CPU, by creating patched shaders that have validation added directly to the shader. However, it can slow things down a lot, especially for applications with numerous PSOs. Time to see the first render frame may take several minutes.
+COPY_READBACK ia_vertices=6
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 166 filtered out; finished in 0.64s
+
+===== pr663-local-merge/copy-WARP-1-1.log =====
+running 1 test
+test pipeline::make::indirect_review_tests::copied_arguments_replace_a_prefetched_record ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER vendor=1414 device=008c software=true
+VALIDATION_MESSAGE id=1016 severity=4 Device Debug Layer Startup Options: GPU-Based Validation is enabled (disabled by default). This results in new validation not possible during API calls on the CPU, by creating patched shaders that have validation added directly to the shader. However, it can slow things down a lot, especially for applications with numerous PSOs. Time to see the first render frame may take several minutes.
+COPY_READBACK ia_vertices=6
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 166 filtered out; finished in 0.74s
+
+===== pr663-local-merge/copy-WARP-2-1.log =====
+running 1 test
+test pipeline::make::indirect_review_tests::copied_arguments_replace_a_prefetched_record ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER vendor=1414 device=008c software=true
+VALIDATION_MESSAGE id=1016 severity=4 Device Debug Layer Startup Options: GPU-Based Validation is enabled (disabled by default). This results in new validation not possible during API calls on the CPU, by creating patched shaders that have validation added directly to the shader. However, it can slow things down a lot, especially for applications with numerous PSOs. Time to see the first render frame may take several minutes.
+COPY_READBACK ia_vertices=6
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 166 filtered out; finished in 0.96s
+
+===== pr663-local-merge/window-RTX-1-0.log =====
+running 1 test
+test host::late_tests::indirect_window_ends_at_a_copy_or_unknown_writer ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER vendor=10de device=1f06 software=false
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 166 filtered out; finished in 0.39s
+
+===== pr663-local-merge/window-RTX-2-0.log =====
+running 1 test
+test host::late_tests::indirect_window_ends_at_a_copy_or_unknown_writer ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER vendor=10de device=1f06 software=false
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 166 filtered out; finished in 0.43s
+
+===== pr663-local-merge/window-WARP-1-0.log =====
+running 1 test
+test host::late_tests::indirect_window_ends_at_a_copy_or_unknown_writer ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER vendor=1414 device=008c software=true
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 166 filtered out; finished in 0.11s
+
+===== pr663-local-merge/window-WARP-2-0.log =====
+running 1 test
+test host::late_tests::indirect_window_ends_at_a_copy_or_unknown_writer ... VALIDATION debug=1 gbv=1 synchronized_queue=1 full_state_tracking=1
+ADAPTER vendor=1414 device=008c software=true
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 166 filtered out; finished in 0.12s
